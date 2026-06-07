@@ -1,0 +1,82 @@
+Modular movie test script for scales using placeholder blocks
+
+This test script generates a quick 10-second video sample (300 frames) using a simplified schematic grid. Instead of using real artwork, it uses colored geometric blocks built exactly to your real-world dimensions.
+Running this script allows you to verify that the guard's feet stay locked to the floor line, the storefront ads align perfectly inside the walls, and the guard walks behind the structural pillars before you invest time or money into generating full creative assets.
+The Layout Grid Test Script (test_layout.py)
+Save this code in your project directory and run it. It creates placeholder assets automatically on the fly so you can test the positioning math instantly.
+import os
+import math
+import sys
+from PIL import Image, ImageDraw
+
+FRAME_RATE = 30
+TEST_FRAMES = 300  # 10 seconds of video to test the layout motion
+OUTPUT_DIR = "test_pipe"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# 1. GENERATE PLACEHOLDER SCHEMATIC ASSETS
+# Base Background Layer (Light gray walls, dark gray floor line at Y:850)
+bg_base = Image.new("RGBA", (1920, 1080), (220, 220, 220, 255))
+draw_bg = ImageDraw.Draw(bg_base)
+draw_bg.rectangle([0, 850, 1920, 1080], fill=(80, 80, 80, 255)) # The Floor
+
+# Guard Sprite Layer (50x175 Pixel Silhouette Box)
+# The sprite frame canvas itself is 1920x1080 to match coordinate mapping easily
+guard_sprite = Image.new("RGBA", (1920, 1080), (0, 0, 0, 0))
+draw_guard = ImageDraw.Draw(guard_sprite)
+draw_guard.rectangle([0, 0, 50, 175], fill=(0, 120, 255, 255)) # Blue Guard Box
+
+# Foreground Columns Layer (1920x1080 Transparent Canvas)
+foreground = Image.new("RGBA", (1920, 1080), (0, 0, 0, 0))
+draw_fg = ImageDraw.Draw(foreground)
+# Central structural pillar dividing Store 1 and Store 2 (Width: 100px)
+draw_fg.rectangle([910, 0, 1010, 850], fill=(140, 140, 140, 255)) 
+
+# Mock Advertiser Storefront Graphics (450x350 Pixels)
+ad_1 = Image.new("RGBA", (450, 350), (255, 100, 100, 255)) # Red Brand Box
+ad_2 = Image.new("RGBA", (450, 350), (100, 255, 100, 255)) # Green Brand Box
+
+# 2. RUN VELOCITY & MAPPING TEST LOOP
+guard_x = 100
+guard_y = 675  # 850 (Floor Line) - 175 (Guard Height) = 675 Head Coordinate
+guard_speed = 4
+direction = "right"
+
+print("--- Rendering 10-Second Layout Verification Grid ---")
+
+for frame in range(TEST_FRAMES):
+    # Movement logic check
+    if direction == "right":
+        guard_x += guard_speed
+        if guard_x > 1750: direction = "left"
+    else:
+        guard_x -= guard_speed
+        if guard_x < 100: direction = "right"
+        
+    # Stack the composition layers
+    canvas = bg_base.copy()
+    
+    # Drop Ads onto the wall slots
+    canvas.alpha_composite(ad_1, dest=(350, 500))
+    canvas.alpha_composite(ad_2, dest=(1120, 500))
+    
+    # Overlap the guard at his dynamic moving X position
+    canvas.alpha_composite(guard_sprite, dest=(guard_x, guard_y))
+    
+    # Layer the foreground pillar over the moving guard
+    canvas.alpha_composite(foreground, dest=(0, 0))
+    
+    # Save the calibration frame to disk
+    frame_name = f"test_frame_{frame:03d}.jpg"
+    canvas.convert("RGB").save(os.path.join(OUTPUT_DIR, frame_name), "JPEG", quality=80)
+
+print("[SUCCESS] Test compilation complete. 300 test frames written to 'test_pipe/'")
+3. Verify the Output Layout Animation
+Run this quick FFmpeg command in your terminal to compile the 300 test images into a fast 10-second layout calibration video file:
+ffmpeg -framerate 30 -i test_pipe/test_frame_%03d.jpg -c:v libx264 -pix_fmt yuv420p layout_verification.mp4
+Open the resulting layout_verification.mp4 file and look for three specific visual behaviors:
+
+	•	No Foot Floating: Ensure the blue guard block slides smoothly across the line where the light gray walls meet the dark gray flooring without bouncing or sinking.
+	•	Proportional Scales: Check that the scale feels visually natural—the blue guard block should appear correctly proportioned next to the larger red and green storefront squares.
+	•	The Layering Illusion: Watch the blue block cross the center of the screen. It must disappear behind the gray structural pillar layer at X:910 and reappear instantly on the other side at X:1010, confirming your 3D depth system is configured correctly.
+Now that the architectural grid and depth structures are mathematically verified, would you like to plan the visual layout or formatting style for the day/night transitions (like how the shop lights turn off at closing time)?

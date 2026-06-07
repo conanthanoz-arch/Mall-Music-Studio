@@ -1,0 +1,55 @@
+Modular movie directory tree
+
+Since the entire foundation of your 24/7 automated ambient streaming network is technically and logistically complete, the absolute next logical step is Production Execution: Pre-Alpha Local Deployment.
+We need to build your physical local development folder on your machine, test the Python engine with basic dummy files, and verify your local hardware can feed frames stably into the FFmpeg wrapper.
+Here is your exact step-by-step technical launch checklist to get your first test stream running privately on YouTube.
+
+Step 1: Create Your Local Directory Tree
+Open your computer's file explorer or terminal and create the exact structure below. Copy your finalized code scripts into the root folder.
+������ Mall_Patrol_Network/
+│   ├── ������ stream_engine.py             (The master RAM-piping python engine)
+│   ├── ������ start_stream.sh              (The automated crash recovery shell script)
+│   ├── ������ advertiser_log.csv           (The CSV tracker for storefront sponsors)
+│   ├── ������ lofi_music.mp3               (Your master concatenated audio loop file)
+│   ├── ������ Arial.ttf                     (A standard TrueType Font file for the HUD text)
+│   ├── ������ ads/                         (Keep empty for now)
+│   └── ������ assets/                      
+│       ├── ������ pixel_art/               (Create these 4 folders for the 6-hour blocks)
+│       ├── ������ anime_vector/
+│       ├── ������ matte_painting/
+│       └── ������ cyberpunk/
+
+Step 2: Generate Fast Development Placeholders
+Before you wait for your background artist to deliver beautiful final layers, you need quick, unshaded rectangular images to verify the code logic.
+
+	1.	Open any basic image editor (like Photoshop, MS Paint, or Canva).
+	2.	Create 6 flat, unshaded 1920x1080 pixel PNG images named mall_structure_day.png, mall_structure_night.png, guard_walk_right.png, guard_walk_left.png, mall_pillars.png, and a double-width panoramic_sky.png (3840x1080).
+	3.	Use a different bright background color for each image so you can easily spot them.
+	4.	Drop a duplicate set of these 6 files into all four theme folders under your assets/ directory.
+
+Step 3: Run Your Pre-Flight System Diagnostics
+Open your computer's command line or terminal inside the Mall_Patrol_Network directory and run your script directly using Python:
+python3 stream_engine.py
+
+	•	What to look for: The script should output [SUCCESS] All core assets validated. System initialized. Starting infinite loop... to the screen.
+	•	It will immediately begin printing raw, rapid binary code characters to your terminal window. This is completely correct—it means your Python script is successfully piping the uncompressed frame data directly to your computer's standard output RAM stream instead of cluttering your hard drive.
+	•	Press CTRL + C on your keyboard to stop the script.
+
+Step 4: Configure Your Private YouTube Ingestion Server
+Before streaming publicly, you want to test your network engine in an invisible, secure sandbox:
+
+	1.	Go to the YouTube Live Control Room dashboard.
+	2.	Create a new Live Stream event. Set the visibility strictly to "Unlisted" or "Private". This allows you to monitor performance without sending notifications to subscribers.
+	3.	Copy your unique alpha-numeric Stream Key.
+	4.	Open your start_stream.sh (or start_stream.bat if you are on Windows) script in a text editor and paste the string directly into your STREAM_KEY="" configuration variable.
+
+Step 5: Execute Your First Live Network Test
+With your placeholder assets in place, your tracking array compiled, and your stream key saved, run your shell recovery monitor:
+./start_stream.sh
+
+	•	The Validation Checklist: Open your private YouTube Live Studio dashboard in a web browser. Within 20–30 seconds, the dashboard status light should switch to a bright green "Excellent Connection" signal.
+	•	Monitor the stream player for 10 to 15 minutes. Check that your background layers remain completely stable, your text HUD displays your track titles with zero screen flickering, and your Discord webhook triggers a startup message on your mobile phone.
+To help you troubleshoot and optimize this live test environment, let me know:
+
+	•	What Operating System (Windows, macOS, or Linux) will you be using for this initial local execution?
+	•	Do you need help generating your first batch of license-free audio tracks to build your initial lofi_music.mp3master file?

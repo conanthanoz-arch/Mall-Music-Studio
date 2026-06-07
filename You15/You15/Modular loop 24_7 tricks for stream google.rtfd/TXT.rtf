@@ -1,0 +1,256 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;\f5\fnil\fcharset0 Menlo-Regular;
+\f6\fnil\fcharset0 .SFUI-SemiboldItalic;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular loop 24/7 tricks for stream google\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+This is a highly innovative monetization model. By turning your fictional storefronts into dynamic ad spaces, you are essentially creating a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 digital billboard network hidden inside a 24/7 lo-fi stream
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . Brands can pay you to take over a storefront for a week or a month, allowing you to update the stream seamlessly without turning it off.\
+To achieve a 24/7 continuous stream that updates seamlessly on the fly, you 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 cannot
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  upload 6-hour video files manually [1]. You must run a 24/7 server using a tool like OBS Studio or FFmpeg to stream directly to YouTube via a stream key.\
+Here is how to update the code to handle precise structural time triggers and dynamic brand swap-outs.\
+\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. Updated Python Script: Structural Triggers & Ad Injection\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 This updated code uses a dictionary-based asset manager. To change a storefront brand for a real advertiser, you simply drop a new PNG image into your 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 ads/
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774  folder. The script will automatically load the new brand image on the next frame loop cycle.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 import os\
+import math\
+from PIL import Image, ImageEnhance\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\i \cf0 # 1. SETUP ENGINE SETTINGS
+\f3\i0 \
+FRAME_RATE = 30\
+TOTAL_FRAMES = 60 * 60 * 6 * FRAME_RATE  
+\f4\i # 6-hour cycle loop
+\f3\i0 \
+OUTPUT_DIR = "stream_pipe"               
+\f4\i # A shared folder used by your streaming software
+\f3\i0 \
+os.makedirs(OUTPUT_DIR, exist_ok=True)\
+os.makedirs("ads", exist_ok=True)       
+\f4\i # Put brand PNGs here
+\f3\i0 \
+\
+
+\f4\i # 2. LOAD INFRASTRUCTURE ASSETS (1920x1080)
+\f3\i0 \
+bg_base = Image.open("mall_structure_day.png").convert("RGBA")\
+bg_night = Image.open("mall_structure_night.png").convert("RGBA")\
+guard_right = Image.open("guard_walk_right.png").convert("RGBA")\
+guard_left = Image.open("guard_walk_left.png").convert("RGBA")\
+foreground = Image.open("mall_pillars.png").convert("RGBA")\
+\
+
+\f4\i # 3. DYNAMIC ADVERTISER LAYER DEFINITIONS
+\f3\i0 \
+
+\f4\i # Storefronts are transparent cutouts in your base background file.
+\f3\i0 \
+
+\f4\i # These brand images sit *behind* the mall walls so they look perfectly framed.
+\f3\i0 \
+def get_advertiser_billboards():\
+    try:\
+        
+\f4\i # If an advertiser pays you, replace these files with their real logo/shop display
+\f3\i0 \
+        store_1 = Image.open("ads/storefront_1.png").convert("RGBA")\
+        store_2 = Image.open("ads/storefront_2.png").convert("RGBA")\
+    except FileNotFoundError:\
+        
+\f4\i # Fallback to default fictional brands if no ad file exists
+\f3\i0 \
+        store_1 = Image.open("fictional_store_1.png").convert("RGBA")\
+        store_2 = Image.open("fictional_store_2.png").convert("RGBA")\
+    return store_1, store_2\
+\
+
+\f4\i # Initial coordinates
+\f3\i0 \
+guard_x = 100\
+guard_y = 500\
+guard_speed = 2\
+direction = "right"\
+\
+
+\f4\i # 4. CONTINUOUS STREAM LOOP (Infinite 24/7 Generation)
+\f3\i0 \
+frame = 0\
+while True:\
+    
+\f4\i # Handle mathematical time loop tracking
+\f3\i0 \
+    current_cycle_frame = frame % TOTAL_FRAMES\
+    \
+    
+\f4\i # --- PHASE A: CHRONOLOGICAL TIME TRIGGERS ---
+\f3\i0 \
+    
+\f4\i # Determine the status of mall operations based on the 6-hour loop timeline
+\f3\i0 \
+    is_mall_open = True\
+    
+\f4\i # Closing Time Trigger: At 4 hours in (14,400 seconds), mall shuts down
+\f3\i0 \
+    if current_cycle_frame > (4 * 60 * 60 * FRAME_RATE):\
+        is_mall_open = False\
+\
+    
+\f4\i # --- PHASE B: MOVEMENT LOGIC ---
+\f3\i0 \
+    if direction == "right":\
+        guard_x += guard_speed\
+        current_guard_sprite = guard_right\
+        if guard_x > 1500: direction = "left"\
+    else:\
+        guard_x -= guard_speed\
+        current_guard_sprite = guard_left\
+        if guard_x < 100: direction = "right"\
+\
+    
+\f4\i # --- PHASE C: INDEPENDENT LAYER COMPOSITING (Z-INDEX Order) ---
+\f3\i0 \
+    
+\f4\i # Step 1: Initialize canvas with structural backgrounds
+\f3\i0 \
+    if is_mall_open:\
+        frame_canvas = bg_base.copy()\
+    else:\
+        frame_canvas = bg_night.copy() 
+\f4\i # Toggled off interior safety lights
+\f3\i0 \
+\
+    
+\f4\i # Step 2: Inject dynamic advertiser assets on the fly
+\f3\i0 \
+    ad_1, ad_2 = get_advertiser_billboards()\
+    frame_canvas.alpha_composite(ad_1, dest=(200, 300))  
+\f4\i # Precise pixel location of Store 1
+\f3\i0 \
+    frame_canvas.alpha_composite(ad_2, dest=(800, 300))  
+\f4\i # Precise pixel location of Store 2
+\f3\i0 \
+\
+    
+\f4\i # Step 3: Layer the patrol guard over the storefronts
+\f3\i0 \
+    frame_canvas.alpha_composite(current_guard_sprite, dest=(guard_x, guard_y))\
+    \
+    
+\f4\i # Step 4: Layer structural pillars/potted plants over everything
+\f3\i0 \
+    frame_canvas.alpha_composite(foreground, dest=(0, 0))\
+\
+    
+\f4\i # --- PHASE D: ENVIRONMENTAL DAY/NIGHT COLOR TINT ---
+\f3\i0 \
+    time_factor = (math.sin(2 * math.pi * current_cycle_frame / TOTAL_FRAMES) + 1) / 2\
+    brightness_multiplier = 0.3 + (time_factor * 0.7)\
+    color_multiplier = 0.5 + (time_factor * 0.5)\
+\
+    final_frame = frame_canvas.convert("RGB")\
+    final_frame = ImageEnhance.Brightness(final_frame).enhance(brightness_multiplier)\
+    final_frame = ImageEnhance.Color(final_frame).enhance(color_multiplier)\
+\
+    
+\f4\i # Apply deep blue midnight hue if mall is closed
+\f3\i0 \
+    if not is_mall_open:\
+        night_overlay = Image.new("RGB", final_frame.size, (5, 10, 35))\
+        final_frame = Image.blend(final_frame, night_overlay, alpha=0.35)\
+\
+    
+\f4\i # --- PHASE E: LIVE STREAM INTERFACE PIPE ---
+\f3\i0 \
+    
+\f4\i # Instead of writing thousands of files, we continually overwrite the exact same file names.
+\f3\i0 \
+    
+\f4\i # Your streaming server will continually ingest these specific image updates.
+\f3\i0 \
+    frame_name = f"live_pipe_\{current_cycle_frame % 900:03d\}.jpg" 
+\f4\i # Loops through a tiny 30-second image cache
+\f3\i0 \
+    final_frame.save(os.path.join(OUTPUT_DIR, frame_name), "JPEG", quality=85)\
+\
+    frame += 1\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Achieving Seamless 24/7 Updates Without Disconnecting\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To ensure your YouTube live stream stays active forever while you swap out advertiser brand images in the background, you must separate your 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 rendering pipeline
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  from your 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 streaming broadcast pipeline
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 .\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Shared Cache Architecture:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Notice in Phase E of the code that the script only cycles through 900 frame names over and over again (a rolling 30-second visual buffer).\
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 How to Update Ads Live:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Because the Python script reads the ads/ folder fresh every frame, you can drop a brand new storefront_1.png file into that folder 
+\f6\i \AppleTypeServices\AppleTypeServicesF2293774 while the code is running
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774 . On the very next loop iteration, Python will grab the new image, seamlessly rendering the new advertiser's store display into the video feed.\
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Broadcast Solution:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  You run an 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 FFmpeg Loop Script
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  or a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 linux server script
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  on a hosting machine. This script points to the stream_pipe/ folder, ingests the frames being generated by Python, pairs them with an infinite lo-fi music audio loop, and pipes that data out to your YouTube Stream Key via RTMP protocol.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Creating Your Advertiser Media Kit\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 When you pitch this format to real-world brands (like clothing companies, energy drinks, or tech brands), you should provide explicit layout metrics so their design teams can build the assets perfectly:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0
+\f5\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Pixel Dimensions:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Give them the exact crop resolution of your storefront assets (e.g., 
+\f6\i \AppleTypeServices\AppleTypeServicesF2293774 Storefront 1 Canvas: 450x300 pixels
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774 ).\
+\ls2\ilvl0
+\f5\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Lighting Directions:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Request transparent PNG files with natural, flat lighting so that your Python color grading filters (the afternoon warmth and midnight blue overlay) can realistically affect their brand colors.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Would you like help setting up the specific 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 FFmpeg terminal script
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  that takes this Python image pipe folder and broadcasts it live to YouTube without stopping?\
+\
+}

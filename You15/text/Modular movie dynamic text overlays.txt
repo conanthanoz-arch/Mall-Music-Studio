@@ -1,0 +1,80 @@
+Modular movie dynamic text overlays
+
+Adding dynamic text overlays like a floating song notification or occasional guard dialogue is the ultimate way to make your stream feel interactive, alive, and polished.
+Since you are rendering frames sequentially in Python, you can use Pillow’s ImageDraw and ImageFont modules to render clean, anti-aliased text overlays directly onto the video canvas without needing external video editing tools.
+1. Setting Up Your Fonts
+Before running the code below, make sure you have a standard TrueType Font file (like Arial.ttf, Roboto.ttf, or a stylized retro pixel font) placed in your main project folder.
+
+2. The Python Text Overlay & Music Display Code
+This modular function tracks what track is currently playing and renders a sleek, semi-transparent overlay in the top-left corner of the stream, while occasionally drawing a dialogue bubble right above your security guard's head.
+import os
+from PIL import Image, ImageDraw, ImageFont
+
+# Initialize font settings (Set size relative to 1920x1080 canvas)
+try:
+    font_title = ImageFont.truetype("Arial.ttf", 28)
+    font_artist = ImageFont.truetype("Arial.ttf", 20)
+    font_dialogue = ImageFont.truetype("Arial.ttf", 22)
+except IOError:
+    # Fallback to default low-res font if system ttf isn't found
+    font_title = font_artist = font_dialogue = ImageFont.load_default()
+
+def render_text_layers(frame_canvas, guard_x, guard_y, current_frame):
+    # Create a transparent drawing context overlay
+    draw = ImageDraw.Draw(frame_canvas)
+    
+    # --- PHASE A: "NOW PLAYING" MUSIC HUD OVERLAY ---
+    # Dummy logic: Change track name every 5400 frames (approx. every 3 minutes at 30fps)
+    if current_frame < 5400:
+        track_title = "Late Night Patrol"
+        track_artist = "Lo-Fi Guard Collective"
+    else:
+        track_title = "Neon Escalator Echoes"
+        track_artist = "Synth Wave Cadet"
+        
+    # Draw a sleek, semi-transparent background box for readability
+    # Coordinates: (X1, Y1, X2, Y2)
+    draw.rectangle([40, 40, 400, 120], fill=(0, 0, 0, 140), radius=8)
+    
+    # Draw text fields (Text string, coordinates, color, font configuration)
+    draw.text((60, 50), f"������ {track_title}", fill=(255, 255, 255, 255), font=font_title)
+    draw.text((60, 85), f"by {track_artist}", fill=(200, 200, 200, 255), font=font_artist)
+
+    # --- PHASE B: GUARD DIALOGUE BOX (OCCASIONAL TRIGGERS) ---
+    # Make the guard "speak" occasionally (e.g., between frames 300 and 420)
+    # This keeps viewers watching for fun little Easter eggs
+    if 300 <= (current_frame % 2000) <= 450:
+        speech_text = "All clear on the second floor..."
+        
+        # Calculate dynamic bubble position directly over the guard's walking X position
+        bubble_x1 = guard_x + 20
+        bubble_y1 = guard_y - 80
+        bubble_x2 = bubble_x1 + 320
+        bubble_y2 = bubble_y1 + 50
+        
+        # Draw the dialogue bubble container
+        draw.rectangle([bubble_x1, bubble_y1, bubble_x2, bubble_y2], fill=(255, 255, 255, 230), radius=12)
+        
+        # Draw a little text bubble pointer triangle pointing to the guard
+        draw.polygon([(guard_x + 50, guard_y - 30), (guard_x + 60, guard_y - 31), (guard_x + 55, guard_y - 20)], fill=(255, 255, 255, 230))
+        
+        # Superimpose the dialogue text inside the bubble boundaries
+        draw.text((bubble_x1 + 15, bubble_y1 + 12), speech_text, fill=(20, 20, 20, 255), font=font_dialogue)
+
+    return frame_canvas
+
+3. Integrating Into Your Main Frame Loop
+To hook this feature up, go inside your main while True: loop where your composite images are compiled, and pass the final composite image into this function right before applying the global day/night color grading filters:
+# ... (Previous canvas building: background, ads, guard sprite, foreground) ...
+
+# Layer text overlays directly onto the combined composition
+frame_canvas = render_text_layers(frame_canvas, guard_x, guard_y, current_cycle_frame)
+
+# ... (Continue to Phase D: Apply Day/Night color grading and save frame) ...
+
+4. Maximizing Viewer Engagement
+By introducing this code block, you open up incredibly clever options to build an active community around your stream:
+
+	•	Easter Eggs: You can add randomized behavior triggers to make the guard say weird or funny things if he walks past a specific store at exactly 3:00 AM in the loop cycle.
+	•	Track Metadata: You can tie the track_title variables directly to an array or external text file containing your music tracklist so the onscreen metadata seamlessly changes along with your audio files.
+Would you like to build out the automated tracklist dictionary array next, so that your code can cleanly cycle through 50+ songs along with their exact timestamps?

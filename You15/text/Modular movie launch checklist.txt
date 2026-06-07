@@ -1,0 +1,45 @@
+Modular movie launch checklist
+
+Here is your definitive 7-Day Launch Timeline Checklist to take your 24/7 automated lo-fi network from local code scripts to a fully live, monetized YouTube broadcast.
+
+������ Day 1: Asset Preparation & Scaling Check
+
+	•	Hand Off Blueprints: Send the Background Artist Production Blueprint & Checklist to your illustrator or generate your baseline layers.
+	•	Enforce Canvas Metrics: Confirm that the day, night, and foreground layers are strictly 1920x1080 pixels, and the sky panorama is exactly 3840x1080.
+	•	Format Sprites: Ensure the security guard sprites (guard_walk_right.png and guard_walk_left.png) are isolated transparent PNGs cropped tight to the bottom edge so his feet lock cleanly to the floor line (Y: 850).
+������ Day 2: Audio Harvesting & Rounding
+
+	•	Gather 120 Tracks: Download your initial library of copyright-cleared, royalty-free, or Creative Commons lo-fi MP3s into your music_source/ directory.
+	•	Run the Windows Analyzer: Execute build_windows_playlist.py to calculate frame-rounded durations for your TRACKLIST array.
+	•	Compile the Master Loop: Run the FFmpeg concat command to compile lofi_music.mp3 with zero quality loss.
+	•	Verify Audio Integrity: Run verify_audio_pipeline.py to confirm that your script timeline and the physical MP3 duration are perfectly synchronized.
+������ Day 3: Backend Integration & Local Testing
+
+	•	Merge the Core Script: Combine the optimized direct-to-RAM logic, tracklist lookup, multi-theme loader, text HUD overlays, and daylight masking into your master stream_engine.py.
+	•	Set Up Mock Ads: Populate your advertiser_log.csv file with 2 fictional fallback brands and save their placeholder graphics inside the ads/ directory.
+	•	Run the Benchmark: Execute benchmark_engine.py. Verify that your average frame render speed is well under 33.33 ms and your CPU headroom is clear.
+������ Day 4: Sandbox Broadcast Simulation
+
+	•	Get Your Stream Key: Log into YouTube Studio, create an Unlisted/Private Live Stream event, configure it to "Normal Latency," and turn "Auto-Stop" OFF.
+	•	Configure Webhooks: Create your private Discord server webhook and paste the URL into your start_stream.bat recovery file.
+	•	Launch the 24-Hour Stress Test: Execute start_stream.bat and leave it streaming to your private YouTube link overnight.
+	•	Review the Error Logs: Check stream_monitor.log the next morning to ensure the script ran indefinitely without memory leaks, crash loops, or frame drops.
+������ Day 5: Setting Up Community & Automation Bots
+
+	•	Build Your Holding Slate: Design a custom 1280x720 thumbnail reading "Optimization in Progress - Resuming Shortly" and upload it to your YouTube Live dashboard as a crash placeholder.
+	•	Set Up Search SEO: Populate your live stream metadata box with your keyword-dense description, rotation schedule, sponsor contact info, and targeted video tags.
+	•	Deploy Moderation Bots: Connect Nightbot or Streamlabs Cloudbot to your channel. Configure Slow Mode (3–5 seconds), turn on the Link Blocker, and set up automated chat timers for !schedule, !advertise, and your study prompts.
+������ Day 6: Promotional Asset Generation
+
+	•	Record Short-Form Hooks: Use OBS Studio to record your local screen running the code, capturing a crisp time-lapse of a day/night shift transition.
+	•	Edit Vertical Teasers: Render three 15-second vertical clips using the 3-Part Short-Form Hook Formula (Hook → Code Explanation → Call to Action).
+	•	Schedule Social Outposts: Schedule these clips to post across TikTok, Instagram Reels, and YouTube Shorts over the upcoming weekend to build initial traffic.
+	•	Equip Your Media Kit: Save your Advertiser Media Kit PDF so you are ready to respond to inbound business inquiries instantly.
+������ Day 7: Go Live & Launch Campaign
+
+	•	Flip the Switch: Open your YouTube Live Dashboard and switch your stream visibility from Private to Public.
+	•	Engage the Crew: Drop a pinned message in the live chat welcoming listeners, announcing the guard's official shift start, and kicking off the community "Guard Naming Contest."
+	•	Deploy the Marketing Hooks: Publish your pre-rendered Shorts, Reels, and TikToks the exact second you go live, driving direct algorithmic traffic to your active broadcast.
+
+You now have a complete engineering, artistic, logistical, and marketing structure for a fully functional 24/7 ambient network.
+As you start setting up your local directories, would you like me to help you write the custom text file connection layerto bridge your live chat bot to your Python script for the interactive chat triggers, or are you ready to jump into building your files?

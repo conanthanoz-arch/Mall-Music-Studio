@@ -1,0 +1,87 @@
+Modular movie streaming scripts for 24:7
+
+This diagnostic module acts as a pre-flight safety check. It runs automatically right before your infinite loop starts. If a file is missing, corrupted, or formatted in the wrong resolution, the script will halt instantly and tell you exactly what to fix, preventing a system crash after you leave the server running.
+The Python Pre-Flight Diagnostic Module
+Insert this block of code right before the while True: loop in your main script:
+import os
+import sys
+from PIL import Image
+
+def run_preflight_diagnostics():
+    print("=== STARTING SYSTEM DIAGNOSTICS ===")
+    
+    # 1. Define required files and their ideal dimensions
+    required_assets = {
+        "mall_structure_day.png": (1920, 1080),
+        "mall_structure_night.png": (1920, 1080),
+        "guard_walk_right.png": (1920, 1080), # Or your specific sprite size
+        "guard_walk_left.png": (1920, 1080),
+        "mall_pillars.png": (1920, 1080),
+        "lofi_audio.mp3": None # Audio doesn't have dimensions
+    }
+    
+    critical_error_found = False
+    
+    # 2. Check each asset file
+    for filename, expected_size in required_assets.items():
+        # Check if file exists
+        if not os.path.exists(filename):
+            print(f"[ERROR] Missing file: '{filename}' not found in directory.")
+            critical_error_found = True
+            continue
+            
+        # If it's an image, check for transparency and size consistency
+        if filename.endswith(".png"):
+            try:
+                with Image.open(filename) as img:
+                    # Check resolution consistency
+                    if expected_size and img.size != expected_size:
+                        print(f"[WARNING] Resolution mismatch in '{filename}'. Expected {expected_size}, got {img.size}. This may distort your layers.")
+                    
+                    # Ensure image is in RGBA mode for transparency support
+                    if img.mode != "RGBA" and "pillars" in filename or "guard" in filename:
+                        print(f"[WARNING] '{filename}' is in {img.mode} mode instead of RGBA. Transparency masking might fail.")
+            except Exception as e:
+                print(f"[ERROR] '{filename}' seems corrupted or unreadable. Details: {e}")
+                critical_error_found = True
+
+    # 3. Verify Advertiser folder infrastructure
+    if not os.path.exists("ads"):
+        print("[INFO] 'ads/' directory not found. Creating it now...")
+        os.makedirs("ads", exist_ok=True)
+    else:
+        # Check if current active ad files are valid images
+        for ad_file in os.listdir("ads"):
+            if ad_file.endswith(".png"):
+                try:
+                    with Image.open(os.path.join("ads", ad_file)) as img:
+                        pass
+                except Exception:
+                    print(f"[WARNING] Found corrupted ad asset: 'ads/{ad_file}'. Remove or replace it.")
+
+    # 4. Check system write permissions for the stream pipe folder
+    try:
+        test_file_path = "stream_pipe/permissions_test.txt"
+        os.makedirs("stream_pipe", exist_ok=True)
+        with open(test_file_path, "w") as f:
+            f.write("test")
+        os.remove(test_file_path)
+    except Exception as e:
+        print(f"[ERROR] Cannot write to 'stream_pipe/' folder. Check folder permissions. Details: {e}")
+        critical_error_found = True
+
+    # 5. Evaluate final status
+    if critical_error_found:
+        print("\n[CRITICAL] System diagnostics FAILED. Stream initialization aborted to protect broadcast integrity.")
+        sys.exit(1) # Instantly kills the script safely before breaking things
+    else:
+        print("\n[SUCCESS] All core assets validated. System initialized. Starting infinite loop...\n")
+
+# Execute the diagnostic check
+run_preflight_diagnostics()
+Why This Architecture Works
+
+	•	Protects the Stream Key: If your script crashes immediately upon execution because a file is missing, the auto-recovery monitor script we created earlier will get stuck in a fast restart loop. This can flag your YouTube stream key for spamming connection requests. This diagnostic check kills the program cleanly before that loop can happen.
+	•	Catches Transparency Failures: It reads the header color profile (img.mode). If you mistakenly save your security guard graphic as a standard JPEG or flat 2D RGB image, it warns you ahead of time so the guard doesn't display with a solid white box around him.
+	•	Isolates Hardware Problems: The permission check verifies that your script can actively read/write thousands of frames to your storage drive. This is incredibly useful if you deploy the setup to a headless cloud linux machine.
+Would you like to explore how to set up an automated notification hook (like a basic Discord or Telegram webhook) so that your server sends an alert directly to your phone if it registers a critical crash or recovery event?

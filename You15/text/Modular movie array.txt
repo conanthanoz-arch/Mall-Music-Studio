@@ -1,0 +1,144 @@
+Modular movie array
+
+Here is the complete, production-ready python configuration array. This data structure maps out the entire macro-loop lifecycle from the pristine outer rings (A and Z) down through the green bathroom inversion (B and Y), hitting the spatial split at the **Nexus**, and finally threading the monster back into the origin frame.
+You can drop this directly into your automated loop-weaving pipeline script.
+```python
+# The Master Loop Configuration Array
+# Structure maps the folding timeline from the outer limits to the center collision
+macro_loop_weave = [
+    # =====================================================================
+    # PHASE 1: THE OUTER RING (Baseline Setup)
+    # Target: Establish the structural rules. Left-to-right cadence is locked.
+    # =====================================================================
+    {
+        "step": 1,
+        "scene_id": "A",
+        "visual_asset": "scene_A_white_hallway_pristine.mp4",
+        "protagonist_state": "normal_baseline",
+        "audio_layers": {
+            "drone": "drone_50hz_industrial_clean.wav",
+            "foley": "footsteps_clean_shoes_center.wav",
+            "leak": None
+        },
+        "transition": {
+            "type": "door_wipe",
+            "duration": 2.0,
+            "target_scene_id": "B"
+        }
+    },
+    {
+        "step": 2,
+        "scene_id": "Z",
+        "visual_asset": "scene_Z_brick_hallway_pristine.mp4",
+        "protagonist_state": "normal_scruffy",
+        "audio_layers": {
+            "drone": "drone_50hz_industrial_clean.wav",
+            "foley": "footsteps_clean_shoes_center.wav",
+            "leak": None
+        },
+        "transition": {
+            "type": "corner_wipe",
+            "duration": 2.0,
+            "target_scene_id": "B" # Pointing toward the inner ring
+        }
+    },
+
+    # =====================================================================
+    # PHASE 2: THE GREEN BATHROOM INVERSION (The Constriction)
+    # Target: The two rooms rule active. Scenes B and Y are the same space 
+    # separated by a single wall. Subtle leaks begin.
+    # =====================================================================
+    {
+        "step": 3,
+        "scene_id": "B",
+        "visual_asset": "scene_B_green_bathroom_vanity.mp4",
+        "protagonist_state": "subtle_muscle_growth",
+        "audio_layers": {
+            "drone": "drone_pitched_down_1st.wav",
+            "foley": "footsteps_mixed_barefoot_thud.wav", # Subtle audio warning
+            "leak": "spatial_leak_shower_running_reverse.wav" # Hearing room Y
+        },
+        "transition": {
+            "type": "door_wipe",
+            "duration": 1.5,
+            "ghost_layer": {"asset": "scene_Z_brick_hallway_pristine.mp4", "opacity": 0.05},
+            "target_scene_id": "Y"
+        }
+    },
+    {
+        "step": 4,
+        "scene_id": "Y",
+        "visual_asset": "scene_Y_green_bathroom_shower.mp4",
+        "protagonist_state": "feral_01_scowling",
+        "audio_layers": {
+            "drone": "drone_pitched_down_2st.wav",
+            "foley": "footsteps_heavy_dragging.wav",
+            "leak": "spatial_leak_vanity_mirror_echo.wav" # Hearing room B
+        },
+        "transition": {
+            "type": "corner_wipe",
+            "duration": 1.2,
+            "ghost_layer": {"asset": "scene_B_green_bathroom_vanity.mp4", "opacity": 0.12},
+            "target_scene_id": "NEXUS" # Forcing the collision next step
+        }
+    },
+
+    # =====================================================================
+    # PHASE 3: THE NEXUS COLLISION (The Tearing)
+    # Target: The temporal barrier breaks. 50/50 horizontal split screen.
+    # Left side is counting up (Clean), Right side is counting down (Rotten).
+    # =====================================================================
+    {
+        "step": 5,
+        "scene_id": "NEXUS",
+        "visual_asset": {
+            "left_src": "scene_C_white_tiles_clean.mp4",
+            "right_src": "scene_X_decay_tiles_rotten.mp4"
+        },
+        "protagonist_state": "split_continuous_mutation", # Swaps states at the 50% line
+        "audio_layers": {
+            "drone": "drone_fractured_mechanical_grind.wav",
+            "foley": {
+                "left_ear_pan": "footsteps_clean_shoes_center.wav",
+                "right_ear_pan": "footsteps_wet_flesh_drag.wav"
+            },
+            "leak": "reverse_audio_suck_in.wav"
+        },
+        "transition": {
+            "type": "spatial_hstack_mask", # Custom filter rule executed by your script
+            "duration": 0.0, # Instant physical paradox seam, no crossfade
+            "target_scene_id": "A_CORRUPTED"
+        }
+    },
+
+    # =====================================================================
+    # PHASE 4: THE MOBIUS RETURN (The Trap)
+    # Target: The threads weave back on themselves. The monster enters 
+    # the pristine white hallway from Step 1. The gaslight is complete.
+    # =====================================================================
+    {
+        "step": 6,
+        "scene_id": "A_CORRUPTED",
+        "visual_asset": "scene_A_white_hallway_pristine.mp4", # Same physical environment as Step 1
+        "protagonist_state": "peak_feral_monster", # Crucial anomaly
+        "audio_layers": {
+            "drone": "drone_50hz_industrial_clean.wav", # Audio pretends everything is fine
+            "foley": "footsteps_wet_flesh_drag.wav",     # Audio reality conflicts
+            "leak": "whispers_of_step_1_audio.wav"
+        },
+        "transition": {
+            "type": "door_wipe",
+            "duration": 2.5,
+            "ghost_layer": {"asset": "scene_X_decay_tiles_rotten.mp4", "opacity": 0.20}, # Deep corruption bleeding back
+            "target_scene_id": "B" # Loops back into the bathroom pattern indefinitely
+        }
+    }
+]
+
+```
+### How Your Script Processes This Array Matrix
+When your automation loop engine steps through this list, it looks at the transition sub-dictionary to decide which FFmpeg configuration blocks to stack:
+ 1. **Standard Steps (1, 2, 3, 4):** Standard time-based temporal crossfades (xfade) using the designated durations. It checks for a ghost_layer key; if present, it applies the low-opacity spatial bleed technique we prototyped.
+ 2. **The Nexus Step (5):** The script hits a conditional flag if type == "spatial_hstack_mask". It bypasses temporal fades entirely, runs the cropping logic to slice the frames down the exact horizontal center, and applies the hard stereo audio split.
+ 3. **The Loop-Back Loop (6):** The target_scene_id points straight back into the processing pipe for Scene_ID: B.
+This data matrix is fully locked. Once you've saved this structure out into your pipeline configuration utilities, you have the exact automated roadmap to generate the whole film sequence.

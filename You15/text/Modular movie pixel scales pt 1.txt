@@ -1,0 +1,59 @@
+Modular movie pixel scales pt 1
+
+To translate real-world physical space into digital pixels, we need a baseline conversion factor. For a 1080p stream, a highly accurate and clean scale is 1 meter = 100 pixels (or roughly 1 foot = 30 pixels).
+Using this metric, your 1920x1080 canvas represents a physical mall hallway that is 19.2 meters (63 feet) wide and 10.8 meters (35.4 feet) tall.
+Here is the exact pixel blueprint based on standard commercial building codes and average human anatomy.
+
+1. The Security Guard (The Character Layer)
+
+	•	Real-World Dimension: An average human male is roughly 1.75 meters (5 feet 9 inches) tall and 0.5 meters wide at the shoulders.
+	•	Pixel Size: Your security guard graphic should be exported as a canvas size of 50 x 175 pixels.
+	•	The Floor Line Alignment: To position him perfectly flat on the mall's floor line, his positioning coordinates should be:
+	•	guard_y = 675 (The top of his head sits 675 pixels down from the top edge).
+	•	This aligns his feet perfectly with the floor line at pixel 850.
+	•	
+
+2. The Mall Layout (The Background Layer)
+Standard shopping mall architecture utilizes massive double-height vertical spaces to feel grand and airy.
+
+	•	The Ceiling Height: Set at 8.5 meters (28 feet) tall. This places your structural floor line exactly 850 pixels downfrom the top edge. The bottom 230 pixels of your canvas represent the physical flooring tiles stretching toward the viewer.
+	•	Storefront Entrances (Tier 1 Premium Ads): Standard mall storefront gates are roughly 4.5 meters (15 feet) wide by 3.5 meters (11.5 feet) high.
+	•	Pixel Size: Draw your storefront openings at exactly 450 x 350 pixels.
+	•	
+	•	Window Poster Displays (Tier 2 Ads): Standard vertical promotional glass boxes are roughly 1.2 meters wide by 2.0 meters high.
+	•	Pixel Size: Draw these windows at exactly 120 x 200 pixels.
+	•	
+
+3. The Structural Grid Matrix (X, Y Coordinate Mapping)
+To make your scene feel balanced and spacious, we will space out two premium storefronts and two poster displays across the 19.2-meter screen width.
+Configure your Python overlay coordinates (dest=(X, Y)) using this architectural grid:
+(0,0)-----------------------------------------------------------------(1920,0)
+
+|                                                                            |
+|                                                                            |
+|      [Poster 1]       [Storefront 1]       [Storefront 2]       [Poster 2] |
+|       120x200            450x350              450x350            120x200   |
+|    (X:150, Y:500)     (X:350, Y:500)      (X:1120, Y:500)    (X:1650, Y:500)|
+|                                                                            |
+|-----------------------------[ MALL FLOOR LINE ]--------------------(Y: 850)|
+|                             [Guard (50x175)]                               |
+|                             (X: Variable, Y: 675)                          |
+(0,1080)-------------------------------------------------------------1920,1080)
+Code Updates for This Real-World Scale
+Update these variable lines at the top of your stream_engine.py script to match this precise real-world layout:
+# Updated positioning variables matching real-world architectural scale
+guard_x = 100
+guard_y = 675       # Head level (Feet touch exactly at Y: 850)
+guard_speed = 3     # Moves ~3 pixels per frame (~1 meter per second patrol walk)
+
+# Inside your layout loop, update the advertiser pixel snap grid destinations:
+canvas.alpha_composite(ad_1, dest=(350, 500))   # Premium Storefront 1
+canvas.alpha_composite(ad_2, dest=(1120, 500))  # Premium Storefront 2
+
+4. The Foreground Masking Columns (The Pillars Layer)
+To create depth, standard mall support pillars are typically structural columns placed between storefronts, spanning from the floor to the ceiling.
+
+	•	Real-World Dimension: Structural concrete columns are roughly 1.0 meter (3.3 feet) wide.
+	•	Pixel Size & Placement: Your mall_pillars.png should be a 1920x1080 transparent sheet containing two pillars drawn at exactly 100 pixels wide each.
+	•	Placement Strategy: Place one pillar at horizontal pixel X: 900 (perfectly dividing the dead space between Storefront 1 and Storefront 2). When your guard's guard_x value sweeps past 900, he will seamlessly disappear behind the pillar and emerge on the other side, instantly locking in a realistic 3D perspective.
+Would you like to build a quick test script to verify that your guard walks along this exact architectural floor grid without any layout shifts?

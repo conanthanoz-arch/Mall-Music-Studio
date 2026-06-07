@@ -1,0 +1,94 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid201\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie advertising\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+To push your Python-generated image cache onto an infinite 24/7 YouTube live stream, you will use an 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 FFmpeg terminal script
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 .\
+Because your Python code continuously updates and overwrites images in the 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 stream_pipe/
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774  folder, FFmpeg can read that folder as a live video source, merge it with your lo-fi music track, and broadcast it to YouTube [1].\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. The 24/7 Live Stream FFmpeg Command\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 You will run this command in your command line or terminal interface. It assumes your Python script is actively running and generating images inside the 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 stream_pipe
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774  folder.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 -i "stream_pipe/live_pipe_%03d.jpg" -stream_loop -1 -i "lofi_audio.mp3" -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com"\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Breakdown of the Technical Settings\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -f image2 -loop 1: Forces FFmpeg to treat the sequential image frames as a continuous video loop input [1].\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -i "stream_pipe/live_pipe_%03d.jpg": Points directly to your Python image folder [1]. It reads the rolling 900-frame buffer file names (live_pipe_000.jpg through live_pipe_899.jpg).\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -stream_loop -1 -i "lofi_audio.mp3": The -1 setting tells FFmpeg to loop your ambient audio track infinitely [1]. If your audio file ends, it instantly restarts from the beginning without cutting the stream.\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -preset veryfast -b:v 3000k: Standard high-quality 1080p compression settings for a 30fps stream. It keeps the processor load very low so your computer can handle rendering the AI math and streaming at the same time.\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -g 60: Sets a keyframe interval of every 2 seconds. YouTube\'92s live ingest servers strictly require this to prevent buffering drops or screen tearing on the viewer's end.\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 -f flv "rtmp://...": This translates the entire file into the Flash Video format required by YouTube Live [1] and pushes it out to your private channel using your unique 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 YouTube Stream Key
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 .\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Server Architecture Options\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Running a 24/7 streaming machine requires constant internet uptime and power. You have two production options to deploy this code:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Option A: Local Home Server (Budget-Friendly)
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 \uc0\u8232 You can run both the Python script and the FFmpeg command on a spare home computer or desktop. Ensure you use an ethernet cable instead of Wi-Fi to prevent network drops, and turn off all automatic sleep/power-saving modes.\
+\ls2\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Option B: Cloud VPS (Enterprise Grade)
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 \uc0\u8232 You can rent a virtual machine with GPU capabilities from providers like AWS, Linxu, or DigitalOcean. You upload your python file, asset directories, and audio files to the cloud machine and execute them. The cloud server will stay online 365 days a year without relying on your home power or internet connection.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. Swapping Advertiser Files Live\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 When an advertiser pays for a storefront placement, follow this workflow to maintain a seamless transition:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls3\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 \cf0 {\listtext	1.	}\AppleTypeServices\AppleTypeServicesF2293774 Save the new advertisement image as storefront_1.png.\
+\ls3\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	2.	}\AppleTypeServices\AppleTypeServicesF2293774 Move it into your project's ads/ folder, overwriting the previous asset.\
+\ls3\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	3.	}\AppleTypeServices\AppleTypeServicesF2293774 The running Python script automatically reads the fresh image file on its next loop generation tick.\
+\ls3\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	4.	}\AppleTypeServices\AppleTypeServicesF2293774 The newly generated visual frames instantly stream to the stream_pipe/ folder, and FFmpeg pushes the updated brand display live to YouTube within 2 seconds.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Do you need help writing a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 wrapper script
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  that automatically restarts the FFmpeg pipeline if your internet connection temporarily drops?\
+\
+}

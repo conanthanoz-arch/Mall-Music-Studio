@@ -1,0 +1,24 @@
+Modular looping Visual Aesthetics
+
+The visual aesthetic for this loop needs to feel deeply tactile, grainy, and physically degraded—as if the film itself is decaying as the narrative loop evolves. By treating the low-cost AI output (like Stable Video Diffusion) as a "digital optical printer," we can enhance its flaws and artifacts to achieve that muddy, high-contrast, surreal Lynchian quality.
+Here is the four-step plan for implementing the film degradation look, moving from image-to-video generation into dynamic post-processing for chronological disorientation.
+### Step 1: Generating the "Source Substrate" (Low-Cost Base Images)
+Because we are keeping the camera fixed and perpendicular to the wall (the clean, flat, comic-strip layout we established), we can generate high-resolution, hyper-textured base images that low-cost video models (like SVD) can easily animate with minimal distortion.
+To achieve this, we need precise prompting for our source frames. Here is the visual formula:
+ * **Prompting Formula for Base Frames (e.g., in Midjourney, Flux.1, or local DALL-E):**
+   > "A flat, high-resolution still photograph, shot with a strictly perpendicular camera angle against a textured red brick wall substrate. A man in profile, wearing a simple grey t-shirt and dark jeans, is standing center-frame. Mood lighting, casting long, stark shadows. Captured on 35mm film stock, visible cinematic grain, deep contrast, subtle lens aberration, unsettling atmosphere, David Lynch style."
+   > 
+ * **The Baseline Transition Plan:** Generate two *identical spatial anchors* (the doorway and the corner) using two different textures: 'White Plaster' and 'Exposed Brick.' These will be our two primary "Substrates" (A and B).
+### Step 2: The Optical Printer Simulation (Generating Video)
+Once we have our high-resolution textures and baseline character frames, we feed them into our Video AI Engine. The goal is to animate only the subtle movement (walking left-to-right) while maximizing texture retention.
+ 1. **Motion Parameters:** We prompt for extremely subtle movement (e.g., "...the man begins to walk slowly to the right").
+ 2. **The Step-Down Frame Rate:** To simulate an old optical printer or re-photographed film, we use our looping script to **down-sample the AI output to 12fps or 18fps.** This intentional "judder" breaks the smooth reality and immediately induces uncanny surrealism.
+### Step 3: Layering the Visual "Chronological Leaks" (The Weave)
+Lynch's style often dissolves mundane reality by overlapping timeframes. Our looping script's history logic will now be used to layer "ghosts" into the final render, creating the ultimate gaslight.
+ * **The Ghosting Technique:** We will create an automated alpha-blending routine in the script. When a loop transitions from Substrate A to B, we pull a frame from three loops ago (A_{n-3}), lower its opacity to 5% or 8%, and weave it into the motion blur of the current turn (B_n). This makes a character who died or changed twenty minutes ago subtly reappear in the new loop.
+### Step 4: The Final Post-Process Stack (Baking the Lynch Aesthetic)
+The final step is to process the raw, perhaps slightly too clean AI video outputs to give them physical, "filmic" texture. This will be baked into your automated 10-second turnaround utility.
+ 1. **Contrast Crushing:** Lynch's work features profound blacks and stark whites. The script applies an aggressive contrast curve, "crushing" the shadow detail into total darkness and blowing out subtle highlights.
+ 2. **Texture Overlay:** We generate or license a 10-second looping clip of actual dirty 35mm film grain, dust, and subtle light leaks. The script overlays this entire clip across every loop, unifying the disparate AI segments under a single "film" texture.
+ 3. **Color Grade & Saturation Shift:** The color should start muddy (warm and sepia-toned) in the peaceful phases. As the protagonist grows feral, the script pushes the saturation down toward monochrome while applying a stark, sickening green-cyan tint.
+This visual strategy, combined with the three-tier audio architecture, forms the total pipeline. By focusing the low-cost AI on simple motion and then layering high-control post-processing, you achieve a complex, high-quality, surreal film without the commercial price tag.

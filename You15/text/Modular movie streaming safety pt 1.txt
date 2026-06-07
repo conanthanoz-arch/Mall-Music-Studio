@@ -1,0 +1,62 @@
+Modular movie streaming safety pt 1
+
+To ensure your 24/7 stream stays online indefinitely, you cannot rely on a single manual terminal command. If your home internet blips for a fraction of a second or your Wi-Fi resets, FFmpeg will immediately crash and shut down your YouTube stream.
+You need a wrapper script that acts as an automated system monitor. If FFmpeg closes or errors out, this script will instantly catch the failure, wait a few seconds for the network to stabilize, and restart the broadcast pipeline automatically without you needing to lift a finger.
+The Automated Recovery Script (Bash/Linux/Mac)
+Create a file named start_stream.sh in your main project folder and paste the following code into it:
+#!/bin/bash
+
+# Configuration Variables
+STREAM_KEY="YOUR_YOUTUBE_STREAM_KEY"
+IMAGE_PIPE="stream_pipe/live_pipe_%03d.jpg"
+AUDIO_FILE="lofi_audio.mp3"
+LOG_FILE="stream_monitor.log"
+
+echo "=== Lo-Fi Ambient Stream Monitor Started ===" | tee -a "$LOG_FILE"
+echo "Starting stream at $(date)" | tee -a "$LOG_FILE"
+
+# Infinite monitoring loop
+while true
+do
+    echo "Launching FFmpeg pipeline..." | tee -a "$LOG_FILE"
+    
+    # Execute the streaming command
+    ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 \
+    -i "$IMAGE_PIPE" -stream_loop -1 -i "$AUDIO_FILE" \
+    -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 \
+    -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com" 2>> "$LOG_FILE"
+
+    # If the script reaches this point, FFmpeg has crashed or disconnected
+    echo "WARNING: FFmpeg disconnected or crashed with exit code $?. Attempting recovery..." | tee -a "$LOG_FILE"
+    echo "Crash timestamp: $(date)" | tee -a "$LOG_FILE"
+    
+    # Cooldown timer to prevent spamming YouTube's servers during an extended outage
+    echo "Waiting 5 seconds before restarting stream..."
+    sleep 5
+done
+Windows Alternative (Batch Script)
+If you are hosting your stream on a Windows desktop machine instead of Linux, create a file named start_stream.batand use this syntax instead:
+@echo off
+:: Configuration Variables
+set STREAM_KEY=YOUR_YOUTUBE_STREAM_KEY
+set IMAGE_PIPE=stream_pipe\live_pipe_%%03d.jpg
+set AUDIO_FILE=lofi_audio.mp3
+
+title 24/7 Lo-Fi Stream Auto-Recovery Monitor
+
+:start
+echo [%date% %time%] Launching FFmpeg pipeline... >> stream_monitor.log
+echo Launching FFmpeg pipeline...
+
+ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 -i "%IMAGE_PIPE%" -stream_loop -1 -i "%AUDIO_FILE%" -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com%" 2>> stream_monitor.log
+
+echo [%date% %time%] WARNING: FFmpeg crashed. >> stream_monitor.log
+echo WARNING: FFmpeg crashed. Reconnecting in 5 seconds...
+timeout /t 5
+goto start
+How This Protects Your Channel
+
+	•	The while true / :start Loop: This creates an intentionally endless loop. The script execution will "pause" on the FFmpeg command line indefinitely while the stream is running normally. It only advances to the next lines of code if FFmpeg terminates.
+	•	The Log File Generation (stream_monitor.log): It routes all raw error codes, connection drops, and network warnings out of the terminal and appends them to a text log file. If you wake up and notice the stream restarted overnight, you can check this text file to pinpoint exactly what went wrong.
+	•	The 5-Second Cooldown (sleep 5): If your local router undergoes a full reboot cycle (taking 1–2 minutes), trying to instantly reconnect to YouTube over and over would spam their ingestion system and potentially flag your stream key for erratic behavior. The cooldown creates a healthy buffer.
+Are you interested in learning how to configure YouTube Studio's backend dashboard settings so that it gracefully displays a "Streaming Will Resume Shortly" placeholder if your system undergoes a recovery reset?

@@ -1,0 +1,328 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 .SFUI-SemiboldItalic;\f4\fnil\fcharset0 Menlo-Regular;\f5\fswiss\fcharset0 Helvetica;
+\f6\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f7\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;}
+{\colortbl;\red255\green255\blue255;\red170\green170\blue170;}
+{\*\expandedcolortbl;;\csgray\c66667\cname lightGrayColor;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie revenue split\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+This model is 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 economically brilliant
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . By turning your 24/7 stream into a decentralized, scaling revenue-share platform, you incentivize global artists and musicians to build the stream 
+\f3\i \AppleTypeServices\AppleTypeServicesF2293774 for
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774  you. You act as the tech infrastructure provider, platform owner, and algorithmic content coordinator, securing your baseline 33.3% share while crowdsourcing production.\
+To run this without manual bookkeeping nightmare, you can compute your monthly payout fractions programmatically by mapping out the mathematical scaling formulas and updating your database tracker.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. The Scaling Split Mathematics\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 The revenue share pool is divided into three buckets, totaling a maximum of 100% payout. Your share is fixed, while the content buckets scale dynamically between 0% and 33.333% based on actual utilization over your total loop cycle (e.g., 24 hours / 2,592,000 frames total).\
+The algebraic equations for your billing cycle splits look like this:\
+$$\\text\{Owner Share\} = 33.333\\%$$ \
+$$\\text\{Art Share\} = \\left( \\frac\{\\text\{Frames of Contributed Human Art\}\}\{\\text\{Total Day Cycle Frames\}\} \\right) \\times 33.333\\%$$ \
+$$\\text\{Music Share\} = \\left( \\frac\{\\text\{Seconds of Contributed Human Music\}\}\{\\text\{Total Day Cycle Seconds\}\} \\right) \\times 33.333\\%$$ \
+$$\\text\{Platform Overhead / Reinvestment\} = 100\\% - (\\text\{Owner\} + \\text\{Art\} + \\text\{Music\})$$ \
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f3\i\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Financial Cushion:
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774  If a specific 6-hour block uses 100% AI art and 100% AI music, the Art and Music shares drop to 0%. The remaining 66.666% stays with the channel, acting as platform profit or a buffer fund to invest back into marketing or infrastructure.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Updating Your Metadata Ledger (contributor_ledger.csv)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To log these percentages automatically as the Python engine builds frames, create a billing ledger database file named 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 contributor_ledger.csv
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774  in your root folder:\
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrt\brdrnil \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx1440
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx2880
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx4320
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx5760
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx7200
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \AppleTypeServices \cf0 Asset_ID
+\f5\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \cf0 Contributor_Name
+\f5\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \cf0 Asset_Type
+\f5\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \cf0 Metric_Weight
+\f5\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \cf0 Cycle_Coverage_Pct
+\f5\b0\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f2\b\fs34 \cf0 Estimated_Share
+\f5\b0\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx1440
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx2880
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx4320
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx5760
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx7200
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 track_01
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 LofiLuna
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 music
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 180 seconds
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 0.833% (180s / 21600s)
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 0.277%
+\f5\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx1440
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx2880
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx4320
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx5760
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx7200
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 track_02
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 SynthSam
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 music
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 240 seconds
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 1.111% (240s / 21600s)
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 0.370%
+\f5\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx1440
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx2880
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx4320
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx5760
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx7200
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 layer_bg
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 PixelPete
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 art
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 6 hours
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 25.000% (6h / 24h)
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 8.333%
+\f5\fs24 \cell \row
+
+\itap1\trowd \taflags1 \trgaph108\trleft-108 \trbrdrl\brdrnil \trbrdrt\brdrnil \trbrdrr\brdrnil 
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx1440
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx2880
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx4320
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx5760
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx7200
+\clvertalt \clshdrawnil \clbrdrt\brdrs\brdrw20\brdrcf2 \clbrdrl\brdrs\brdrw20\brdrcf2 \clbrdrb\brdrs\brdrw20\brdrcf2 \clbrdrr\brdrs\brdrw20\brdrcf2 \clpadt20 \clpadl100 \clpadb20 \clpadr100 \gaph\cellx8640
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 ad_fallback
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 AI_Engine
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 system
+\f5\fs24 \AppleTypeServices \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 Infinite
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 0.000% (Internal AI)
+\f5\fs24 \cell 
+\pard\intbl\itap1\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs34 \cf0 0.000%
+\f5\fs24 
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cell \lastrow\row
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Automated Revenue Allocation Module\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Add this accounting module directly into your project directory. It parses your tracklist array and asset configurations, reads your ad platform monthly payout report, and outputs an audit sheet detailing exactly how much cash to transfer to each creative contributor.\
+Save this script as 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 calculate_payouts.py
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774 :\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f6\fs28\fsmilli14118 \AppleTypeServices \cf0 import csv\
+\
+def generate_monthly_payout_audit(monthly_ad_revenue):\
+    
+\f7\i # Total operational constants for a full 24-hour stream cycle
+\f6\i0 \
+    TOTAL_DAY_SECONDS = 24 * 60 * 60 
+\f7\i # 86,400 seconds
+\f6\i0 \
+    \
+    owner_guaranteed_share = 0.33333 * monthly_ad_revenue\
+    total_art_payout = 0\
+    total_music_payout = 0\
+    \
+    contributors = []\
+    \
+    print(f"=== PROCESSING DISTRIBUTION AUDIT FOR: $\{monthly_ad_revenue:,.2f\} ===")\
+    \
+    
+\f7\i # 1. READ RAW REVENUE LEDGER
+\f6\i0 \
+    try:\
+        with open("contributor_ledger.csv", mode="r") as file:\
+            reader = csv.DictReader(file)\
+            for row in reader:\
+                contributors.append(row)\
+    except FileNotFoundError:\
+        print("[ERROR] 'contributor_ledger.csv' tracking matrix missing!")\
+        return\
+\
+    
+\f7\i # 2. RUN MATRIX SPLIT CALCULATIONS
+\f6\i0 \
+    print("\\n--- INDIVIDUAL PAYOUT MANIFEST ---")\
+    for person in contributors:\
+        name = person["Contributor_Name"]\
+        asset_type = person["Asset_Type"]\
+        \
+        if asset_type == "music":\
+            
+\f7\i # Scale music: (Track Duration / 24 Hours) * 33.333% of total revenue
+\f6\i0 \
+            duration = float(person["Metric_Weight"].split()[0])\
+            coverage_pct = duration / TOTAL_DAY_SECONDS\
+            individual_payout = (coverage_pct * 0.33333) * monthly_ad_revenue\
+            total_music_payout += individual_payout\
+            \
+        elif asset_type == "art":\
+            
+\f7\i # Scale art: (Hours Active / 24 Hours) * 33.333% of total revenue
+\f6\i0 \
+            hours_active = float(person["Metric_Weight"].split()[0])\
+            coverage_pct = hours_active / 24.0\
+            individual_payout = (coverage_pct * 0.33333) * monthly_ad_revenue\
+            total_art_payout += individual_payout\
+            \
+        else:\
+            individual_payout = 0.0\
+            \
+        if individual_payout > 0:\
+            print(f"\uc0\u55357 \u56420  \{name\} (\{asset_type.upper()\}): Earnings Split: $\{individual_payout:.2f\}")\
+\
+    
+\f7\i # 3. CONSOLIDATED PLATFORM SUMMARY REPORT
+\f6\i0 \
+    platform_retention = monthly_ad_revenue - (owner_guaranteed_share + total_art_payout + total_music_payout)\
+    \
+    print("\\n================ FINANCIAL SHARE SUMMARY ================")\
+    print(f"Guaranteed Owner Share (33.3%):   $\{owner_guaranteed_share:,.2f\}")\
+    print(f"Total Scaled Human Art Payout:     $\{total_art_payout:,.2f\}")\
+    print(f"Total Scaled Human Music Payout:   $\{total_music_payout:,.2f\}")\
+    print(f"System Surplus Retained by Platform: $\{platform_retention:,.2f\}")\
+    print("=========================================================")\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f7\i \cf0 # Test calculation using a mock monthly AdSense revenue of $5,000
+\f6\i0 \
+generate_monthly_payout_audit(5000.00)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. Legal Protection Blueprint for Contributor Submissions\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Because you are distributing real advertising revenue, protect yourself from legal disputes or malicious uploads by enforcing a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Contributor Submission Agreement Form
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . You can link to a simple form from your couch using Google Forms.\
+Add these two core legal terms to your submission guidelines:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 \cf0 {\listtext	1.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Copyright Indemnification Waiver:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Contributors must legally verify that they own 100% of the copyright for the loops or visuals they submit. This protects your network if an artist attempts to submit a stolen audio track or copyrighted artwork sample that triggers a Content ID strike.\
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	2.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Dynamic Split Acceptance Clause:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Contributors must explicitly agree that their payout fluctuates dynamically based on their exact frame or second coverage metrics logged by your script, as verified by your calculate_payouts.py engine output logs.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Now that your scaling economics engine is fully mapped out, would you like to return to your couch notes and build out the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 algorithmic drum loop generator logic
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  or the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 automated baseline sequencer
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 ?\
+\
+}

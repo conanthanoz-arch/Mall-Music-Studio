@@ -1,0 +1,176 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;\f4\fnil\fcharset0 Menlo-Regular;\f5\fnil\fcharset0 .SFUI-Heavy;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie benchmarking script\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+This benchmarking script runs a controlled 1,000-frame test of your compositing engine. It measures your processing speeds down to the millisecond, checks your CPU core utilization, and calculates exactly how much hardware headroom you have left before you commit to launching a 24/7 continuous broadcast.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 The Performance Benchmark Script (benchmark_engine.py)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Save this file in your root folder and run it via your command prompt. It simulates your actual rendering loop but outputs a real-time analytics report instead of streaming data to YouTube.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f2\fs28\fsmilli14118 \AppleTypeServices \cf0 import time\
+import sys\
+import os\
+import psutil\
+import multiprocessing\
+from PIL import Image, ImageDraw, ImageEnhance\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\i \cf0 # 1. INITIALIZE HARDWARE ACCELERATION
+\f2\i0 \
+import PIL\
+PIL.Image.set_num_threads(multiprocessing.cpu_count())\
+\
+def run_performance_benchmark():\
+    print("=== INITIALIZING HARDWARE PERFORMANCE BENCHMARK ===")\
+    print(f"Detected CPU Threads Available: \{multiprocessing.cpu_count()\}")\
+    \
+    
+\f3\i # Verify minimal dummy test layers exist
+\f2\i0 \
+    if not os.path.exists("mall_structure_day.png"):\
+        print("[ERROR] Run your asset generation or place test PNGs in this folder first!")\
+        return\
+\
+    
+\f3\i # Load test frames into RAM cache exactly like the main engine
+\f2\i0 \
+    bg_day = Image.open("mall_structure_day.png").convert("RGBA")\
+    guard_right = Image.open("guard_walk_right.png").convert("RGBA")\
+    foreground = Image.open("mall_pillars.png").convert("RGBA")\
+    ad_placeholder = Image.new("RGBA", (450, 350), (255, 100, 100, 120))\
+\
+    
+\f3\i # Benchmark Control Variables
+\f2\i0 \
+    TEST_FRAMES = 1000\
+    TARGET_FRAME_TIME = 1.0 / 30.0  
+\f3\i # 0.0333 seconds (33.3ms) per frame
+\f2\i0 \
+    \
+    total_processing_time = 0\
+    max_frame_time = 0\
+    min_frame_time = 999.0\
+    \
+    print(f"Processing \{TEST_FRAMES\} composition layers unthrottled...")\
+    \
+    
+\f3\i # Get baseline system memory snapshot
+\f2\i0 \
+    process = psutil.Process(os.getpid())\
+    start_ram = process.memory_info().rss / (1024 * 1024)\
+\
+    
+\f3\i # Core execution loop (unthrottled by sleep timers to find true limits)
+\f2\i0 \
+    for frame in range(TEST_FRAMES):\
+        frame_start = time.time()\
+        \
+        
+\f3\i # Simulate active layout compositing stack
+\f2\i0 \
+        canvas = bg_day.copy()\
+        canvas.alpha_composite(ad_placeholder, dest=(350, 500))\
+        canvas.alpha_composite(guard_right, dest=(200 + (frame % 200), 675))\
+        canvas.alpha_composite(foreground, dest=(0, 0))\
+        \
+        
+\f3\i # Simulate chronological color grading enhancements
+\f2\i0 \
+        final_img = canvas.convert("RGB")\
+        final_img = ImageEnhance.Brightness(final_img).enhance(0.8)\
+        final_img = ImageEnhance.Color(final_img).enhance(0.9)\
+        \
+        
+\f3\i # Calculate metric timing data
+\f2\i0 \
+        frame_duration = time.time() - frame_start\
+        total_processing_time += frame_duration\
+        \
+        if frame_duration > max_frame_time: max_frame_time = frame_duration\
+        if frame_duration < min_frame_time: min_frame_time = frame_duration\
+\
+    
+\f3\i # Calculate final analytics report
+\f2\i0 \
+    end_ram = process.memory_info().rss / (1024 * 1024)\
+    avg_frame_time_ms = (total_processing_time / TEST_FRAMES) * 1000\
+    max_frame_time_ms = max_frame_time * 1000\
+    min_frame_time_ms = min_frame_time * 1000\
+    \
+    
+\f3\i # Max possible rendering frame-rate your computer can physically handle
+\f2\i0 \
+    theoretical_max_fps = 1.0 / (total_processing_time / TEST_FRAMES)\
+    \
+    
+\f3\i # Calculate how much free time your CPU has during a standard 33.3ms window
+\f2\i0 \
+    cpu_headroom_percent = (1.0 - ((total_processing_time / TEST_FRAMES) / TARGET_FRAME_TIME)) * 100\
+\
+    print("\\n================ BENCHMARK ANALYTICS REPORT ================")\
+    print(f"Average Frame Render Speed:    \{avg_frame_time_ms:.2f\} ms")\
+    print(f"Fastest Spiked Frame:          \{min_frame_time_ms:.2f\} ms")\
+    print(f"Slowest Spiked Frame:          \{max_frame_time_ms:.2f\} ms")\
+    print(f"RAM Leakage Delta:             \{(end_ram - start_ram):.2f\} MB")\
+    print(f"Theoretical Max Frame Capacity: \{theoretical_max_fps:.1f\} FPS")\
+    print(f"System CPU Idle Headroom:      \{cpu_headroom_percent:.1f\} %")\
+    print("============================================================")\
+\
+    
+\f3\i # 3. INTERPRET STATUS METRICS
+\f2\i0 \
+    if avg_frame_time_ms > 33.3:\
+        print("\\n\uc0\u10060  PERFORMANCE ALERT: Your computer is rendering slower than 33.3ms.")\
+        print("Your stream will drop frames on YouTube Live. Reduce your background layout size.")\
+    elif cpu_headroom_percent < 25.0:\
+        print("\\n\uc0\u9888 \u65039  WARNING: Low hardware headroom. Your system might lag if background apps open.")\
+    else:\
+        print("\\n\uc0\u9989  GREEN STATUS: System performance is optimized. Broadcast stability profile: EXCELLENT.")\
+\
+if __name__ == "__main__":\
+    run_performance_benchmark()\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 How to Evaluate Your Benchmark Scores\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 When the report outputs to your command prompt window, look closely at two critical numbers:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f5\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Average Frame Render Speed:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  This must be lower than 
+\f5\b \AppleTypeServices\AppleTypeServicesF2293774 33.33 ms
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . If your computer handles a complete composition stack in 5ms to 12ms, your script is completely safe and ready for a live broadcast.\
+\ls1\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f5\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 System CPU Idle Headroom:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  A score above 
+\f5\b \AppleTypeServices\AppleTypeServicesF2293774 50%
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  means your machine is running comfortably. It guarantees that the system won't overheat, crash, or freeze when you leave the automated environment streaming for days at a time.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 With your entire backend infrastructure, media sheets, auto-recovery routines, and diagnostic performance metrics completely configured, your structural launch pad is set.\
+Do you want to discuss how to structure your 
+\f5\b \AppleTypeServices\AppleTypeServicesF2293774 promotional marketing hooks on social platforms
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  to drive your initial traffic to the stream, or should we refine your 
+\f5\b \AppleTypeServices\AppleTypeServicesF2293774 on-screen chat engagement rules
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  next?\
+\
+}

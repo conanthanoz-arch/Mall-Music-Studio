@@ -1,0 +1,43 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+
+# Build artifacts
+build/
+dist/
+*.spec.bak
+
+# Stream runtime / generated audio
+stream_monitor.log
+*.mp3
+music_source/
+lofi_master.wav
+lofi_music.mp3
+tracklist_export.txt
+
+# User library (created on first save)
+music_library/*.wav
+music_library/*.json
+music_library/import_jobs/
+music_library/imported/
+music_library/session_layout.json
+music_library/playlist.json
+
+# User emulated presets
+instrument_presets/user/*.json
+
+# PyInstaller / temp
+*.seg.wav
+*.tail.wav
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# Large local reference archive (optional)
+You15.zip

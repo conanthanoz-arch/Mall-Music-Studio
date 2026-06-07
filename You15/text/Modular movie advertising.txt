@@ -1,0 +1,28 @@
+Modular movie advertising
+
+To push your Python-generated image cache onto an infinite 24/7 YouTube live stream, you will use an FFmpeg terminal script.
+Because your Python code continuously updates and overwrites images in the stream_pipe/ folder, FFmpeg can read that folder as a live video source, merge it with your lo-fi music track, and broadcast it to YouTube [1].
+1. The 24/7 Live Stream FFmpeg Command
+You will run this command in your command line or terminal interface. It assumes your Python script is actively running and generating images inside the stream_pipe folder.
+ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 -i "stream_pipe/live_pipe_%03d.jpg" -stream_loop -1 -i "lofi_audio.mp3" -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com"
+2. Breakdown of the Technical Settings
+
+	•	-f image2 -loop 1: Forces FFmpeg to treat the sequential image frames as a continuous video loop input [1].
+	•	-i "stream_pipe/live_pipe_%03d.jpg": Points directly to your Python image folder [1]. It reads the rolling 900-frame buffer file names (live_pipe_000.jpg through live_pipe_899.jpg).
+	•	-stream_loop -1 -i "lofi_audio.mp3": The -1 setting tells FFmpeg to loop your ambient audio track infinitely [1]. If your audio file ends, it instantly restarts from the beginning without cutting the stream.
+	•	-preset veryfast -b:v 3000k: Standard high-quality 1080p compression settings for a 30fps stream. It keeps the processor load very low so your computer can handle rendering the AI math and streaming at the same time.
+	•	-g 60: Sets a keyframe interval of every 2 seconds. YouTube’s live ingest servers strictly require this to prevent buffering drops or screen tearing on the viewer's end.
+	•	-f flv "rtmp://...": This translates the entire file into the Flash Video format required by YouTube Live [1] and pushes it out to your private channel using your unique YouTube Stream Key.
+3. Server Architecture Options
+Running a 24/7 streaming machine requires constant internet uptime and power. You have two production options to deploy this code:
+
+	•	Option A: Local Home Server (Budget-Friendly) You can run both the Python script and the FFmpeg command on a spare home computer or desktop. Ensure you use an ethernet cable instead of Wi-Fi to prevent network drops, and turn off all automatic sleep/power-saving modes.
+	•	Option B: Cloud VPS (Enterprise Grade) You can rent a virtual machine with GPU capabilities from providers like AWS, Linxu, or DigitalOcean. You upload your python file, asset directories, and audio files to the cloud machine and execute them. The cloud server will stay online 365 days a year without relying on your home power or internet connection.
+4. Swapping Advertiser Files Live
+When an advertiser pays for a storefront placement, follow this workflow to maintain a seamless transition:
+
+	1.	Save the new advertisement image as storefront_1.png.
+	2.	Move it into your project's ads/ folder, overwriting the previous asset.
+	3.	The running Python script automatically reads the fresh image file on its next loop generation tick.
+	4.	The newly generated visual frames instantly stream to the stream_pipe/ folder, and FFmpeg pushes the updated brand display live to YouTube within 2 seconds.
+Do you need help writing a wrapper script that automatically restarts the FFmpeg pipeline if your internet connection temporarily drops?

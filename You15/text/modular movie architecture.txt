@@ -1,0 +1,65 @@
+modular movie architecture
+
+Here is the spreadsheet architecture and automated Python code to handle your advertiser tracking.
+By tracking expiration timestamps, your Python script will automatically revert an advertiser's storefront back to your default fictional brand the exact second their paid contract expires.
+1. The Spreadsheet Architecture (Data Structure)
+You can set up a tracking sheet in Excel or Google Sheets. Export it as a CSV file named advertiser_log.csv and keep it in your main project folder.
+Storefront_ID|Brand_Name|Asset_File|Start_Date|End_Date|Active_Status|Rate_Paid|Notes|
+store_1|NeonApparel|ads/neon_apparel.png|2026-06-01|2026-06-15|True|$250|Central storefront|
+store_2|EcoDrink Co|ads/eco_drink.png|2026-06-01|2026-06-08|True|$150|Window poster slot|
+2. Python Automation: Auto-Expiring Ad Engine
+To make this hands-off, we will modify the previous get_advertiser_billboards() function. Now, the code will read the CSV file, check the current real-world date, and swap out the ad assets completely on the fly without breaking the stream.
+Add this updated logic into your main Python script:
+import csv
+from datetime import datetime
+from PIL import Image
+
+def get_active_advertisements():
+    # Set up your default fallback fictional brands
+    store_1 = Image.open("fictional_store_1.png").convert("RGBA")
+    store_2 = Image.open("fictional_store_2.png").convert("RGBA")
+    
+    # Get current real-world date
+    current_date = datetime.now().date()
+    
+    # Check if the log file exists
+    if not os.path.exists("advertiser_log.csv"):
+        return store_1, store_2
+
+    # Read the spreadsheet database
+    with open("advertiser_log.csv", mode="r") as file:
+        reader = csv.DictReader(file)
+        for row in reader:
+            # Parse dates from the spreadsheet
+            start_dt = datetime.strptime(row["Start_Date"], "%Y-%m-%d").date()
+            end_dt = datetime.strptime(row["End_Date"], "%Y-%m-%d").date()
+            is_enabled = row["Active_Status"].strip().lower() == "true"
+            
+            # Check if the contract is currently valid right now
+            if is_enabled and (start_dt <= current_date <= end_dt):
+                asset_path = row["Asset_File"]
+                
+                # Verify the advertiser file exists before loading
+                if os.path.exists(asset_path):
+                    try:
+                        loaded_ad = Image.open(asset_path).convert("RGBA")
+                        
+                        # Assign to the correct slot based on the ID
+                        if row["Storefront_ID"] == "store_1":
+                            store_1 = loaded_ad
+                        elif row["Storefront_ID"] == "store_2":
+                            store_2 = loaded_ad
+                    except Exception:
+                        print(f"[Warning] Failed to load asset for {row['Brand_Name']}. Using default.")
+                        
+    return store_1, store_2
+
+3. How to Update Ads Live Using This Setup
+When a new brand signs a contract with you, you do not need to touch your code or restart your server. You can manage everything through your spreadsheet:
+
+	1.	Place their transparent logo image inside your ads/ folder.
+	2.	Open your advertiser_log.csv file.
+	3.	Add a new row specifying the target Storefront_ID, the image filename, and the End_Date when their campaign ends.
+	4.	Save and overwrite the CSV file on your server.
+Because the Python script checks the CSV dynamically as it renders frames, it will seamlessly inject the new brand graphic into the stream cache. The moment midnight strikes on their End_Date, the script will automatically drop their asset and restore your default fictional storefront scenery.
+Would you like to design a custom text layer script next, so that your security guard can occasionally display floating "dialogue bubbles" or text notifications about the current background track playing?

@@ -1,0 +1,42 @@
+Modular movie music making
+
+ design the musical architecture and song logic profiles that your Python script will use to generate those tracks [stem-calculative-problem-solving].
+Programmatic music generation relies heavily on structural rules (like chord progressions, tempo constraints, and track structures) defined in data dictionaries. You can map out this entire musical framework using a simple note-taking app on your phone.
+Here is how to structure your programmatic music blueprint right now:
+1. Define Your Genre Code Rules
+Your 4 rotating visual style blocks need matching musical subgenres. You can outline the exact musical variables (BPM and scale structures) your Python code will use to generate the melodies:
+
+	•	Pixel Art Block (Classic Chillhop):
+	•	Tempo range: 75 – 85 BPM.
+	•	Scales: Dorian or Minor 7th chords (gives that classic, jazzy lo-fi warmth).
+	•	
+	•	Anime Vector Block (Bedroom Pop):
+	•	Tempo range: 85 – 95 BPM.
+	•	Scales: Major 7th chords or Pentatonic scales (creates a bright, uplifting, airy feel).
+	•	
+	•	Matte Painting Block (Cinematic Ambient):
+	•	Tempo range: 60 – 70 BPM.
+	•	Scales: Lydian or ethereal major chords with long sustaining notes.
+	•	
+	•	Cyberpunk Block (Deep Mallwave):
+	•	Tempo range: 70 – 80 BPM.
+	•	Scales: Phrygian or Natural Minor scales with heavy detuned synth filters.
+	•	
+2. Map Out Your Programmatic Song Structure
+To keep your generated music from sounding like random, disjointed notes, your Python code needs a structural roadmap for each song loop. Sketch out a standard 3-minute arrangement template in your notes:
+
+	•	Intro (16 bars): Code triggers just the ambient mall texture (mall_day_ambiance.mp3) and a basic, slow-fading electric piano chord progression.
+	•	The Verse/Core (32 bars): Code activates your generated drum loop generation sequence (kick, snare, hi-hat) and kicks in the main melodic synth or guitar line.
+	•	The Bridge/B-Section (16 bars): Code drops the drum layers completely. It modifies the filter cutoff to make the chords sound muffled, simulating a track playing from a speaker deep inside an empty store.
+	•	Outro (16 bars): Code strips away the melody, leaving just the bassline and the mall ambiance fading out to zero.
+3. Draft Your Floating Song Metadata Dictionary
+Since you are generating the tracks yourself, you get to name them and invent the fictional artists! You can write out your initial TRACKLIST array data using placeholders for your generation parameters.
+Open your phone's note app and format it exactly like this:
+# Fictional track names for your self-generated algorithmic loops
+TRACKLIST_BLUEPRINT = [
+    {"seed": 404, "title": "Empty Food Court", "artist": "The Python Patrol", "duration_sec": 180},
+    {"seed": 808, "title": "Neon Escalator", "artist": "Couch Code Collective", "duration_sec": 210},
+    {"seed": 909, "title": "Midnight Shift Change", "artist": "Algorithm Beats", "duration_sec": 165}
+]
+(The "seed" variable is what your Python music generator will use to ensure that the exact same song generates identically every time the stream loops).
+Would you like to map out the exact chord progression formulas (like ii-V-I or I-IV-V-I) for one of your 6-hour music blocks so you can paste the musical math straight into your code later?

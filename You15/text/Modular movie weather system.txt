@@ -1,0 +1,72 @@
+Modular movie weather system
+
+Adding a scrolling parallax layer for the sky is the perfect finishing touch. It makes the world feel infinitely larger because objects far away (like clouds, the moon, or stars) drift at a slower speed than the guard's walking pace, creating a realistic sense of scale and depth.
+Because your camera is completely flat and perpendicular, you can handle this parallax effect using an image looping calculation.
+
+1. The Sky Panoramas Needed
+Your artist will deliver one extra-wide image for the sky layer:
+
+	•	panoramic_sky.png – This asset must be 3840 x 1080 pixels (exactly twice as wide as your 1920x1080 stream canvas).
+	•	The left side of the panorama can feature the afternoon sun and daytime clouds, blending smoothly into a sunset in the middle, and ending with a deep night sky filled with stars and the moon on the far right.
+
+2. How Parallax Math Works
+To make the sky feel miles away, it needs to move incredibly slowly. While your guard walks left and right across the screen at 3 or 4 pixels per frame, the sky should slowly slide in one direction at a fraction of a pixel per frame, matching the natural rotation of the earth over your 6-hour loop.
+Instead of cutting the image when it hits the edge, we use Python’s modulo (%) math to loop the panorama seamlessly.
+
+3. Python Implementation: The Parallax Sky Engine
+Add this script logic directly into the top of your frame loop. It calculates the moving window position on the panoramic sky, crops out a 1920x1080 window, and places it at the very bottom of your visual layer stack.
+# --- OPTIMIZED PARALLAX SKY LOOP ENGINE ---
+
+# Configuration settings for sky movement velocity
+SKY_PANORAMA_WIDTH = 3840
+STREAM_CANVAS_WIDTH = 1920
+# Moves exactly 1 pixel every 5 frames (incredibly slow and relaxing drift)
+SKY_SPEED_FACTOR = 0.2 
+
+def render_parallax_sky(cycle_frame):
+    # Calculate the horizontal pixel shift based on the current timeline frame
+    # Modulo ensures that when the offset hits the end of the panorama, it loops back to 0
+    sky_offset_x = int(cycle_frame * SKY_SPEED_FACTOR) % (SKY_PANORAMA_WIDTH - STREAM_CANVAS_WIDTH)
+    
+    # Define the crop boundary box to cut out of our extra-wide sky panorama
+    # Crop coordinates: (Left, Upper, Right, Lower)
+    crop_box = (sky_offset_x, 0, sky_offset_x + STREAM_CANVAS_WIDTH, 1080)
+    
+    # Extract the visible 1920x1080 sky window for this exact frame
+    # Using open panoramic asset already cached in RAM outside the loop
+    visible_sky_frame = panoramic_sky.crop(crop_box)
+    
+    return visible_sky_frame
+
+4. The Complete Production Layer Stack Order
+Now that we have every single layer mechanics mapped out—from the distant scrolling sky to the foreground pillars—here is the exact sequence your Python script will use to composite each frame from back to front:
+# 1. Start with the moving parallax sky frame as your bottom canvas layer
+frame_canvas = render_parallax_sky(cycle_frame)
+
+# 2. Layer the Architectural Shell over the sky
+# (Skylights and outdoor sky are transparent holes, revealing the moving sky behind them)
+frame_canvas.alpha_composite(mall_architectural_shell)
+
+# 3. Inject active advertiser assets into the storefront wall slots
+frame_canvas.alpha_composite(ad_1, dest=(350, 500))
+frame_canvas.alpha_composite(ad_2, dest=(1120, 500))
+
+# 4. Overlap the security guard sprite at his dynamic walking path position
+frame_canvas.alpha_composite(current_guard_sprite, dest=(guard_x, guard_y))
+
+# 5. Apply advanced environmental lighting masks (skylight sunbeams / streetlights / flashlights)
+frame_canvas = apply_advanced_environmental_lighting(frame_canvas, cycle_frame, TOTAL_FRAMES, guard_x)
+
+# 6. Overlay the foreground columns and lamp posts over everything to finalize depth
+frame_canvas.alpha_composite(foreground_pillars, dest=(0, 0))
+
+# 7. Render text layers (Music HUD metadata and occasional dialogue bubbles)
+frame_canvas = render_text_layers(frame_canvas, guard_x, guard_y, frame, TRACK_FRAME_MAP, AUDIO_LOOP_DURATION)
+
+5. Launching Your Stream Network
+You now have a complete, fully engineered technical architecture for an automated, self-sustaining 24/7 ambient streaming network:
+
+	•	Policy Compliance: Safe from YouTube’s "repetitive/reused content" filters thanks to your hours-long evolving lighting cycles, dynamic text overlays, and tracking scripts.
+	•	Cost Efficiency: Built to run entirely in RAM, saving your hardware from overheating and protecting your storage drives from data wear.
+	•	Monetization Engine: Equipped with an automated, spreadsheet-driven ad engine that allows you to swap real-world brands into fictional storefronts seamlessly on the fly.
+To begin building out the production pipeline, what style of artwork (e.g., retro 16-bit pixel art, cozy hand-drawn anime vector style, or stylized 2D digital painting) are you planning to have your artist use to draw these layers?

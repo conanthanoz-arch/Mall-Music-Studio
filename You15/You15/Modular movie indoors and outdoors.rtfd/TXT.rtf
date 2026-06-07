@@ -1,0 +1,223 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 Menlo-Regular;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;
+\f6\fnil\fcharset0 .SFUI-SemiboldItalic;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie indoors and outdoors\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+The previous transition blueprint assumed the guard remained entirely inside a single hallway corridor. However, transitioning from the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 mall interior out onto an exterior sidewalk
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 \'97while factoring in 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 skylight sun shafts
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 \'97takes this ambient movie to an entirely new level of realism.\
+To handle this smoothly, we must upgrade the rendering pipeline from basic global color fading to 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 localized lighting masks
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . This ensures that when the sun sets, the light from the sky shifts at a different color temperature than the indoor storefront lights.\
+Here is how to structure your assets and code logic to manage skylights, interior walls, and an outdoor sidewalk layout cleanly.\
+\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. The Updated Layer Stack (Z-Index Order)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To allow the guard to walk seamlessly past glass entry doors and step out onto a sidewalk under a skylight, your artist needs to break the scene into these specific transparent layers:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 \cf0 {\listtext	1.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 1: The Base Structural Sky (Background):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  A moving sky loop seen through the skylights and exterior windows (sunsets, moving clouds, starry nights).\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	2.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 2: The Core Architectural Shell:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  The solid mall walls, storefront cutouts, and the concrete sidewalk. Glass windows and skylights are completely cut out as transparent holes.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	3.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 3: The Advertiser Display Ads:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Positioned inside the storefront windows.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	4.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 4: The Guard Sprite:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Your security guard character walking his path.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	5.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 5: Foreground Architecture:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  The structural pillars inside, and the sidewalk lamp posts outside.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	6.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Layer 6: The Lighting Overlays:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Semi-transparent masks for the skylight sunbeams and the outdoor streetlights.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Dividing Your Screen Canvas into Two Zones\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To transition between the mall interior and the outdoor sidewalk, divide your 1920-pixel horizontal canvas into two distinct layout zones:\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 (0,0)-----------------------------------------------------------------(1920,0)\
+\
+| [ ZONE 1: MALL INTERIOR (Pixels 0-1400) ]     | [ ZONE 2: SIDEWALK (1400-1920) ]\
+|                                               |                               |\
+|   === SKYLIGHTS GRID ===                      |   === OPEN OUTDOOR SKY ===    |\
+|   (Sun beams down to Y:850)                   |   (Direct natural light)      |\
+|                                               |                               |\
+| [Store 1]             [Store 2]               |      [Outdoor Sidewalk]       |\
+|                                [GLASS DOORS]  |                               |\
+|-----------------------------------------------|------------------------(Y:850)|\
+|                   ====== PATROL PATH FLOOR LINE ======                        |\
+(0,1080)-------------------------------------------------------------(1920,1080)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Zone 1: Interior Corridor (Pixels 0 to 1400):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Features storefronts, safety pillars, and overhead skylight frames.\
+\ls2\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Zone 2: Exterior Sidewalk (Pixels 1400 to 1920):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  The guard walks out through transparent glass exit doors at pixel 1400. From pixel 1400 onward, he is fully outdoors on the sidewalk against the exterior wall of the mall.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Advanced Python Logic: Dual-Zone Lighting & Skylight Rays\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 This advanced Python module calculates localized color temperatures. As the 6-hour time cycle progresses, it dims the indoor storefront lights while casting shifting sunlight angles through the skylights, and eventually turns on the outdoor sidewalk streetlights at night.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 import math\
+from PIL import Image, ImageEnhance, ImageDraw\
+\
+def apply_advanced_environmental_lighting(canvas, cycle_frame, total_frames, guard_x):\
+    
+\f5\i # Create a lighting overlay canvas to paint our light rays onto
+\f3\i0 \
+    light_mask = Image.new("RGBA", canvas.size, (0, 0, 0, 0))\
+    draw_light = ImageDraw.Draw(light_mask)\
+    \
+    
+\f5\i # Calculate global time curve (0.0 = midnight, 1.0 = noon)
+\f3\i0 \
+    time_factor = (math.sin(2 * math.pi * cycle_frame / total_frames) + 1) / 2\
+    is_night = time_factor < 0.3\
+    \
+    
+\f5\i # --- PHASE A: SKYLIGHT SUN SHAFTS (Zone 1) ---
+\f3\i0 \
+    if time_factor > 0.3: 
+\f5\i # Only draw sunbeams during day/sunset
+\f3\i0 \
+        
+\f5\i # Calculate shifting sun ray angle based on the time of day
+\f3\i0 \
+        angle_offset = int(math.cos(2 * math.pi * cycle_frame / total_frames) * 150)\
+        \
+        
+\f5\i # Draw a semi-transparent warm golden sun beam coming down from a skylight
+\f3\i0 \
+        
+\f5\i # Skylight location: X=500 to X=700 on ceiling (Y=0) projecting down to the floor
+\f3\i0 \
+        sun_beam_opacity = int(time_factor * 80) 
+\f5\i # Brightest at noon, fades at dusk
+\f3\i0 \
+        draw_light.polygon([\
+            (500 + angle_offset, 0), (700 + angle_offset, 0), \
+            (900 + angle_offset, 850), (600 + angle_offset, 850)\
+        ], fill=(255, 230, 180, sun_beam_opacity))\
+\
+    
+\f5\i # --- PHASE B: OUTDOOR STREETLIGHT CONE (Zone 2) ---
+\f3\i0 \
+    if is_night:\
+        
+\f5\i # If it's night, turn on the outdoor lamppost spotlight on the sidewalk
+\f3\i0 \
+        
+\f5\i # Lamppost location: X=1650, Y=300 projecting down onto the sidewalk floor
+\f3\i0 \
+        draw_light.polygon([\
+            (1650, 300), (1500, 850), (1800, 850)\
+        ], fill=(255, 255, 200, 45)) 
+\f5\i # Soft yellow ambient electric light
+\f3\i0 \
+\
+    
+\f5\i # --- PHASE C: DYNAMIC POSITION-BASED CHARACTER TINTING ---
+\f3\i0 \
+    
+\f5\i # We slice out the section containing just the security guard to tint him accurately
+\f3\i0 \
+    
+\f5\i # depending on whether he is currently standing inside or outside
+\f3\i0 \
+    if guard_x < 1400:\
+        
+\f5\i # GUARD IS INSIDE: Affected by warm interior lights and skylight rays
+\f3\i0 \
+        interior_brightness = 0.4 + (time_factor * 0.6)\
+        
+\f5\i # Apply interior color space values to canvas
+\f3\i0 \
+    else:\
+        
+\f5\i # GUARD IS OUTSIDE: Fully exposed to external natural sky colors
+\f3\i0 \
+        
+\f5\i # At night, the sidewalk should look a cooler blue/slate color temperature
+\f3\i0 \
+        exterior_brightness = 0.2 + (time_factor * 0.8)\
+        if is_night:\
+            
+\f5\i # Apply a cooler dark blue tint specifically to the sidewalk zone
+\f3\i0 \
+            sidewalk_overlay = Image.new("RGBA", (520, 1080), (15, 25, 55, 60))\
+            canvas.paste(sidewalk_overlay, (1400, 0), sidewalk_overlay)\
+\
+    
+\f5\i # Blend the lighting masks (sunbeams/streetlights) over the entire composition
+\f3\i0 \
+    canvas.alpha_composite(light_mask)\
+    return canvas\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. How the Guard Interacts with the Glass Doors\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 When the guard walks from pixel 1399 to 1401, he transitions between the inside environment and the outside sidewalk. To make this look convincing:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls3\ilvl0
+\f4\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Glass Transparency:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  The glass exit doors on your background layer should be drawn with roughly 20% opacity.\
+\ls3\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Layer Order Saves the Day:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Because your script composites the guard 
+\f6\i \AppleTypeServices\AppleTypeServicesF2293774 under
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774  the foreground layers, when the guard stands at pixel 1350 (inside, but right behind the glass doors), the 20% opacity glass layer is drawn 
+\f6\i \AppleTypeServices\AppleTypeServicesF2293774 on top of him
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774 . This automatically gives his sprite a realistic reflective glass look.\
+\ls3\ilvl0
+\f4\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Once his position crosses X:1400, he steps clear of the doors and is drawn cleanly on the open sidewalk with zero glass reflection, completely selling the visual transition.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Would you like to explore how to set up the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 scrolling parallax background layer
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  next, so that when looking out the skylight or from the sidewalk, the moon and clouds slowly drift across the sky?\
+\
+}

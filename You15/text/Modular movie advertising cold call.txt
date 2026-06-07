@@ -1,0 +1,37 @@
+Modular movie advertising cold call
+
+Here is a professional, high-conversion cold outreach email template. It is specifically written to pitch your 24/7 stream to brands by framing the channel as a premium digital billboard network inside a highly engaged aesthetic subculture, rather than just another video loop.
+The Brand Outreach Pitch Template
+Subject: Dynamic Storefront Sponsorship / [Brand Name] x [Your Channel Name] Lo-Fi Network
+Email Body:
+Hi [Brand Manager Name / Marketing Team],
+
+I’m reaching out because I love the visual aesthetic of [Brand Name], and I see a perfect synergy with an innovative digital art project we are launching.
+
+We operate [Your Channel Name], an automated 24/7 lo-fi ambient broadcast network on YouTube. Our platform blends relaxing lo-fi music with a programmatically evolving, hours-long "ambient movie." The scene follows a security guard patrolling a stylized, surreal shopping mall that moves through continuous day/night lighting cycles.
+
+Instead of traditional, disruptive banner ads, we have engineered an immersive integration model: we turn the fictional storefront displays inside our animated world into dynamic ad spaces for real-world brands. 
+
+Every 6 hours, our entire broadcast rotates its visual art style and music subgenre to engage distinct internet subcultures. We have built a premium placement slot specifically tailored for [Brand Name]’s aesthetic:
+
+• Target Placement Block: [Select one: 16-Bit Retro Pixel Art / Hand-Drawn Anime / Cyberpunk Neon Noir]
+• Integration Type: Seamless Storefront Billboard & Window Display Takeover
+• Stream Availability: Live 24/7 globally on repeat
+
+Because our rendering engine runs live through custom Python code, your brand display will naturally interact with the environment—gradually shifting from afternoon sun-shafts to deep evening shadows as the day turns to night. 
+
+We are currently onboarding a select group of launch partners for our upcoming broadcast cycle. I would love to send over our exact pixel layout metrics to your design team so you can see how [Brand Name] fits into our world. 
+
+Are you open to looking at our quick 10-second visual layout test?
+
+Best regards,
+
+[Your Name]
+Creative Director, [Your Channel Name]
+[Link to Channel or Test Compilation Clip]
+Strategy Tips for Maximum Response Rates
+
+	•	The 10-Second Test Hook: Notice that the email doesn't ask them to buy anything right away. It simply asks for permission to send the visual test. Because you built the test_layout.py script earlier, you can drop their raw logo into your ads/ folder, run a quick render, and send them a link to a private 10-second clip showing their brand dynamically fading into twilight. Seeing their own logo come to life inside the animation is an incredibly powerful sales tool.
+	•	Targeting the Right Contact: Don't send this to general info@ corporate email addresses. Search on LinkedIn for the brand's "Social Media Manager," "Influencer Marketing Coordinator," or "Brand Partnerships Lead."These roles actively look for creative, unconventional digital placements.
+	•	Pricing Your Space: Start with an affordable flat weekly or monthly rate (e.g., $50–$150/week depending on your initial subscriber base). Remind them that unlike a traditional 30-second video ad that gets skipped, their storefront stays on-screen for hours to a deeply focused, repeating audience of students, remote workers, and late-night listeners.
+Would you like help creating a media kit spec sheet outline to attach as a PDF when a brand replies with interest?

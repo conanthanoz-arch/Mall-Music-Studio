@@ -1,0 +1,68 @@
+Modular movie 2 rooms response
+
+This "2 rooms" rule is brilliant because it turns the entire movie structure into a visual **constrictor knot**.
+By having the loops count up from the beginning (A, B, C...) and down from the end (Z, Y, X...), you are creating a symmetrical countdown. The audience thinks they are just watching a linear progression of different rooms, but the geometry is actually folding inward on itself. When the two timelines collision-course in the middle, the "beginning" and the "end" will literally be sharing the same wall.
+Here is how we translate this architectural folding trick into our script logic and layout pipeline.
+## 1. The Spatial Symmetrical Matrix
+To keep your assets organized in the pipeline, we need to map the rooms so that the "Left-to-Right" rule is maintained, but the *geographical layout* mirrors itself as the loop collapses.
+```
+THE LOOP TIMELINE (FOLDING INWARD):
+
+Phase 1 (Outer Ring):
+[Scene A: White Hallway]  -->  (Man walks L to R)  -->  [Scene Z: Brick Hallway]
+                                                                  |
+Phase 2 (The Mid-Point):                                          v
+[Scene B: Green Vanity]   -->  (Man walks L to R)  -->  [Scene Y: Green Shower]
+                                                                  |
+Phase 3 (The Collision):                                          v
+                   [CRITICAL NEXUS: THE CENTER WALL]
+
+```
+### The Symmetrical Layout Rule:
+ * **Counting Up (A \to B \to C):** The protagonist enters from a door on the **left**, walks across the room, and exits a door on the **right**.
+ * **Counting Down (Z \to Y \to X):** The protagonist *also* enters from a door on the **left** and exits on the **right**.
+**The Psychological Trick:** Because the camera view is always perpendicular to the wall, the audience won't realize that **Scene B** and **Scene Y** are actually the *same room separated by a single wall* until the background details start leaking across the threshold.
+## 2. Automating the Environmental Leak (Pipeline Logic)
+As the steps come closer together, the script needs to handle the "Environmental Bleed." Because Scene B (Vanity) and Scene Y (Shower) share the same green aesthetic, we can start programmatically swapping assets between them to trigger the audience's paranoia.
+We can add a mirror_leak variable to your loop configuration script to handle this:
+```python
+# Expanded asset dictionary mapping the symmetrical rooms
+rooms_matrix = {
+    "A": {"type": "hallway", "style": "white_plaster", "pair": "Z"},
+    "Z": {"type": "hallway", "style": "exposed_brick", "pair": "A"},
+    
+    "B": {"type": "bathroom_vanity", "style": "green_tile", "pair": "Y"},
+    "Y": {"type": "bathroom_shower", "style": "green_tile", "pair": "B"},
+}
+
+# Evolution State Logic for Phase 2 (The Green Bathroom)
+loop_sequence = [
+    {
+        "current_scene": "B", 
+        "state": {
+            "fade_duration": 1.5,
+            "leak_from_pair": 0.05, # 5% opacity of Scene Y's shower curtain ghosted onto the vanity wall
+            "audio_leak": "shower_running_reverse.wav" # Hearing the future/past room
+        }
+    },
+    {
+        "current_scene": "Y", 
+        "state": {
+            "fade_duration": 1.2,
+            "leak_from_pair": 0.15, # The leak intensifies as the loop constricts
+            "audio_leak": "vanity_mirror_smash_echo.wav"
+        }
+    }
+]
+
+```
+## 3. Visual Clues for the Fold (The Lynchian Details)
+Since the camera angle is strictly perpendicular and flat, small details dictate the narrative weight. Here is how to stage the green bathroom scenes to maximize the disorientation:
+ * **Scene B (The Vanity):** The man walks in from the left. He faces a green tiled wall with a sink and a mirror. He walks right, opens the door, and exits.
+ * **Scene Y (The Shower/Toilet):** The man walks in from the left. He faces a green tiled wall with a shower curtain and a toilet. He walks right, opens the door, and exits.
+### The Gaslight Execution:
+ 1. **The Shadow Match:** In Scene B, as the man walks past the vanity mirror, cast a shadow from right-to-left across the wall that *does not match his movement*. This shadow is actually the motion data from Scene Y (the shower side) bleeding through the wall.
+ 2. **The Tile Decay:** A specific crack in the green tile appears on the right side of the wall in Scene B. When he enters Scene Y, that *exact same crack* is on the left side of the wall. The physics of the room are folding backward.
+ 3. **The Audio Collision:** While the man is in the Vanity (Scene B), the sound of the shower running (from Scene Y) plays softly in the right audio channel. When he finally gets to the Shower (Scene Y), the sound of the shower is now in the left channel, and the sound of a faucet dripping (from Scene B) is in his right channel.
+The audience will subconsciously map the layout and realize that he isn't moving forward through a building—he is spiraling into a dead-end pocket dimension where the rooms are consuming each other.
+Do you want to write out the precise prompt structures for these two green bathroom segments to ensure the AI matches the tile textures perfectly, or do you want to look at how the script handles the final "Nexus" transition where B and Y collide?

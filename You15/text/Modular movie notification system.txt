@@ -1,0 +1,77 @@
+Modular movie notification system
+
+To get instant alerts on your phone whenever your server experiences a system crash, recovery event, or ad swap, you can integrate a Discord Webhook directly into your shell script. Discord webhooks are completely free, highly reliable, and take less than two minutes to set up.
+1. Set Up Your Discord Webhook Channel
+
+	1.	Open Discord on your desktop or mobile app.
+	2.	Go to your personal server settings (or create a private server just for your stream updates).
+	3.	Click on Integrations > Webhooks > New Webhook.
+	4.	Name the webhook something like "Stream Monitor Bot" and assign it to a text channel.
+	5.	Click Copy Webhook URL.
+
+2. The Updated Auto-Recovery Script with Discord Notifications
+This updated version of your monitor script uses curl (a standard tool installed by default on almost all computers) to send a structured notification payload directly to your Discord server the exact millisecond an error or recovery occurs.
+For Linux / Mac (start_stream.sh)
+#!/bin/bash
+
+# Configuration Variables
+STREAM_KEY="YOUR_YOUTUBE_STREAM_KEY"
+IMAGE_PIPE="stream_pipe/live_pipe_%03d.jpg"
+AUDIO_FILE="lofi_audio.mp3"
+LOG_FILE="stream_monitor.log"
+
+# PASTE YOUR COPIED DISCORD WEBHOOK URL HERE
+DISCORD_URL="https://discord.com"
+
+# Helper function to send Discord messages
+send_discord_alert() {
+    local message="$1"
+    curl -H "Content-Type: application/json" -X POST -d "{\"content\": \"$message\"}" "$DISCORD_URL"
+}
+
+echo "=== Lo-Fi Ambient Stream Monitor Started ===" | tee -a "$LOG_FILE"
+send_discord_alert "������ **Stream Server Alert**: The 24/7 Lo-Fi Stream monitor has been launched successfully at $(date)."
+
+while true
+do
+    echo "Launching FFmpeg pipeline..." | tee -a "$LOG_FILE"
+    
+    # Execute the streaming command
+    ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 \
+    -i "$IMAGE_PIPE" -stream_loop -1 -i "$AUDIO_FILE" \
+    -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 \
+    -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com" 2>> "$LOG_FILE"
+
+    # If the script reaches this point, FFmpeg has crashed or disconnected
+    echo "WARNING: FFmpeg disconnected or crashed. Attempting recovery..." | tee -a "$LOG_FILE"
+    
+    # Send an urgent alert to your phone
+    send_discord_alert "⚠️ **STREAM CRASH DETECTED**: FFmpeg connection dropped at $(date). Attempting automatic recovery loop in 5 seconds..."
+    
+    sleep 5
+done
+For Windows (start_stream.bat)
+@echo off
+set STREAM_KEY=YOUR_YOUTUBE_STREAM_KEY
+set IMAGE_PIPE=stream_pipe\live_pipe_%%03d.jpg
+set AUDIO_FILE=lofi_audio.mp3
+set DISCORD_URL=https://discord.com
+
+echo Launching FFmpeg pipeline...
+:: Send startup notification using powershell curl wrapper
+powershell -Command "Invoke-RestMethod -Uri '%DISCORD_URL%' -Method Post -ContentType 'application/json' -Body '{\"content\":\"������ **Stream Server Alert**: Windows Stream Monitor started successfully.\"}'"
+
+:start
+ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 -i "%IMAGE_PIPE%" -stream_loop -1 -i "%AUDIO_FILE%" -c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com%" 2>> stream_monitor.log
+
+echo WARNING: FFmpeg crashed. Reconnecting in 5 seconds...
+powershell -Command "Invoke-RestMethod -Uri '%DISCORD_URL%' -Method Post -ContentType 'application/json' -Body '{\"content\":\"⚠️ **STREAM CRASH DETECTED**: Windows server lost connection to YouTube. Rebooting loop now...\"}'"
+
+timeout /t 5
+goto start
+
+3. What Happens in Real-World Scenarios
+
+	•	The Daily Checklist: When you fire up the engine in the morning, you will instantly get a green rocket message (������) on your phone confirming everything is running perfectly.
+	•	The Internet Drops out at 3 AM: If your internet provider pushes a routine update in the middle of the night causing a 10-second dropout, your phone will buzz with a warning icon (⚠️). Five seconds later, your recovery script will reconnect, and you will see the stream resume on YouTube without ever having to wake up or open a laptop.
+Now that the entire operational automation, video piping, ad swap engine, and notification structures are fully mapped out, what is the next step you would like to tackle—would you like to look at structuring your advertiser onboarding sheets, or should we refine the sound design transitions for the changing times of day?

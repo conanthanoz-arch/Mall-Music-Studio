@@ -1,0 +1,181 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 Menlo-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie beat machine\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+To build your programmatic 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Drum Loop Generator
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  using Python, you need to think like a drum machine or step sequencer.\
+In electronic music, a standard measure (bar) is split into a grid of beats and steps. For a typical lo-fi beat, we use a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 4/4 time signature split into a 16-step grid
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . This grid represents sixteenth notes, meaning a full loop consists of 16 indices in a Python list.\
+Here is the mathematical framework and code to programmatically generate organic, randomized drum loops from your couch.\
+\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. The 16-Step Step Sequencer Matrix\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 We represent each drum instrument (Kick, Snare, Hi-Hat) as an array of 16 steps.\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f3\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 A 1 means the drum hits on that specific step.\
+\ls1\ilvl0
+\f3\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 A 0 means silence.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 For a classic, relaxing lo-fi "boom-bap" rhythm, the standard step placements look like this:\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\i\fs28\fsmilli14118 \AppleTypeServices \cf0 # The 16-Step Grid Index: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15]
+\f5\i0 \
+
+\f4\i # Beats (Quarter notes):  [X           X           X             X          ]
+\f5\i0 \
+\
+GRID_KICK   = [1, 0, 0, 0, 0, 0, 0, 1, 0, 1, 0, 0,  0,  0,  0,  0]  
+\f4\i # Thump on 1, skip-kick on 8,9
+\f5\i0 \
+GRID_SNARE  = [0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0,  1,  0,  0,  0]  
+\f4\i # Crisp snaps on steps 5 and 13
+\f5\i0 \
+GRID_HIHAT  = [1, 0, 1, 0, 1, 0, 1, 0, 1, 0, 1, 0,  1,  0,  1,  1]  
+\f4\i # Steady ticks, double hit at end
+\f5\i0 \
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Programmatic "Swing" and Humanization Math\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 If you play these notes exactly on their mathematical grid markers, the drums will sound sterile and robotic. Lo-fi music gets its signature cozy, relaxed feel from 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 "Swing"
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 \'97which slightly delays the even-numbered steps (the off-beats) to create a lazy, human syncopation.\
+To do this programmatically, your code shifts the note's target timestamp using this simple swing displacement equation:\
+$$\\text\{Delayed Timestamp\} = \\text\{Target Step Time\} + (\\text\{Swing Factor\} \\times \\text\{Step Interval\})$$ \
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f5\fs28\fsmilli14118 \AppleTypeServices \cf0 import random\
+\
+def calculate_step_timestamps(bpm=80, swing_amount=0.15):\
+    
+\f4\i # Calculate the exact duration of a single sixteenth-note step in seconds
+\f5\i0 \
+    beat_duration = 60.0 / bpm\
+    step_duration = beat_duration / 4.0  
+\f4\i # 4 steps per beat
+\f5\i0 \
+    \
+    timestamps = []\
+    \
+    for step in range(16):\
+        base_time = step * step_duration\
+        \
+        
+\f4\i # Apply swing strictly to even-numbered (off-beat) steps
+\f5\i0 \
+        if step % 2 != 0:\
+            swing_delay = step_duration * swing_amount\
+            base_time += swing_delay\
+            \
+        
+\f4\i # Add micro-timing humanization (subtle random organic drift)
+\f5\i0 \
+        human_drift = random.gauss(0, 0.003) 
+\f4\i # Fills variance between -3ms and +3ms
+\f5\i0 \
+        \
+        timestamps.append(max(0, base_time + human_drift))\
+        \
+    return timestamps\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. The Algorithmic Pattern Generator\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Instead of hardcoding every drum beat, you can write an algorithm that uses a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 probability matrix
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  to write variations of the drum loops automatically. This ensures your 6-hour video stream never repeats the exact same drum pattern twice.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f5\fs28\fsmilli14118 \AppleTypeServices \cf0 def generate_algorithmic_lofi_pattern(seed=None):\
+    if seed:\
+        random.seed(seed)\
+        \
+    
+\f4\i # Define hit likelihood percentages (0.0 to 1.0) for each step on the grid
+\f5\i0 \
+    kick_probabilities =  [1.0, 0.0, 0.1, 0.0, 0.0, 0.0, 0.2, 0.8, 0.1, 0.9, 0.0, 0.2, 0.0, 0.0, 0.1, 0.0]\
+    snare_probabilities = [0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.1]\
+    hihat_probabilities = [1.0, 0.2, 0.9, 0.3, 1.0, 0.2, 0.9, 0.3, 1.0, 0.2, 0.9, 0.3, 1.0, 0.2, 0.9, 0.7]\
+\
+    generated_kick = []\
+    generated_snare = []\
+    generated_hihat = []\
+\
+    for step in range(16):\
+        
+\f4\i # Roll a random number between 0.0 and 1.0. If lower than probability, register a hit.
+\f5\i0 \
+        generated_kick.append(1 if random.random() < kick_probabilities[step] else 0)\
+        generated_snare.append(1 if random.random() < snare_probabilities[step] else 0)\
+        generated_hihat.append(1 if random.random() < hihat_probabilities[step] else 0)\
+\
+    return \{\
+        "kick": generated_kick,\
+        "snare": generated_snare,\
+        "hihat": generated_hihat\
+    \}\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\i \cf0 # Example generation: Generates a brand new custom, valid lo-fi pattern instantly
+\f5\i0 \
+mock_pattern = generate_algorithmic_lofi_pattern()\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. Audio Velocity Layering\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To make the drums sound deeply immersive, your code must vary the note volume (velocity) based on the importance of the beat. In lo-fi music, accent patterns follow these acoustic principles:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0
+\f3\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Downbeats (Step 0, 4, 8, 12):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Should hit hard (Velocity 95 - 105) to establish the driving groove.\
+\ls2\ilvl0
+\f3\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Offbeats & Ghost Notes:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Should hit softly (Velocity 40 - 65) to add subtle texture without muddying the mix.\
+\ls2\ilvl0
+\f3\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Hi-Hats:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Alternate velocities every other step (e.g., strong-weak-strong-weak) to recreate the natural arm movements of a real session drummer.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Now that your programmatic drum engine math is completely designed, are you ready to layer the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 automated bassline sequencer
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  underneath this rhythm?\
+\
+}

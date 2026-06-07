@@ -1,0 +1,96 @@
+Modular movie audio script for syncing
+
+To ensure your stream runs continuously without the audio drifting out of sync with your on-screen "Now Playing" text, you need to track precise audio metrics.
+Because your Python code loops through image names based on frames, and your audio plays back in seconds, a mismatch as tiny as a few milliseconds per song can add up over 24 hours. This results in the text displaying a new song title before the old song has actually finished playing.
+Here is the technical guide and script to calculate your audio metrics, configure your tracklist data, and generate your master audio loops with zero sync drift.
+
+1. Core Audio-to-Visual Metrics Checklist
+Before building your playlist files, ensure your audio tracks are rendered using identical encoding settings. Mixing different bitrates or sample rates will cause FFmpeg to lose sync during long broadcasts.
+
+	•	Sample Rate: Strictly 44,100 Hz (44.1 kHz). This matches the standard YouTube streaming specification.
+	•	Bitrate Mode: Strictly Constant Bitrate (CBR) at 320 kbps (or 192 kbps). Do not use Variable Bitrate (VBR), as VBR files calculate time dynamically, causing your frame math to drift.
+	•	Channels: Stereo.
+	•	The Conversion Metric: At 30 Frames Per Second (FPS), 1 second of audio = exactly 30 frames of video.
+
+2. Precise Automated Metric Analyzer Script
+Instead of manually checking the length of dozens of songs using a media player, you can use Python to read your audio folder, extract the exact duration down to the millisecond, and automatically generate your TRACKLIST data structure.
+First, install the lightweight audio metadata library via your terminal:
+pip install mutagen
+Create a script named generate_playlist_metrics.py and run it:
+import os
+import csv
+from mutagen.mp3 import MP3
+
+def analyze_audio_playlist(audio_folder="music_source"):
+    if not os.path.exists(audio_folder):
+        os.makedirs(audio_folder)
+        print(f"[INFO] Created '{audio_folder}/' directory. Place your raw MP3s inside it.")
+        return
+
+    print("=== ANALYZING PLAYLIST METRICS ===")
+    
+    total_seconds = 0.0
+    playlist_data = []
+    
+    # Sort files alphabetically to guarantee compilation order matches rendering order
+    mp3_files = sorted([f for f in os.listdir(audio_folder) if f.endswith(".mp3")])
+    
+    for file in mp3_files:
+        path = os.path.join(audio_folder, file)
+        
+        # Extract precise metadata headers
+        audio = MP3(path)
+        duration_in_seconds = audio.info.length
+        
+        # Extract metadata tags (Fallback to filename if tags are empty)
+        title = str(audio.get('TIT2', file.replace(".mp3", "")))
+        artist = str(audio.get('TPE1', "Unknown Producer"))
+        
+        # Calculate precise frame profiles at 30fps
+        exact_frames = duration_in_seconds * 30
+        
+        # Round cleanly to the nearest whole integer frame to prevent math drift
+        rounded_frames = round(exact_frames)
+        corrected_seconds = rounded_frames / 30
+        
+        playlist_data.append({
+            "filename": file,
+            "title": title,
+            "artist": artist,
+            "duration_sec": corrected_seconds,
+            "total_frames": rounded_frames
+        })
+        
+        total_seconds += corrected_seconds
+        print(f"✅ Loaded: {title} | {corrected_seconds:.3f}s | {rounded_frames} Frames")
+
+    # Generate the exact Python dictionary code block to copy-paste
+    print("\n=== COPY AND PASTE THIS INTO YOUR MAIN ENGINE ===")
+    print("TRACKLIST = [")
+    for track in playlist_data:
+        print(f'    {{"title": "{track["title"]}", "artist": "{track["artist"]}", "duration_sec": {track["duration_sec"]}}},')
+    print("]")
+    
+    # Generate the exact concatenation command for FFmpeg
+    print("\n=== RUN THIS TERMINAL COMMAND TO CONCATENATE AUDIO ===")
+    concat_list = "|".join([os.path.join(audio_folder, t["filename"]) for t in playlist_data])
+    print(f'ffmpeg -i "concat:{concat_list}" -acodec copy lofi_music.mp3\n')
+
+analyze_audio_playlist()
+
+3. How the "Frame-Correction" Metric Works
+Look closely at Phase 2 of the analysis script. An MP3 file might have a real-world length of 184.342 seconds.
+
+	•	At 30 FPS, that equals 5530.26 frames.
+	•	A video engine cannot render a fraction of a frame (.26).
+	•	By rounding 5530.26 up to exactly 5530 frames, the script corrects the track duration to 184.333 seconds.
+By forcing the tracklist array to use this corrected value, your text overlay will align perfectly with your audio track, remaining synchronized even after weeks of continuous broadcasting.
+
+4. Structuring a 6-Hour Audio Block
+To keep your 6-hour video timeline balanced, aim for these total track volume metrics:
+
+	•	Average Track Length: 3 minutes (180 seconds / 5,400 frames).
+	•	Tracks Needed per 6-Hour Block: Exactly 120 tracks.
+	•	Total Frames per 6-Hour Block: Exactly 648,000 frames.
+If your 120 tracks fall slightly short of the full 6 hours (e.g., totaling 5 hours and 52 minutes), that is completely fine. Your main rendering script uses the modulo operator (current_frame % AUDIO_LOOP_DURATION), which tells the system to automatically restart the playlist text from track 1 the exact millisecond the audio loops back to the beginning, maintaining a seamless presentation.
+Would you like to write a verification module that compares your compiled lofi_music.mp3 file against your spreadsheet tracker to double-check for errors before launching your stream?

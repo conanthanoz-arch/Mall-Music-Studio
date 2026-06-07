@@ -1,0 +1,90 @@
+Modular movie audio organizing
+
+To handle an extensive music collection without any sync drift, we need to structure a tracklist dictionary array.
+Because your audio stream loops infinitely using FFmpeg, the Python script needs to track the exact frame counts to know when one song ends and the next begins. This keeps your onscreen "Now Playing" text perfectly synced with the background audio track.
+1. The Tracklist Data Structure
+Create a list of dictionaries where you define each song's name, artist, and exact duration in seconds. Place this at the top of your Python script:
+# 1. DEFINE TRACKLIST INFRASTRUCTURE
+# Duration must be exact down to the second to match your MP3 compilation
+TRACKLIST = [
+    {"title": "Late Night Patrol", "artist": "Lo-Fi Guard Collective", "duration_sec": 180},
+    {"title": "Neon Escalator Echoes", "artist": "Synth Wave Cadet", "duration_sec": 215},
+    {"title": "Closed Mall Blues", "artist": "Coffee Shop Beats", "duration_sec": 165},
+    {"title": "Security Desk Solitude", "artist": "Midnight Ranger", "duration_sec": 240},
+    {"title": "After Hours Slumber", "artist": "Vaporwave Visionary", "duration_sec": 195}
+]
+
+FRAME_RATE = 30
+
+# 2. AUTOMATIC TRACKLIST INDEX BUILDER
+# This automatically calculates the exact starting and ending frames for every track
+def build_track_frame_map(tracklist, fps):
+    frame_map = []
+    current_start_frame = 0
+    
+    for track in tracklist:
+        duration_frames = track["duration_sec"] * fps
+        end_frame = current_start_frame + duration_frames
+        
+        frame_map.append({
+            "title": track["title"],
+            "artist": track["artist"],
+            "start_frame": current_start_frame,
+            "end_frame": end_frame
+        })
+        current_start_frame = end_frame
+        
+    total_audio_loop_frames = current_start_frame
+    return frame_map, total_audio_loop_frames
+
+# Compile the framework data
+TRACK_FRAME_MAP, AUDIO_LOOP_DURATION = build_track_frame_map(TRACKLIST, FRAME_RATE)
+
+2. The High-Speed Track Lookup Function
+Instead of using a slow loop to search through dozens of tracks on every single frame, this function uses a quick lookup logic to find the exact song matching the current frame count:
+def get_current_playing_track(current_frame, frame_map, total_audio_frames):
+    # Standardize the frame count against the loop duration of the entire audio file
+    normalized_frame = current_frame % total_audio_frames
+    
+    # Quick sweep to see which song boundary the frame drops into
+    for track in frame_map:
+        if track["start_frame"] <= normalized_frame < track["end_frame"]:
+            return track["title"], track["artist"]
+            
+    return "Unknown Track", "Ambient Artist"
+
+3. Integrating Tracking into Your Text Engine
+Now, update your previous render_text_layers function to drop the manual frame numbers and pull the live text data dynamically using your new tracker:
+def render_text_layers(frame_canvas, guard_x, guard_y, current_frame, frame_map, total_audio_frames):
+    draw = ImageDraw.Draw(frame_canvas)
+    
+    # --- PHASE A: DYNAMIC DUAL-LOOKUP ---
+    # Fetch the exact metadata for this single frame block
+    track_title, track_artist = get_current_playing_track(current_frame, frame_map, total_audio_frames)
+        
+    # Draw the text box frame overlay
+    draw.rectangle([40, 40, 500, 130], fill=(0, 0, 0, 140), radius=8)
+    draw.text((60, 50), f"������ {track_title}", fill=(255, 255, 255, 255), font=font_title)
+    draw.text((60, 85), f"by {track_artist}", fill=(200, 200, 200, 255), font=font_artist)
+
+    # --- PHASE B: DIALOGUE EASTER EGGS ---
+    # Trigger a fun dialogue box precisely during the first 5 seconds of a new song
+    normalized_frame = current_frame % total_audio_frames
+    for track in frame_map:
+        if track["start_frame"] <= normalized_frame < (track["start_frame"] + (5 * FRAME_RATE)):
+            speech_text = f"Ah, I love this track..."
+            
+            # Render dialogue container bubble above guard
+            bubble_x1 = guard_x + 20
+            bubble_y1 = guard_y - 80
+            draw.rectangle([bubble_x1, bubble_y1, bubble_x1 + 250, bubble_y1 + 50], fill=(255, 255, 255, 230), radius=12)
+            draw.text((bubble_x1 + 15, bubble_y1 + 12), speech_text, fill=(20, 20, 20, 255), font=font_dialogue)
+            break
+
+    return frame_canvas
+
+4. Compiling Your Master Audio Loop
+To make sure your audio matches your code perfectly, compile your individual song files into one single audio file using this quick FFmpeg command in your terminal before launching the stream:
+ffmpeg -i "concat:track1.mp3|track2.mp3|track3.mp3|track4.mp3|track5.mp3" -acodec copy lofi_music.mp3
+This guarantees your final master lofi_music.mp3 file matches the mathematical sum of the individual song durations defined in your Python array down to the millisecond.
+Would you like to explore how to optimize your computer's CPU and RAM so that running this heavy image generation pipeline continuously 24/7 doesn't overheat your hardware?

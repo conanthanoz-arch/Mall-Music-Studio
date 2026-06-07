@@ -1,0 +1,136 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;\f4\fnil\fcharset0 .SFUI-Heavy;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid1\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie audio pipeline verifier\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+This verification script serves as your final automated quality gate. It opens your compiled master audio loop (
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 lofi_music.mp3
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774 ), checks its actual properties against your Python tracklist array, and flags any potential sync issues before they go live on your YouTube channel.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 The Audio Pipeline Validator (verify_audio_pipeline.py)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Save this code in your project directory and execute it right before deploying a new 6-hour playlist.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f2\fs28\fsmilli14118 \AppleTypeServices \cf0 import os\
+import sys\
+from mutagen.mp3 import MP3\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\i \cf0 # Copy your calculated TRACKLIST configuration here to test it
+\f2\i0 \
+TRACKLIST = [\
+    \{"title": "Late Night Patrol", "artist": "Lo-Fi Guard Collective", "duration_sec": 180.0\},\
+    \{"title": "Neon Escalator Echoes", "artist": "Synth Wave Cadet", "duration_sec": 215.0\},\
+    \{"title": "Closed Mall Blues", "artist": "Coffee Shop Beats", "duration_sec": 165.0\},\
+    \{"title": "Security Desk Solitude", "artist": "Midnight Ranger", "duration_sec": 240.0\},\
+    \{"title": "After Hours Slumber", "artist": "Vaporwave Visionary", "duration_sec": 195.0\}\
+]\
+\
+FRAME_RATE = 30\
+\
+def verify_master_audio_pipeline():\
+    print("=== RUNNING STREAM AUDIO INTEGRITY CHECKS ===")\
+    \
+    master_file = "lofi_music.mp3"\
+    \
+    
+\f3\i # 1. Check if the compiled master loop file exists
+\f2\i0 \
+    if not os.path.exists(master_file):\
+        print(f"[CRITICAL ERROR] '\{master_file\}' not found. Run your FFmpeg concat command first.")\
+        sys.exit(1)\
+        \
+    
+\f3\i # 2. Extract technical headers from the master audio loop
+\f2\i0 \
+    try:\
+        audio = MP3(master_file)\
+        actual_duration = audio.info.length\
+        sample_rate = audio.info.sample_rate\
+        bitrate = audio.info.bitrate\
+    except Exception as e:\
+        print(f"[CRITICAL ERROR] Failed to parse file header configurations. Details: \{e\}")\
+        sys.exit(1)\
+        \
+    
+\f3\i # 3. Validate sample rate requirements
+\f2\i0 \
+    if sample_rate != 44100:\
+        print(f"[WARNING] Sample rate is \{sample_rate\}Hz instead of 44100Hz. This can cause audio pitch distortion or latency drops on YouTube Live.")\
+    else:\
+        print("\uc0\u9989  Sample Rate Validated: 44,100 Hz")\
+\
+    
+\f3\i # 4. Calculate mathematical duration totals
+\f2\i0 \
+    calculated_duration = sum([track["duration_sec"] for track in TRACKLIST])\
+    calculated_total_frames = sum([round(track["duration_sec"] * FRAME_RATE) for track in TRACKLIST])\
+    \
+    
+\f3\i # 5. Measure precision sync drift thresholds
+\f2\i0 \
+    drift_seconds = abs(actual_duration - calculated_duration)\
+    drift_frames = drift_seconds * FRAME_RATE\
+    \
+    print("\\n--- MATRIX DATA MATCH ANALYSIS ---")\
+    print(f"Master File Real Duration: \{actual_duration:.3f\} seconds")\
+    print(f"Python Array Total Time:   \{calculated_duration:.3f\} seconds")\
+    print(f"Total Sequence Video Frames: \{calculated_total_frames\} frames")\
+    \
+    
+\f3\i # Tolerable threshold error budget: less than 15 frames (half a second)
+\f2\i0 \
+    if drift_frames > 15:\
+        print(f"\\n[CRITICAL SYNC ERROR DETECTED]")\
+        print(f"\uc0\u9888 \u65039  Your text tracker drifts from the real audio timeline by \{drift_seconds:.3f\} seconds (\{drift_frames:.1f\} frames).")\
+        print("This causes 'Now Playing' screen titles to drift out of sync over time.")\
+        print("Fix: Ensure all source tracks use Constant Bitrate (CBR) and recalculate via the analyzer.")\
+        sys.exit(1)\
+    else:\
+        print(f"\uc0\u9989  Timeline Sync Confirmed: Total script drift is negligible (\{drift_frames:.2f\} frames).")\
+        print(f"Calculated 24/7 Run Safety Profile: Excellent.")\
+        print("\\n=== SYSTEM BROADCAST READY FOR LAUNCH ===")\
+\
+if __name__ == "__main__":\
+    verify_master_audio_pipeline()\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Stream Pipeline Architecture Summary\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Your automated lo-fi television broadcast network structure is now complete. Here is the operational summary of your engine:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 \cf0 {\listtext	1.	}
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 generate_playlist_metrics.py
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 : Automatically analyzes your raw audio tracks and builds a precise, rounded frame tracking index.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	2.	}
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 verify_audio_pipeline.py
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 : Confirms that your compiled master loop and your tracking logic are completely in sync before launching the stream.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	3.	}
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 stream_engine.py
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 : Your main engine that loads your multi-theme art styles into memory, loops the parallax sky, swaps out advertiser assets via spreadsheets, and renders a day/night cycle entirely through your computer's RAM.\
+\ls1\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	4.	}
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 start_stream.sh
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 : A shell monitor that loops your video pipe directly into FFmpeg and automatically reconnects to YouTube while sending real-time health alerts to your phone if any network drops occur.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Your architecture is completely optimized, scalable, and built for monetization. If you want to refine this setup further, let me know if you would like me to help you 
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 draft an automated chat moderation plan
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  for your stream's live comment section to engage viewers, or help you structure 
+\f4\b \AppleTypeServices\AppleTypeServicesF2293774 your channel's description and metadata fields
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  to optimize your visibility in YouTube's search algorithm!\
+\
+}

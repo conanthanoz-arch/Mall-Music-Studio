@@ -1,0 +1,3 @@
+Modular movie two rooms prompt
+
+We will also introduce the "2 rooms" rule, each step toward the loop coming closer together  the next room made will be a "two section room" of the same aesthetic, so Scene A and Z are "white hallway and brick hallway.   Scenes B and Y are "two different parts of the same green bathroom (like 2 rooms, vanity and shower/toilet, with a door on the left to enter from (for counting up from A) and a door on the right to exit from (counting down from Z)

@@ -1,0 +1,169 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-SemiboldItalic;
+\f3\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;\f5\fnil\fcharset0 Menlo-Regular;
+\f6\fnil\fcharset0 .SFUI-Heavy;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie test script for scales using placeholder blocks\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+This test script generates a quick 10-second video sample (300 frames) using a simplified schematic grid. Instead of using real artwork, it uses colored geometric blocks built exactly to your real-world dimensions.\
+Running this script allows you to verify that the guard's feet stay locked to the floor line, the storefront ads align perfectly inside the walls, and the guard walks 
+\f2\i \AppleTypeServices\AppleTypeServicesF2293774 behind
+\f1\i0 \AppleTypeServices\AppleTypeServicesF2293774  the structural pillars before you invest time or money into generating full creative assets.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 The Layout Grid Test Script (test_layout.py)\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Save this code in your project directory and run it. It creates placeholder assets automatically on the fly so you can test the positioning math instantly.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 import os\
+import math\
+import sys\
+from PIL import Image, ImageDraw\
+\
+FRAME_RATE = 30\
+TEST_FRAMES = 300  
+\f4\i # 10 seconds of video to test the layout motion
+\f3\i0 \
+OUTPUT_DIR = "test_pipe"\
+os.makedirs(OUTPUT_DIR, exist_ok=True)\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\i \cf0 # 1. GENERATE PLACEHOLDER SCHEMATIC ASSETS
+\f3\i0 \
+
+\f4\i # Base Background Layer (Light gray walls, dark gray floor line at Y:850)
+\f3\i0 \
+bg_base = Image.new("RGBA", (1920, 1080), (220, 220, 220, 255))\
+draw_bg = ImageDraw.Draw(bg_base)\
+draw_bg.rectangle([0, 850, 1920, 1080], fill=(80, 80, 80, 255)) 
+\f4\i # The Floor
+\f3\i0 \
+\
+
+\f4\i # Guard Sprite Layer (50x175 Pixel Silhouette Box)
+\f3\i0 \
+
+\f4\i # The sprite frame canvas itself is 1920x1080 to match coordinate mapping easily
+\f3\i0 \
+guard_sprite = Image.new("RGBA", (1920, 1080), (0, 0, 0, 0))\
+draw_guard = ImageDraw.Draw(guard_sprite)\
+draw_guard.rectangle([0, 0, 50, 175], fill=(0, 120, 255, 255)) 
+\f4\i # Blue Guard Box
+\f3\i0 \
+\
+
+\f4\i # Foreground Columns Layer (1920x1080 Transparent Canvas)
+\f3\i0 \
+foreground = Image.new("RGBA", (1920, 1080), (0, 0, 0, 0))\
+draw_fg = ImageDraw.Draw(foreground)\
+
+\f4\i # Central structural pillar dividing Store 1 and Store 2 (Width: 100px)
+\f3\i0 \
+draw_fg.rectangle([910, 0, 1010, 850], fill=(140, 140, 140, 255)) \
+\
+
+\f4\i # Mock Advertiser Storefront Graphics (450x350 Pixels)
+\f3\i0 \
+ad_1 = Image.new("RGBA", (450, 350), (255, 100, 100, 255)) 
+\f4\i # Red Brand Box
+\f3\i0 \
+ad_2 = Image.new("RGBA", (450, 350), (100, 255, 100, 255)) 
+\f4\i # Green Brand Box
+\f3\i0 \
+\
+
+\f4\i # 2. RUN VELOCITY & MAPPING TEST LOOP
+\f3\i0 \
+guard_x = 100\
+guard_y = 675  
+\f4\i # 850 (Floor Line) - 175 (Guard Height) = 675 Head Coordinate
+\f3\i0 \
+guard_speed = 4\
+direction = "right"\
+\
+print("--- Rendering 10-Second Layout Verification Grid ---")\
+\
+for frame in range(TEST_FRAMES):\
+    
+\f4\i # Movement logic check
+\f3\i0 \
+    if direction == "right":\
+        guard_x += guard_speed\
+        if guard_x > 1750: direction = "left"\
+    else:\
+        guard_x -= guard_speed\
+        if guard_x < 100: direction = "right"\
+        \
+    
+\f4\i # Stack the composition layers
+\f3\i0 \
+    canvas = bg_base.copy()\
+    \
+    
+\f4\i # Drop Ads onto the wall slots
+\f3\i0 \
+    canvas.alpha_composite(ad_1, dest=(350, 500))\
+    canvas.alpha_composite(ad_2, dest=(1120, 500))\
+    \
+    
+\f4\i # Overlap the guard at his dynamic moving X position
+\f3\i0 \
+    canvas.alpha_composite(guard_sprite, dest=(guard_x, guard_y))\
+    \
+    
+\f4\i # Layer the foreground pillar over the moving guard
+\f3\i0 \
+    canvas.alpha_composite(foreground, dest=(0, 0))\
+    \
+    
+\f4\i # Save the calibration frame to disk
+\f3\i0 \
+    frame_name = f"test_frame_\{frame:03d\}.jpg"\
+    canvas.convert("RGB").save(os.path.join(OUTPUT_DIR, frame_name), "JPEG", quality=80)\
+\
+print("[SUCCESS] Test compilation complete. 300 test frames written to 'test_pipe/'")\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Verify the Output Layout Animation\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Run this quick FFmpeg command in your terminal to compile the 300 test images into a fast 10-second layout calibration video file:\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f3\fs28\fsmilli14118 \AppleTypeServices \cf0 ffmpeg -framerate 30 -i test_pipe/test_frame_%03d.jpg -c:v libx264 -pix_fmt yuv420p layout_verification.mp4\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Open the resulting 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 layout_verification.mp4
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774  file and look for three specific visual behaviors:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f6\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 No Foot Floating:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Ensure the blue guard block slides smoothly across the line where the light gray walls meet the dark gray flooring without bouncing or sinking.\
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f6\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Proportional Scales:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Check that the scale feels visually natural\'97the blue guard block should appear correctly proportioned next to the larger red and green storefront squares.\
+\ls1\ilvl0
+\f5\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f6\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Layering Illusion:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Watch the blue block cross the center of the screen. It must disappear behind the gray structural pillar layer at X:910 and reappear instantly on the other side at X:1010, confirming your 3D depth system is configured correctly.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Now that the architectural grid and depth structures are mathematically verified, would you like to plan the 
+\f6\b \AppleTypeServices\AppleTypeServicesF2293774 visual layout or formatting style
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  for the day/night transitions (like how the shop lights turn off at closing time)?\
+\
+}

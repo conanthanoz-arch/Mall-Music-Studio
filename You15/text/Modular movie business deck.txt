@@ -1,0 +1,63 @@
+Modular movie business deck
+
+Multi-Style 24/7 Broadcast Network Media Kit
+This structure can be saved as a clean two-page PDF or an interactive slide deck to send to interested brand managers.
+
+[YOUR CHANNEL NAME]
+24/7 Ambient Broadcast Network • Media Kit 2026
+Immersive Digital Placement for Modern Internet Subcultures
+
+1. The Channel Concept
+[Your Channel Name] is a continuous, 24/7 automated streaming experience on YouTube. Our platform blends curated lo-fi instrumentals with an hours-long, programmatically designed ambient movie.
+The visual narrative follows a security guard on a 24/7 patrol shift through a stylized shopping mall. Rather than using disruptive commercial breaks, our network integrates real-world brands natively into the artwork by converting the fictional storefront windows and signs into high-resolution, dynamic ad displays.
+
+2. The 24-Hour Aesthetic Rotation Matrix
+Our broadcast pipeline automatically rotates its visual art style and musical subgenre every 6 hours. This enables advertisers to target highly specific demographic subcultures throughout the day:
+
+	•	Block 1 (00:00 - 06:00) | 16-Bit Retro Pixel Art
+	•	Audience: Nostalgic gamers, code developers, late-night students.
+	•	Music: Jazzy chillhop, boom-bap lo-fi beats.
+	•	
+	•	Block 2 (06:00 - 12:00) | Hand-Drawn Anime Vector
+	•	Audience: Modern anime enthusiasts, morning routine listeners, creative artists.
+	•	Music: Bright bedroom-pop instrumentals, acoustic lo-fi melodies.
+	•	
+	•	Block 3 (12:00 - 18:00) | 2D Matte Concept Painting
+	•	Audience: Design professionals, remote corporate workers, ambient music fans.
+	•	Music: Cinematic ambient pads, post-rock swells, slow-tempo study beats.
+	•	
+	•	Block 4 (18:00 - 00:00) | Cyberpunk Neon Noir
+	•	Audience: Tech enthusiasts, nocturnal listeners, synthwave communities.
+	•	Music: Midnight synthwave, dark ambient, hollowing mall-wave.
+	•	
+
+3. Native Environmental Lighting Integration
+Our proprietary Python rendering pipeline applies real-time color spaces across all layers. Your ad asset will not remain static; it will naturally interact with our evolving environmental lighting cycles:
+
+	•	Business Hours (Day Shift): Your display is fully illuminated with crisp color clarity.
+	•	Dusk Sequence (Sunset): The environment shifts into rich, golden hour color tones.
+	•	After Hours (Night Shift): Interior mall ceiling grids shut off. Your display naturally desaturates and darkens by 85% to match the closed mall aesthetic, while remaining visible in the background shadows and under the guard’s dynamic flashlight beam.
+
+4. Technical Asset Specifications
+To ensure seamless integration into our automated layout pipeline, your design team must deliver creative assets adhering strictly to the following technical metrics:
+
+	•	File Format: .png (Strictly saved in transparent RGBA color space mode).
+	•	Color Profile: Standard sRGB.
+	•	Lighting Profile: Flat, neutral illumination. Note: Do not bake highlights, shadows, or ambient glows directly into your file. Our code engine calculates and overlays these environmental light properties programmatically.
+Placement Dimensions:
+
+	•	Tier 1: Premium Center Storefront Takeover
+	•	Dimensions: 450 x 350 pixels.
+	•	Placement Location: Directly behind the central horizontal patrol path.
+	•	
+	•	Tier 2: Window Poster Display
+	•	Dimensions: 120 x 200 pixels (Vertical Orientation).
+	•	Placement Location: Outer structural flanking windows.
+	•	
+
+5. Sponsorship Options & Launch Packages
+
+	•	Weekly Rotation: Includes 7 consecutive days of execution inside your choice of one specific 6-hour aesthetic block.
+	•	Monthly Network Takeover: Includes 30 days of consecutive execution across all four rotating art style blocks, ensuring maximum exposure across our entire audience base.
+
+To wrap up your launch plan, let me know if you would like me to draft a checklist of standard guidelines to hand your background artist so they can design the base mall structures correctly for your Python engine.

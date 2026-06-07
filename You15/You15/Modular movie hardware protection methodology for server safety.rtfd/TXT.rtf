@@ -1,0 +1,105 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 Menlo-Regular;
+\f3\fnil\fcharset0 .SFUI-Heavy;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid101\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid2}
+{\list\listtemplateid3\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid201\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid3}
+{\list\listtemplateid4\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid301\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid4}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}{\listoverride\listid3\listoverridecount0\ls3}{\listoverride\listid4\listoverridecount0\ls4}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie hardware protection methodology for server safety\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+Running a Python script that renders, blends, color-grades, and saves images 30 times a second can put a heavy load on your CPU and storage drive. Left unoptimized, running this pipeline 24/7 can cause your hardware to overheat, wear down your storage drive, or drop frames on your live stream.\
+Because your project relies on a flat, 2D "diorama" layout, you can use these four optimization methods to reduce your system's CPU, RAM, and hardware usage by over 70%.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. Zero-Disk I/O: Stream Straight Through RAM\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Writing 30 JPEG files to a hard drive or SSD every second will wear out your storage drive over time and create a bottleneck that slows down your system.\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f2\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Solution:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Instead of saving actual image files to your disk, use Python's built-in memory buffer (io.BytesIO) to feed your frames directly to FFmpeg through RAM.\
+\ls1\ilvl0
+\f2\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 How to Implement:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Modify your Python saving step to write directly to the standard output stream (sys.stdout.buffer). Then, configure your FFmpeg command to read from a standard input pipe (-i pipe:0) instead of an image folder. This keeps the entire 6-hour image generation pipeline inside your computer's RAM, completely bypassing your hard drive.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. Cache Your Constant Layout Layers\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Your mall background structural assets and foreground pillars don't change from frame to frame. Loading and converting these images on every loop iteration will waste a massive amount of CPU cycles.\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0
+\f2\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Solution:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Load and open your base image layers (like mall_structure_day.png and mall_pillars.png) exactly 
+\f3\b \AppleTypeServices\AppleTypeServicesF2293774 once
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  at the very top of your script outside the main loop.\
+\ls2\ilvl0
+\f2\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Keep Them in RAM:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Convert them to the .convert('RGBA') format immediately upon loading. This ensures your computer keeps the raw pixel maps cached directly in memory, allowing your frame loop to blend the layers together instantly.\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. Apply Multi-Threading for Image Enhancements\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 By default, Python handles its tasks sequentially on a single CPU core. Applying complex visual adjustments\'97like calculating a day/night color matrix or a deep midnight blue blend\'97across a large 1920x1080 canvas can bottleneck that single core.\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls3\ilvl0
+\f2\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Solution:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  If you run your stream on a modern multi-core processor (such as an Intel i7/i9 or an AMD Ryzen), configure Pillow to take advantage of your hardware's full architecture.\
+\ls3\ilvl0
+\f2\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Code:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Add this configuration line to the very top of your Python setup to allow the image rendering library to distribute its pixel-processing tasks across all your available processor threads:\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\fs28\fsmilli14118 \AppleTypeServices \cf0 from PIL import Image\
+Image.MAX_IMAGE_PIXELS = None  
+\f5\i # Prevents restrictions on large rendering sizes
+\f4\i0 \
+import multiprocessing\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f5\i \cf0 # Tell Pillow to utilize all available CPU threads for image operations
+\f4\i0 \
+import PIL\
+PIL.Image.set_num_threads(multiprocessing.cpu_count())\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. Limit Frame Generation with Precise Sleep Timers\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 If your Python script loops without any constraints, it will render frames as fast as your CPU can handle\'97sometimes pushing over 200 frames per second. Rendering ahead of time wastes a massive amount of electricity and generates unnecessary heat, since your live stream only requires 30 frames per second.\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls4\ilvl0
+\f2\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Solution:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Add a precise clock timer inside your main rendering loop using Python's time module.\
+\ls4\ilvl0
+\f2\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f3\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 The Logic:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Calculate how long it takes to render a single frame. If it finishes a frame in 5 milliseconds, tell the script to pause and sleep for the remaining 28 milliseconds before starting the next frame. This keeps your pipeline locked at an efficient 30 frames per second, keeping your hardware cool and stable.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 Would you like to see how to write the 
+\f3\b \AppleTypeServices\AppleTypeServicesF2293774 complete integrated Python code
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  that puts all of these optimizations together\'97combining the RAM piping, the tracklist tracking, and the advertiser swapping into one unified file?\
+\
+}

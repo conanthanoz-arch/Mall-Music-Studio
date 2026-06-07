@@ -1,0 +1,73 @@
+Modular looping movie loop nexus
+
+The **Nexus Point** is the structural collision. This is the moment where the timeline has constricted so tightly that the buffer between the beginning (A \to B \to C) and the end (Z \to Y \to X) completely collapses.
+Because the camera view is strictly fixed and perpendicular to the wall, the Nexus cannot be a standard spatial cut. It must be a **geometric and physical paradox** where the left side of the frame is operating under a completely different set of chronological rules than the right side of the frame. The camera doesn't move, but the reality inside the 16:9 box tears in half.
+Here is the blueprint for executing the Nexus transition using your loop-weaving framework.
+## 1. The Visual Paradox: The Shared Wall Split
+In the Nexus, the protagonist enters from the left into **Scene C** (the next step up from the Vanity), but the right side of the screen is already displaying **Scene X** (the next step down from the Shower). They are sharing the exact same screen real estate, split right down the middle by a sharp, vertical line—like a living comic book gutter.
+```
+                  THE NEXUS FRAME (16:9)
++--------------------------+--------------------------+
+|       LEFT SCREEN        |       RIGHT SCREEN       |
+|    (Counting Up Timeline) |   (Counting Down Timeline)|
+|                          |                          |
+|  [Scene C: White Tiles]  |  [Scene X: Decay Tiles]  |
+|  Protagonist: Normal A   |  Protagonist: Feral State|
+|  Moving Left -> Right    |  Moving Left -> Right    |
+|                          |                          |
++--------------------------+--------------------------+
+                           ^
+                   THE NEXUS BOUNDARY
+                (No door frame. Just a seam.)
+
+```
+### The Motion Paradox
+ 1. **The Left Side:** The pristine, Normal Protagonist enters from the left edge of the screen, walking right. The wall is clean white tile.
+ 2. **The Right Side:** The Feral Protagonist is *already* in the right half of the screen, walking right toward the exit door. The wall here is rotten, moldy tile.
+ 3. **The Collision:** The Normal Protagonist crosses the exact center line of the frame. The moment his body passes the threshold, he doesn't enter a new room—his body instantly transitions into the Feral Protagonist's movement trail. He enters the frame clean and exits the frame deranged, all in one continuous, un-cut left-to-right stride.
+## 2. Coding the Nexus Mask in the Script
+To achieve this without manual editing, your automated looping tool needs a conditional rule for the Nexus phase. Instead of a temporal crossfade (xfade over time), it executes a **spatial wipe mask** fixed at the 50% horizontal mark of the video frame.
+Here is the FFmpeg pipeline logic to bake this specific layout:
+```python
+def generate_nexus_collision(clip_counting_up, clip_counting_down, output_path):
+    """
+    Spatially splits the 16:9 frame down the center.
+    Left half runs the beginning of the loop sequence.
+    Right half runs the collapsing end of the loop sequence.
+    """
+    input_up = ffmpeg.input(clip_counting_up)
+    input_down = ffmpeg.input(clip_counting_down)
+    
+    # 1. Crop the left half of the Up timeline (0 to width/2)
+    left_half = input_up.video.filter('crop', w='iw/2', h='ih', x=0, y=0)
+    
+    # 2. Crop the right half of the Down timeline (width/2 to width)
+    right_half = input_down.video.filter('crop', w='iw/2', h='ih', x='iw', y=0)
+    
+    # 3. Stack them horizontally side-by-side to create the unified 16:9 frame
+    nexus_video = ffmpeg.filter([left_half, right_half], 'hstack')
+    
+    # 4. Audio Chaos: Mix the past and future audio stems, hard panning them
+    audio_up = input_up.audio.filter('pan', 'stereo|c0=c0|c1=0')    # Hard Left
+    audio_down = input_down.audio.filter('pan', 'stereo|c0=0|c1=c1') # Hard Right
+    nexus_audio = ffmpeg.filter([audio_up, audio_down], 'amix', inputs=2)
+    
+    # Compile the Nexus asset
+    output = ffmpeg.output(nexus_video, nexus_audio, output_path, vcodec='libx264', acodec='aac')
+    output.run(overwrite_output=True, quiet=True)
+    
+    print(f"[������] NEXUS COLLISION COMPILED: {output_path}")
+
+```
+## 3. Auditory Vertigo: The Stereo Tear
+The audio during the Nexus is what truly breaks the audience's orientation.
+ * **The Left Ear (The Past):** Plays the clean, rhythmic, steady footsteps of the normal man, accompanied by the low, stable industrial hum of Phase 1.
+ * **The Right Ear (The Future):** Plays wet, heavy, dragging footsteps, accompanied by the erratic, low-frequency mechanical grinding of Peak Feral.
+As the protagonist's body walks across the center line from left to right, his sound profile doesn't cross over with him. The sound of his clean footsteps stays trapped in the left speaker, walking into nothingness, while the sound of the feral footsteps inherits his physical presence in the right speaker.
+## 4. Breaking the Mind: The Mobius Loop Return
+Once the protagonist exits the right side of the Nexus frame as a fully feral entity, where does he go?
+Because the timelines have collided and canceled each other out, the exit door on the right of the Nexus opens directly back into **Scene A (The White Hallway)**. But now, the loop is completely corrupted:
+ * The background is the pristine white hallway from the very start of the movie.
+ * But the man walking into it from the left is the **Peak Feral Protagonist**.
+The audience realizes with absolute dread that the "beginning" they anchored themselves to is gone. The monster has successfully back-propagated into the origin frame, and the whole cycle is about to happen again—but starting from a state of total madness.
+Should we map out the texture degradation assets for this specific white-tile-to-mold-tile split, or are you ready to write out the dynamic configuration array that feeds this entire macro-loop structure into the generator?

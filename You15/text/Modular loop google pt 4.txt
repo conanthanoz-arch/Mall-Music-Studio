@@ -1,0 +1,91 @@
+Modular loop google pt 4
+
+To build this programmatically, you can use Pillow (PIL), Python's standard library for image processing. It is fast, highly stable, and completely free.
+The code below establishes the basic framework for your 6-hour video generation pipeline. It stacks a fixed background, calculates the guard's walking position, applies a dynamic color tint based on the time of day, and saves the final output as sequential frames.
+The Python Frame-Generator Script
+import os
+import math
+from PIL import Image, ImageEnhance
+
+# 1. SETUP CONSTANTS & DIRECTORIES
+FRAME_RATE = 30
+TOTAL_FRAMES = 60 * 60 * 6 * FRAME_RATE  # 6 hours at 30fps = 648,000 frames
+OUTPUT_DIR = "rendered_frames"
+os.makedirs(OUTPUT_DIR, exist_ok=True)
+
+# 2. LOAD ASSETS (Ensure assets are the same resolution, e.g., 1920x1080)
+# Make sure your character and foreground assets are saved as transparent PNGs
+bg_base = Image.open("mall_background.png").convert("RGBA")
+guard_right = Image.open("guard_walk_right.png").convert("RGBA")
+guard_left = Image.open("guard_walk_left.png").convert("RGBA")
+foreground = Image.open("mall_pillars.png").convert("RGBA")
+
+# Initial positioning variables
+guard_x = 100
+guard_y = 500  # Floor level (perpendicular alignment)
+guard_speed = 2
+direction = "right"
+
+# 3. CORE RENDERING LOOP
+# For testing, you can change TOTAL_FRAMES to 300 (10 seconds) to verify the output
+for frame in range(TOTAL_FRAMES):
+    
+    # --- PHASE A: UPDATE GUARD PATROL LOGIC ---
+    if direction == "right":
+        guard_x += guard_speed
+        current_guard_sprite = guard_right
+        if guard_x > 1500:  # Right boundary of the mall screen
+            direction = "left"
+    else:
+        guard_x -= guard_speed
+        current_guard_sprite = guard_left
+        if guard_x < 100:   # Left boundary of the mall screen
+            direction = "right"
+
+    # --- PHASE B: LAYER THE SCENE (Bottom to Top) ---
+    # Create a fresh canvas copy of the background for this frame
+    frame_canvas = bg_base.copy()
+    
+    # Paste the guard onto the background using its own alpha channel as the mask
+    frame_canvas.alpha_composite(current_guard_sprite, dest=(guard_x, guard_y))
+    
+    # Paste the pillars/plants over the guard to create depth
+    frame_canvas.alpha_composite(foreground, dest=(0, 0))
+
+    # --- PHASE C: DAY/NIGHT TIME MATHEMATICS ---
+    # Calculate a smooth wave (0.0 to 1.0) spanning the entire 6-hour duration
+    # 0.0 represents deep midnight, 1.0 represents brightest noon
+    time_factor = (math.sin(2 * math.pi * frame / TOTAL_FRAMES) + 1) / 2
+    
+    # Translate that math into visual color grading filters
+    brightness_multiplier = 0.3 + (time_factor * 0.7)  # Ranges from 0.3 (dark) to 1.0 (bright)
+    color_multiplier = 0.4 + (time_factor * 0.6)       # Desaturates slightly at night
+
+    # --- PHASE D: APPLY COLOR GRADING ---
+    # Convert to RGB to apply enhancements safely
+    final_frame = frame_canvas.convert("RGB")
+    
+    # Apply brightness drop for nighttime
+    brightness_filter = ImageEnhance.Brightness(final_frame)
+    final_frame = brightness_filter.enhance(brightness_multiplier)
+    
+    # Apply color adjustment (or tinting)
+    color_filter = ImageEnhance.Color(final_frame)
+    final_frame = color_filter.enhance(color_multiplier)
+    
+    # Night tint variation: Gently blend a dark blue layer during the night cycle
+    if time_factor < 0.5:
+        night_overlay = Image.new("RGB", final_frame.size, (10, 20, 50)) # Deep midnight blue
+        blend_amount = (0.5 - time_factor) * 0.5 # Max 25% opacity blue blend
+        final_frame = Image.blend(final_frame, night_overlay, alpha=blend_amount)
+
+    # --- PHASE E: SAVE FRAME TO DISK ---
+    frame_name = f"frame_{frame:06d}.jpg"
+    final_frame.save(os.path.join(OUTPUT_DIR, frame_name), "JPEG", quality=90)
+
+print("Frame rendering complete.")
+Compiling to Video (FFmpeg Command)
+Once your script finishes rendering the images to the rendered_frames directory, you can open your terminal and run a single, fast FFmpeg command to stitch the images and your lo-fi music files into a compressed MP4 video file:
+ffmpeg -framerate 30 -i rendered_frames/frame_%06d.jpg -i lofi_audio.mp3 -c:v libx264 -pix_fmt yuv420p -c:a aac -b:a 320k output_movie.mp4
+Next Steps for Implementation
+To make this code work smoothly on your local machine, you will want to consider the overall structural pacing. Would you like to expand this logic to include specific triggers, such as turning off the interior storefront window lights precisely at a specific hour mark?

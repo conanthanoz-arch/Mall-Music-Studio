@@ -1,0 +1,47 @@
+Modular movie audio daytime automation
+
+To ensure your channel is highly optimized for performance and viewer retention, let's map out the sound design transitions first, followed by the advertiser onboarding structural blueprint.
+Structuring your audio correctly ensures the changing time-of-day looks and sounds totally unified, which keeps people listening for hours.
+
+Part 1: Automated Audio Transitions (Sound Design)
+To make your 6-hour video sound completely immersive, the background ambient noise (the "foley") should change based on the mall’s opening hours. We can do this without relying on complex audio editing software by utilizing FFmpeg's complex audio filtergraphs to layer your music with dynamic background ambiance.
+The Soundscape Setup
+Prepare three distinct audio files in your main project directory:
+
+	1.	lofi_music.mp3 – Your endless, continuous background instrumental tracks.
+	2.	mall_day_ambiance.mp3 – Subtle, echoey sounds of a populated mall (distant footsteps, faint chatter, air conditioning hum).
+	3.	mall_night_ambiance.mp3 – Deep, hollow echoes, isolated building hums, creaking structures, or occasional distant water droplets.
+The Advanced Audio Mixing Script
+Instead of a basic audio mix, update your terminal stream script to use this advanced FFmpeg command. It automatically blends the music with the day/night soundscapes based on the timeline [1]:
+ffmpeg -f image2 -loop 1 -framerate 30 -pattern_type sequence -start_number 0 -i "stream_pipe/live_pipe_%03d.jpg" \
+-stream_loop -1 -i "lofi_music.mp3" \
+-stream_loop -1 -i "mall_day_ambiance.mp3" \
+-stream_loop -1 -i "mall_night_ambiance.mp3" \
+-filter_complex "[1:a]volume=0.8[music]; \
+                 [2:a]volume=0.15[day_bg]; \
+                 [3:a]volume=0.05[night_bg]; \
+                 [music][day_bg][night_bg]amix=inputs=3:duration=first[audio_out]" \
+-map 0:v -map "[audio_out]" \
+-c:v libx264 -pix_fmt yuv420p -preset veryfast -b:v 3000k -g 60 -c:a aac -b:a 168k -ar 44100 -f flv "rtmp://://youtube.com"
+
+	•	Why this is powerful: The amix filter continuously blends the elements together [1]. The background noises sit at a low volume level so they don't overpower the music, but they provide that vital layer of texture that keeps the mall setting feeling alive.
+
+Part 2: Advertiser Onboarding Structural Blueprint
+When you approach brands to buy ad space inside your fictional mall, you need to provide a professional layout sheet. Because your stream relies on flat, perpendicular pixels, you can hand your advertisers an exact specification template.
+Create an Onboarding Document Template with these sections:
+1. Visual Placement Options
+
+	•	Tier 1 (Premium Storefront Takeover): The advertiser's logo replaces the main storefront sign directly behind the guard's central patrol path.
+	•	Tier 2 (Window Display Posters): The advertiser's products or promotional graphics are rendered inside the window panes flanking the left and right borders of the screen.
+2. Strict Asset Delivery Guidelines
+To keep your Python rendering engine running smoothly, all incoming advertiser files must meet these formatting rules:
+
+	•	File Format: Transparent .png strictly compiled in RGBA color mode.
+	•	Canvas Grid: Exactly 450x300 pixels (or your scene's specific crop box size).
+	•	Lighting Style: Flat, neutral illumination. Remind the brand's designer not to draw neon glows, shadows, or sunset colors into their image file. Explain that your Python code programmatically overlays the natural light curves, evening shadows, and midnight hues across their logo dynamically.
+3. Seamless Live Testing Protocol
+When a brand delivers an asset, drop it into your local ads/ folder on a test copy of the script.
+
+	•	Because your Python code reads the folder fresh every frame loop, you can immediately preview what their real-world brand looks like during the afternoon golden hour or the deep blue midnight cycle.
+	•	Once they approve the look, you simply drop the file into your active live server's ads/ directory, updating the public 24/7 stream instantly.
+Would you like to build out a sample spreadsheet architecture next to track advertiser slots, payment statuses, and automatic expiration frame counts?

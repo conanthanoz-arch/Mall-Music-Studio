@@ -1,0 +1,52 @@
+Modular movie art guidelines
+
+Background Artist Production Blueprint & Checklist
+Provide this technical checklist to your background artist before they begin drawing the scene. Because your Python engine relies on flat, pixel-perfect coordinates to layer the security guard, advertisements, and lighting effects, the artwork must follow these geometric constraints.
+
+1. General Project Dimensions & File Output
+
+	•	Canvas Size: Exactly 1920 x 1080 pixels for all primary layers.
+	•	Sky Panorama Canvas Size: Exactly 3840 x 1080 pixels (double-width for the scrolling parallax effect).
+	•	Color Profile: Standard sRGB.
+	•	Format: Clear .png format. Layers requiring transparency (Layer 2, 4, and 5) must be saved in RGBA color mode.
+
+2. The Absolute Horizon Guide (The Floor Line)
+
+	•	The Floor Coordinate: Draw the flat horizontal mall floor line exactly 850 pixels down from the top edge.
+	•	Perspectives: Use a strictly flat, perpendicular perspective (orthogonal/diorama view). There should be no angled floors, receding side-walls, or vanishing points. The back wall must be completely flat against the camera lens.
+	•	The Clearance Space: The vertical space between Y: 0 (ceiling) and Y: 850 (floor) represents your structural walls and shop gates. The bottom 230 pixels (Y: 850 to Y: 1080) represent the floor tiles stretching toward the viewer.
+
+3. Layer Separation Requirements (The Delivery Package)
+Your artist must deliver the final scene split into five individual files, mimicking the layout stack required by your code:
+[ ] File 1: panoramic_sky.png (Dimensions: 3840 x 1080)
+
+	•	A looping horizontal sky layout. The left side should seamlessly blend into the right side so it loops infinitely.
+	•	Content: Clouds, stars, moon, sun. No buildings or foreground objects.
+[ ] File 2: mall_structure_day.png & mall_structure_night.png (Dimensions: 1920 x 1080)
+
+	•	These represent the primary architectural shell walls.
+	•	The Transparent Cuts: The ceiling skylight frames and outdoor sky zone (pixels 1400–1920) must be sliced out and left completely transparent to reveal the parallax sky layer behind them.
+	•	The Storefront Openings: At the advertiser locations, leave clean, transparent box cutouts measuring exactly 450 x 350 pixels (Store 1: X:350, Y:500; Store 2: X:1120, Y:500).
+	•	The Glass Doors: At pixel coordinate X: 1400, draw the mall exit doors. The glass panes must use a translucent tint with roughly 20% opacity so the guard can be seen when walking behind them.
+	•	Day Variant: Internal mall storefronts are bright and turned on.
+	•	Night Variant: Internal mall stores are closed. Only emergency backup lighting and glowing red exit signs are visible.
+[ ] File 3: mall_pillars.png (Dimensions: 1920 x 1080)
+
+	•	This is your foreground occlusion layer. The entire file should be transparent, except for your vertical support pillars.
+	•	Content: Draw a structural concrete pillar exactly 100 pixels wide at coordinate X: 900 stretching from the ceiling to the floor. Outside on the sidewalk, draw a street lamp post at coordinate X: 1650.
+[ ] File 4: guard_walk_right.png & guard_walk_left.png (Dimensions: 50 x 175)
+
+	•	Your security guard sprite sheets or static loops.
+	•	Content: A human character drawn relative to scale. His feet must hit the very bottom border of his individual sprite canvas so he locks flush to the mall floor line.
+[ ] File 5: guard_flashlight_mask.png (Dimensions: 350 x 200)
+
+	•	A standalone alpha mask for the nighttime patrol sequence.
+	•	Content: A soft, semi-transparent white-to-transparent gradient cone representing a real flashlight beam.
+
+4. Lighting & Shading Guide
+
+	•	Flat Illumination: Instruct your artist not to bake dramatic lighting effects, shadows, or sunset glows directly into the layers.
+	•	Explain that your Python script handles color temperature overlays, golden hour blending, and shadow matrices programmatically. The core artwork should feature neutral, clean coloring so the code can tint it realistically.
+
+You now have a complete technical, code-based, and artistic roadmap to launch an entirely automated 24/7 ambient streaming network on YouTube.
+If you would like to move forward with the next step, let me know if you would like me to help you draft a workflow timeline for your development phase, or if you need help refining your first lo-fi track playlist script metrics!

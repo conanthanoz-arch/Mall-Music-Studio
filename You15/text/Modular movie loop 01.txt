@@ -1,0 +1,28 @@
+Modular movie loop 01
+
+Ah, my bad entirely—I completely misread your intent there! You’re totally right, you're laying out the structural blueprint, not asking me to hit "render." I apologize for the hiccup.
+Your idea to use **hard camera cuts** to isolate the dynamic changes is incredibly smart. In traditional filmmaking, a camera cut is the ultimate reset button for the audience's spatial awareness. In AI video generation, it acts as a **data reset button**. By cutting to a new angle right after the surreal action (like the ninja punch), you completely eliminate the need to force the AI to smoothly morph back into the original hallway geometry. The hard cut lets you cleanly drop the character back into the established "ground truth" timeline.
+Here is a comprehensive breakdown to build out and save your **"Haunted Loop Modification Plan"**:
+## The Macro-Loop Modification Blueprint
+### Step 1: Establish the Master Timeline (The Ground Truth)
+Before any modifications happen, you have your successfully generated, bidirectional master loop fully saved out as offline video assets.
+ * **Sections:** A \rightarrow B \rightarrow \dots \rightarrow K \rightarrow \dots \rightarrow Z
+ * **Status:** These files are locked, unedited by AI, and serve as your unchanging foundation.
+### Step 2: The Action Branching Phase (The Deviation)
+You choose a specific target section (e.g., **Section K**) to inject a narrative shift. Instead of regenerating the whole scene, you slice Section K into three distinct micro-segments:
+| Segment | Timing | Action / Pipeline Strategy |
+|---|---|---|
+| **K-1: The Match-Cut Entry** | First 5 seconds | **Pure Master Footage.** This plays exactly like the original master loop to preserve total visual continuity coming out of Section J. |
+| **K-2: The Glitch Action** | ~5–10 seconds | **The Deviation.** You prompt the AI using the last frame of K-1 as a starting reference. The character deviates from the path (e.g., punches a ninja). The environment here can drift slightly because the action distracts the viewer. |
+| **K-3: The Hard Cut Reset** | ~10 seconds+ | **The Recovery.** Instead of trying to blend back, you trigger a **hard camera cut** to a new angle (e.g., an over-the-shoulder shot or a security camera view) that aligns directly with the start of **Section L**. |
+### Step 3: Managing the "Hard Cut" Visual Handshake
+Even with a hard camera cut, the viewer needs to feel like the character is in the same physical space. To make the transition from the chaotic deviation (K-2) back to the master timeline (L) seamless, document these rules for your future AI service:
+ * **The Pose Matching Reset:** Ensure the final frame of your action sequence (K-2) places the character in a physical position that logically leads into the new camera angle. If they punch a ninja, the cut should happen right as the punch connects or right as they follow through, cutting to them stepping forward into the next section.
+ * **The Environmental Anchor:** Even if the camera angle changes entirely, keep **one major visual anchor** from the master timeline in the new shot—such as a specific neon store sign, a structural pillar, or the distinct mall railing. This tells the viewer's brain, *"The space shifted angles, but we are still in the same corridor."*
+### Step 4: The Iterative Variation Pipeline (How to Scale It)
+Because your pipeline is modular, you can reuse this exact saved plan to create infinite variations of the loop later on without breaking the overall structure:
+ 1. Keep A through J completely identical.
+ 2. Swap out Section K with a completely new micro-action (e.g., the character stops to look at a shifting television display, then cuts back to the walk).
+ 3. Because every variation ends on the exact same camera cut pointing toward Section L, **every single variation you create will naturally flow right back into the rest of the master loop.**
+This plan gives you absolute creative control. You get to keep the atmospheric, "haunted" environmental drift while choosing exactly when and where the narrative shatters and pieces itself back together.
+Do you want to add any specific guidelines to this plan regarding how audio or sound design should handle these sudden narrative cuts?

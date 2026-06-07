@@ -1,0 +1,232 @@
+{\rtf1\ansi\ansicpg1252\cocoartf2870
+\cocoatextscaling1\cocoaplatform1{\fonttbl\f0\fnil\fcharset0 .SFUI-Black;\f1\fnil\fcharset0 .SFUI-Semibold;\f2\fnil\fcharset0 .SFUI-Heavy;
+\f3\fnil\fcharset0 Menlo-Regular;\f4\fnil\fcharset0 .AppleSystemUIFontMonospaced-Regular;\f5\fnil\fcharset0 .AppleSystemUIFontMonospaced-RegularItalic;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\*\listtable{\list\listtemplateid1\listhybrid{\listlevel\levelnfc23\levelnfcn23\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{disc\}}{\leveltext\leveltemplateid1\'01\uc0\u8226 ;}{\levelnumbers;}\fi-360\li720\lin720 }{\listname ;}\listid1}
+{\list\listtemplateid2\listhybrid{\listlevel\levelnfc0\levelnfcn0\leveljc0\leveljcn0\levelfollow0\levelstartat1\levelspace360\levelindent0{\*\levelmarker \{decimal\}.}{\leveltext\leveltemplateid101\'02\'00.;}{\levelnumbers\'01;}\fi-360\li720\lin720 }{\listname ;}\listid2}}
+{\*\listoverridetable{\listoverride\listid1\listoverridecount0\ls1}{\listoverride\listid2\listoverridecount0\ls2}}
+\deftab560
+\pard\pardeftab560\slleading20\sa60\pardirnatural\partightenfactor0
+
+\f0\b\fs52 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Modular movie user interface for music themes\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+To finish your programmatic music suite, we need a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Melody Generator Module
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774 . This code will generate chord progressions and improvised top-line leads (the solos).\
+To keep your tracks cohesive, the melody must change its composition logic to match your 6-hour visual shifts. We do this by setting up a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Markov Chain Probability Matrix
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  [stem-calculative-problem-solving]. This music theory matrix calculates which note is statistically most likely to play next based on the note that just finished playing, ensuring your melodies sound cohesive and intentional.\
+\
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 1. The Multi-Aesthetic Melodic Matrix\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Different visual block styles require distinct musical scales. We define these musical styles as target parameters:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls1\ilvl0
+\f3\fs22 \AppleTypeServices \cf0 {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Anime Vector Block (Jazz Pop):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Uses major 7th and 9th chord extensions. The lead melody improvises using the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Pentatonic Major scale
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  for a bright, clean sound.\
+\ls1\ilvl0
+\f3\fs22 \AppleTypeServices {\listtext	\uc0\u8226 	}
+\f2\b\fs32 \AppleTypeServices\AppleTypeServicesF2293774 Cyberpunk Block (Neon Noir):
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Uses dark, minor chord root progressions. The lead melody improvises using the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Aeolian/Natural Minor scale
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  with occasional pitch bends.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 2. The Markov Chain Note Selector\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 This function uses a probability dictionary to select the next musical note. If the melody is currently playing the root note (the 1st), it will choose a note that sounds pleasing next (like the 3rd or 5th) rather than jumping to a jarring note.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\fs28\fsmilli14118 \AppleTypeServices \cf0 import random\
+\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f5\i \cf0 # Music Theory Probability Maps (Current Note Index -> Next Note Index Likelihoods)
+\f4\i0 \
+
+\f5\i # 0=Root, 1=Second, 2=Third, 3=Fourth, 4=Fifth, 5=Sixth, 6=Seventh
+\f4\i0 \
+MARKOV_LOFI_MELODY = \{\
+    0: [0.1, 0.3, 0.4, 0.0, 0.2, 0.0, 0.0], 
+\f5\i # From Root, likely jump to 2nd or 3rd
+\f4\i0 \
+    2: [0.3, 0.1, 0.1, 0.2, 0.3, 0.0, 0.0], 
+\f5\i # From 3rd, likely resolve to Root or 5th
+\f4\i0 \
+    4: [0.4, 0.0, 0.2, 0.1, 0.1, 0.2, 0.0], 
+\f5\i # From 5th, likely drop back down to Root
+\f4\i0 \
+    1: [0.5, 0.1, 0.4, 0.0, 0.0, 0.0, 0.0], 
+\f5\i # Passing tones resolve quickly
+\f4\i0 \
+    3: [0.0, 0.3, 0.5, 0.1, 0.1, 0.0, 0.0],\
+    5: [0.2, 0.0, 0.0, 0.3, 0.4, 0.1, 0.0],\
+    6: [0.8, 0.0, 0.0, 0.0, 0.0, 0.1, 0.1]  
+\f5\i # 7th heavily wants to resolve to the Root
+\f4\i0 \
+\}\
+\
+def get_next_melodic_note(current_note_index):\
+    """Calculates the next note index based on music theory probabilities"""\
+    probabilities = MARKOV_LOFI_MELODY.get(current_note_index, [1.0, 0, 0, 0, 0, 0, 0])\
+    \
+    
+\f5\i # Roll a random index based on the weighted array choices
+\f4\i0 \
+    choices = list(range(7))\
+    next_index = random.choices(choices, weights=probabilities)[0]\
+    return next_index\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 3. The Algorithmic Lead Arranger Code\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 This module generates a 16-step sequence for your top-line melody. It uses a 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Density Parameter
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  (which you can control using your Tkinter UI slider) to determine how often a note plays, ensuring your background melodies remain subtle and relaxed.\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\fs28\fsmilli14118 \AppleTypeServices \cf0 def generate_lofi_melody_lead(scale_midi_notes, density_percentage=70):\
+    """\
+    Generates a 16-step top-line melody loop that stays \
+    harmonically locked within your defined scale array.\
+    """\
+    melody_sequence = []\
+    current_note_idx = 0 
+\f5\i # Start on the scale root fundamental note
+\f4\i0 \
+    \
+    for step in range(16):\
+        
+\f5\i # 1. Respect your UI Slider Complexity Density setting
+\f4\i0 \
+        
+\f5\i # If density is 60%, there is a 40% chance of a musical rest (silence)
+\f4\i0 \
+        if random.randint(1, 100) > density_percentage:\
+            melody_sequence.append(0) 
+\f5\i # Register a silent rest step
+\f4\i0 \
+            continue\
+            \
+        
+\f5\i # 2. Prevent frantic note-spamming: restrict melody from hitting every single step
+\f4\i0 \
+        if step % 2 != 0 and random.random() < 0.60:\
+            melody_sequence.append(0)\
+            continue\
+            \
+        
+\f5\i # 3. Calculate the next note using the Markov chain probability logic
+\f4\i0 \
+        current_note_idx = get_next_melodic_note(current_note_idx)\
+        \
+        
+\f5\i # Pull the actual MIDI note value from your active aesthetic scale array
+\f4\i0 \
+        midi_note = scale_midi_notes[current_note_idx]\
+        \
+        
+\f5\i # Add an octave shift to move the lead melody into Octave 4/5 (Higher register)
+\f4\i0 \
+        melody_sequence.append(midi_note + 24) \
+        \
+    return melody_sequence\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 4. Updating the Tkinter UI to Display Note Feedback\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 To test the feel of these tracks from your couch, hook your new melody module into your existing 
+\fs28\fsmilli14118 \AppleTypeServices\AppleTypeServicesF2293774 music_tuner_ui.py
+\fs32 \AppleTypeServices\AppleTypeServicesF2293774 script. Update the execution method so that clicking the 
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 "Synthesize & Test Feel"
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  button prints out a visual representation of your generated arrangement:\
+\pard\pardeftab560\slleading40\partightenfactor0
+
+\f4\fs28\fsmilli14118 \AppleTypeServices \cf0     def execute_test_generation(self):\
+        
+\f5\i # 1. Gather live parameters from your slider inputs
+\f4\i0 \
+        bpm = self.var_bpm.get()\
+        density = self.var_melody_complexity.get()\
+        \
+        
+\f5\i # 2. Baseline definitions for a C Major scale matrix
+\f4\i0 \
+        c_major_scale = [60, 62, 64, 65, 67, 69, 71] 
+\f5\i # Middle C octave register
+\f4\i0 \
+        \
+        
+\f5\i # 3. Compute the algorithmic melody layout array
+\f4\i0 \
+        generated_lead = generate_lofi_melody_lead(c_major_scale, density_percentage=density)\
+        \
+        
+\f5\i # 4. Print out a visual text matrix report to verify the layout instantly
+\f4\i0 \
+        print("\\n=== GENERATED MELODIC MAP SEQUENCE ===")\
+        visual_steps = []\
+        for note in generated_lead:\
+            if note == 0:\
+                visual_steps.append(" \uc0\u9472 \u9472  ") 
+\f5\i # Text map symbol for a silent rest
+\f4\i0 \
+            else:\
+                visual_steps.append(f"\uc0\u55356 \u57273 \{note\}") 
+\f5\i # Displays the actual target MIDI note number
+\f4\i0 \
+                \
+        print(" | ".join(visual_steps))\
+        print("========================================")\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 \
+\pard\pardeftab560\sa80\partightenfactor0
+
+\f0\b\fs42 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Your Complete Programmatic Synthesis Suite\
+\pard\pardeftab560\slleading80\partightenfactor0
+
+\f1\b0\fs32 \AppleTypeServices\AppleTypeServicesF2293774 \cf0 Your algorithmic music station features a complete set of integrated tools:\
+\
+\pard\pardeftab560\pardirnatural\partightenfactor0
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 \cf0 {\listtext	1.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Rhythm Section:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  The 16-step sequencer matrix applying variable swing delays.\
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	2.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Drum Synthesis Block:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  RAM-based wave generation simulating punchy kick drums and white-noise hi-hats.\
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	3.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Bass Foundation Module:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Sidechained sub-bass notes that automatically lock to your kick patterns.\
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	4.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Melodic Top-Line Engine:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  Markov-chain probability tracks that write humanized melodies matching your visual style blocks.\
+\ls2\ilvl0\AppleTypeServices\AppleTypeServicesF2293774\AppleTypeServicesF393216 {\listtext	5.	}
+\f2\b \AppleTypeServices\AppleTypeServicesF2293774 Interactive Interface:
+\f1\b0 \AppleTypeServices\AppleTypeServicesF2293774  A dark-themed Tkinter tuning application to adjust, render, and test your audio engine settings in real time.\
+\pard\pardeftab560\slleading80\partightenfactor0
+\AppleTypeServices\AppleTypeServicesF2293774 \cf0 If you are ready to begin assembling these modules on your computer, let me know if you want to look at any other specific elements, or if you are ready to start building your files!\
+\
+}

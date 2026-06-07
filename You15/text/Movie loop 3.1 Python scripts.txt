@@ -1,0 +1,134 @@
+Movie loop 3.1 Python scripts
+
+Let’s get the automated multi-track blending logic locked down first so you can save the output script, and then we’ll jump straight into the visual prototyping for those door and corner transitions.
+To handle this narrative "weave," the script needs to move beyond a simple, static A \to B crossfade. It needs to dynamically inject background variables, manage a shifting "degradation" state, and cleanly handle the stacking of conditional video tracks based on where we are in the loop's evolution.
+Here is an optimized python framework using ffmpeg-python (or standard ffmpeg command construction) to automate this multi-layered, state-driven looping pipeline.
+## The Evolutionary Looping Script
+This script takes your base footage slots, applies variable crossfade durations based on an "evolution index," and handles multi-layer stacking (allowing us to slip in those low-opacity "ghost" frames or background character variations).
+```python
+import ffmpeg
+import os
+
+class LoopWeaver:
+    def __init__(self, output_dir="./output_loops"):
+        self.output_dir = output_dir
+        os.makedirs(output_dir, exist_ok=True)
+        
+    def generate_loop_step(self, clip_a, clip_b, step_index, evolution_state, ghost_clip=None):
+        """
+        Generates a specific loop segment with evolving transition properties.
+        
+        clip_a: Path to current main clip
+        clip_b: Path to next main clip (introducing subtle changes)
+        step_index: Sequential identifier for the output file
+        evolution_state: Dict containing 'fade_duration', 'feral_shift', etc.
+        ghost_clip: Path to a historical clip to weave in at low opacity
+        """
+        out_filename = f"{self.output_dir}/step_{step_index:03d}_loop.mp4"
+        
+        # Get metadata to calculate perfect entry/exit frame numbers
+        probe_a = ffmpeg.probe(clip_a)
+        duration_a = float(probe_a['format']['duration'])
+        
+        fade_dur = evolution_state.get('fade_duration', 2.0)
+        # Shift the exact point of transition slightly as the loop degrades to disorient the viewer
+        fade_start = (duration_a - fade_dur) + evolution_state.get('timing_jitter', 0.0)
+        
+        # 1. Initialize Inputs
+        stream_a = ffmpeg.input(clip_a)
+        stream_b = ffmpeg.input(clip_b)
+        
+        # 2. Handle Base Crossfade Logic
+        # Apply crossfade filter for video and audio simultaneously
+        video = ffmpeg.filter([stream_a.video, stream_b.video], 'xfade', 
+                              transition='fade', 
+                              duration=fade_dur, 
+                              offset=fade_start)
+        
+        audio = ffmpeg.filter([stream_a.audio, stream_b.audio], 'afade',
+                              type='in', 
+                              duration=fade_dur, 
+                              start=fade_start)
+        
+        # 3. The Gaslight Layer: Inject Ghost Frames (Phase 3+ Behavior)
+        if ghost_clip and evolution_state.get('ghost_opacity', 0.0) > 0:
+            opacity = evolution_state['ghost_opacity']
+            stream_ghost = ffmpeg.input(ghost_clip)
+            
+            # Match duration, apply low opacity, and blend over the main transition using 'overlay'
+            ghost_v = (
+                stream_ghost.video
+                .filter('format', 'rgba')
+                .filter('colorchannelmixer', aa=opacity) # Control transparency
+            )
+            # Overlay ghost clip precisely during the transition window
+            video = ffmpeg.filter([video, ghost_v], 'overlay', x=0, y=0, shortest=1)
+
+        # 4. Compile and Run
+        output = ffmpeg.output(video, audio, out_filename, 
+                               vcodec='libx264', 
+                               acodec='aac', 
+                               pix_fmt='yuv420p',
+                               preset='fast')
+        
+        # Run with overwrite enabled
+        output.run(overwrite_output=True, quiet=True)
+        print(f"[✓] Compiled Loop Step {step_index:03d} -> {out_filename} (Fade: {fade_dur}s)")
+        return out_filename
+
+# =====================================================================
+# Pipeline Execution Setup
+# =====================================================================
+if __name__ == "__main__":
+    weaver = LoopWeaver()
+    
+    # Mock database of asset paths reflecting character shifts and physical changes
+    # In practice, these point to your exported VFX sequences
+    assets = {
+        "p_normal": "src_protagonist_baseline.mp4",
+        "p_jacked": "src_protagonist_muscular.mp4",
+        "p_feral":  "src_protagonist_deranged.mp4",
+        "bg_empty": "bg_corridor_empty.mp4",
+        "bg_char_x":"bg_corridor_character_x.mp4",
+        "bg_violence":"bg_corridor_the_kill.mp4"
+    }
+    
+    # Definition of the narrative progression ("The Weave")
+    loop_sequence = [
+        # Phase 1: Clean Baseline Loop
+        {"A": assets["p_normal"], "B": assets["p_normal"], "state": {"fade_duration": 2.0, "ghost_opacity": 0.0, "timing_jitter": 0.0}},
+        {"A": assets["p_normal"], "B": assets["p_normal"], "state": {"fade_duration": 2.0, "ghost_opacity": 0.0, "timing_jitter": 0.0}},
+        
+        # Phase 2: Subtle background shift (Character X enters background of part B)
+        {"A": assets["p_normal"], "B": assets["bg_char_x"], "state": {"fade_duration": 2.0, "ghost_opacity": 0.0, "timing_jitter": 0.0}},
+        
+        # Phase 3: Protagonist physically evolves, old loop starts to ghost in transition blur
+        {"A": assets["bg_char_x"], "B": assets["p_jacked"], "state": {"fade_duration": 1.8, "ghost_opacity": 0.05, "timing_jitter": -0.1}},
+        
+        # Phase 4: Violence & Deception (The kill happens, transition timing destabilizes)
+        {"A": assets["p_jacked"], "B": assets["bg_violence"], "state": {"fade_duration": 1.2, "ghost_opacity": 0.08, "timing_jitter": 0.2}},
+        
+        # Phase 5: Deep Feral / Chaos (Weaving back to an empty baseline but with a monstrous protagonist)
+        {"A": assets["bg_violence"], "B": assets["p_feral"], "state": {"fade_duration": 2.5, "ghost_opacity": 0.12, "timing_jitter": -0.4}},
+        {"A": assets["p_feral"], "B": assets["p_normal"], "state": {"fade_duration": 0.8, "ghost_opacity": 0.15, "timing_jitter": 0.0}} 
+    ]
+    
+    print("Starting Loop Generation Pipeline...")
+    for idx, step in enumerate(loop_sequence):
+        # Pass the previous loop step as the ghost frame source if we are far enough in
+        ghost = loop_sequence[idx-2]["A"] if idx >= 2 else None
+        
+        weaver.generate_loop_step(
+            clip_a=step["A"],
+            clip_b=step["B"],
+            step_index=idx + 1,
+            evolution_state=step["state"],
+            ghost_clip=ghost
+        )
+    print("Pipeline Complete. Ready for review.")
+
+```
+## What This Accomplishes Behind the Scenes
+ * **Destabilizes Frame-Counting:** By passing timing_jitter into the math, the exact moment the crossfade initiates changes by a few frames each time. The viewer can't rely on subconscious rhythm to predict the loop reset.
+ * **Automates the Alpha Layering:** The colorchannelmixer dynamically handles fading a third "ghost clip" over the actual spatial turn, baking the visual anomaly directly into your 10-second turnaround render.
+Save this script structure out to your pipeline utilities. Once you're ready, let me know, and we'll pivot directly to designing the **visual prototypes** for tracking the edge boundaries of those door frames and corner wipes!
