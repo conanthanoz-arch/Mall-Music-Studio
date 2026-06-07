@@ -31,6 +31,15 @@ music_library/playlist.json
 # User emulated presets
 instrument_presets/user/*.json
 
+# Licensed sample audio (manifest + LICENSES committed; WAVs fetched locally)
+licensed_library/**/*.wav
+licensed_library/**/*.mp3
+licensed_library/**/*.flac
+licensed_library/**/*.ogg
+licensed_library/_downloads/
+licensed_library/**/packs/
+import_allowlist.json
+
 # PyInstaller / temp
 *.seg.wav
 *.tail.wav

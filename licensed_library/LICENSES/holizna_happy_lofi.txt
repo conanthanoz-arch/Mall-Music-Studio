@@ -1,0 +1,4 @@
+Pack: HoliznaCC0 Happy Lo-Fi Collection
+License: CC0 1.0 Universal
+Source: https://opengameart.org/content/happy-lo-fi-lofi-collection
+Fetched by: tools/fetch_sample_packs.py

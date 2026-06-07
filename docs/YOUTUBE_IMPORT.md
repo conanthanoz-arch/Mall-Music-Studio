@@ -2,6 +2,18 @@
 
 YouTube audio is used **only as a temporary analysis reference** to derive synth presets. The engine never loads or plays imported WAV zones. Saved instruments are JSON synth presets with **generic descriptive names** (no artist or song titles).
 
+## Own-content policy (v0.13+)
+
+Import is restricted to URLs you own or explicitly allow:
+
+1. Copy `import_allowlist.example.json` → `import_allowlist.json`
+2. Add your **channel ID** (`UC…`) and/or **video IDs**
+3. In the UI, check **I own the rights to this URL** when using without an allowlist entry
+
+Developers can set `MMS_IMPORT_UNRESTRICTED=1` to bypass checks locally.
+
+Metadata is fetched with yt-dlp before download; blocked URLs fail with a clear error.
+
 ## Install import tools
 
 ```bat
@@ -19,10 +31,10 @@ run_import_worker.bat "https://www.youtube.com/watch?v=VIDEO_ID"
 
 This downloads audio, runs Demucs, and writes a manifest under `music_library/import_jobs/latest/`. Fit emulated presets from the Mall Music Studio UI (or call `fit_emulated_preset_for_stem()` from Python).
 
-## In Mall Music Studio (v0.12+)
+## In Mall Music Studio
 
 1. Open **Import from YouTube**
-2. Paste URL → **Analyze stems**
+2. Paste URL → confirm rights / allowlist → **Analyze stems**
 3. Select a stem → scrub **Sample from** to the loud section (fixes silent intros)
 4. **Fit emulated sound** → preview synthesized kick/note (not the stem WAV)
 5. Tweak synth sliders → **Apply edits**
@@ -30,9 +42,11 @@ This downloads audio, runs Demucs, and writes a manifest under `music_library/im
 
 Presets are saved to `instrument_presets/user/` as `va_voice` or `drum_kit` JSON. Labels look like `Warm Sub Bass (emulated)` — never song or artist names.
 
+For **licensed sample playback** (CC0 packs, your own loops), see [LICENSED_SAMPLES.md](LICENSED_SAMPLES.md).
+
 ## Copyright
 
-For personal/reference use only. Stems live temporarily under `music_library/import_jobs/latest/` for scrub/preview. Respect copyright and YouTube Terms of Service. No multisample WAV storage.
+Use only on content you have rights to analyze. Stems live temporarily under `music_library/import_jobs/latest/` for scrub/preview. Respect copyright and YouTube Terms of Service. No multisample WAV storage from third-party tracks.
 
 ## Output layout
 
@@ -48,4 +62,4 @@ instrument_presets/user/
   emu_punchy_drums_kit_b1c4.json
 ```
 
-Emulated presets appear in mix track preset dropdowns alongside built-in kits and VA voices.
+Emulated presets appear in mix track preset dropdowns alongside built-in kits, CC0 samples, and VA voices.

@@ -1,0 +1,4 @@
+Pack: OpenGameArt Fantasy Drum Loops
+License: CC0 1.0 Universal
+Source: https://opengameart.org/content/fantasy-music-and-drum-loops-pack
+Fetched by: tools/fetch_sample_packs.py

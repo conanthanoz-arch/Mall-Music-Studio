@@ -9,6 +9,7 @@ from instrument_presets import get_preset
 from melody_generator import generate_melody_steps
 from mix_tracks import stem_bucket_for_mode
 from music_theory import SAMPLE_RATE, humanize_velocity
+from sample_engine import render_sample_kit_hit, render_sample_loop_preset
 from voice_engine import render_voice
 
 
@@ -39,7 +40,7 @@ def _render_note(
 
 
 def _is_melodic_engine(preset: Dict[str, Any]) -> bool:
-    return preset.get("engine") == "va_voice"
+    return preset.get("engine") in ("va_voice", "sample_loop")
 
 
 class MeasureContext:
@@ -92,8 +93,33 @@ def render_mix_track(
     vol = float(track.get("volume", 1.0))
     octave = int(track.get("octave_shift", 0))
     buf = np.zeros(ctx.total_samples, dtype=np.float64)
+    engine = preset.get("engine", "va_voice")
 
-    if mode == "drums" and preset.get("engine") == "drum_kit":
+    if mode in ("loop_chords", "loop_layer") and engine == "sample_loop":
+        layer_vol = 0.65 if mode == "loop_chords" else 0.35
+        loop = render_sample_loop_preset(
+            preset, ctx.total_samples, ctx.bpm, volume=vol * layer_vol
+        )
+        return loop
+
+    if mode == "drums" and engine == "sample_kit":
+        for step in range(16):
+            start = int(ctx.step_times[step] * SAMPLE_RATE)
+            if start >= ctx.total_samples:
+                continue
+            if ctx.drum_pattern["hihat"][step]:
+                closed = step != 15
+                vel = 0.75 + humanize_velocity(50) / 254.0
+                hat = render_sample_kit_hit(preset, "hihat", closed_hat=closed, volume=vel) * vel
+                _mix_at(buf, start, hat)
+            if ctx.drum_pattern["snare"][step]:
+                sn = render_sample_kit_hit(preset, "snare", volume=humanize_velocity(80) / 127.0)
+                _mix_at(buf, start, sn)
+            if ctx.drum_pattern["kick"][step]:
+                _mix_at(buf, start, render_sample_kit_hit(preset, "kick", volume=1.0))
+        return buf * vol
+
+    if mode == "drums" and engine == "drum_kit":
         for step in range(16):
             start = int(ctx.step_times[step] * SAMPLE_RATE)
             if start >= ctx.total_samples:

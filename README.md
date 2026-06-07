@@ -1,6 +1,6 @@
 # Mall Music Studio
 
-Procedural lo-fi music studio with mix tracks, YouTube stem analysis (synth emulation), and a Qt **Arrangement Studio** timeline for building 6-hour master loops. Includes the YoutubeLoopStream visual broadcast engine (mall patrol scenes, FFmpeg streaming).
+Procedural lo-fi music studio with mix tracks, **CC0 licensed sample playback**, MIDI patterns, master FX (vinyl/tape), YouTube stem analysis (synth emulation), and a Qt **Arrangement Studio** timeline for building 6-hour master loops.
 
 ## Install
 
@@ -36,6 +36,12 @@ Or download a CI-built tarball — see [docs/BUILD_LINUX.md](docs/BUILD_LINUX.md
 
 ### Quick install (Windows)
 
+Optional — CC0 sample packs (~150–300 MB):
+
+```powershell
+install_samples.bat
+```
+
 Optional — YouTube import (large download: PyTorch + Demucs):
 
 ```powershell
@@ -63,7 +69,7 @@ Double-click **`run_music_studio.vbs`** to launch the EXE without a command wind
 3. **compile_music.bat** — concat library to `lofi_music.mp3` (optional)
 4. **preview_stream.bat** — local visual stream test (no YouTube)
 
-See [docs/YOUTUBE_IMPORT.md](docs/YOUTUBE_IMPORT.md) for synth-only YouTube emulation.
+See [docs/LICENSED_SAMPLES.md](docs/LICENSED_SAMPLES.md) for CC0 packs and [docs/YOUTUBE_IMPORT.md](docs/YOUTUBE_IMPORT.md) for synth-only YouTube emulation (own-content allowlist).
 
 ## Project layout
 
@@ -72,7 +78,8 @@ Mall-Music-Studio/
 ├── music_tuner_ui.py       # Main Tk UI (sound design)
 ├── arrangement_daw/        # PySide6 Arrangement Studio
 ├── music_library/          # Your saved WAV + JSON (gitignored contents)
-├── instrument_presets/     # Built-in + user emulated presets
+├── licensed_library/       # CC0 samples (manifest in git; WAVs local)
+├── instrument_presets/     # Built-in + samples + user presets
 ├── tools/                  # YouTube import, stem separation
 ├── docs/
 ├── requirements.txt

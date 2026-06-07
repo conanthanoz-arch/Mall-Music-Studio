@@ -1,0 +1,10 @@
+{
+  "id": "cc0_holizna_piano_loop",
+  "label": "CC0 Holizna Piano Loop",
+  "slot": "chords",
+  "engine": "sample_loop",
+  "volume": 0.75,
+  "loop_path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/01 HoliznaCC0 - Poor, But Happy.mp3",
+  "loop_bpm": 80,
+  "bars": 2
+}

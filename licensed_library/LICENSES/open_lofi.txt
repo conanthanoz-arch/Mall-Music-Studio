@@ -1,0 +1,5 @@
+Pack: open-lofi CC0 tracks
+License: CC0 1.0 Universal
+Source: https://github.com/btahir/open-lofi
+Fetched by: tools/fetch_sample_packs.py
+Note: Only a subset of tracks is kept locally after fetch to limit disk use.

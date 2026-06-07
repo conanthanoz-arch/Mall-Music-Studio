@@ -5,6 +5,7 @@ numpy>=1.24.0
 scipy>=1.10.0
 pygame>=2.5.0
 PySide6>=6.5.0
+mido>=1.3.0
 
 # Optional — YouTube instrument import (see run_import_worker.bat)
 yt-dlp>=2024.1.0

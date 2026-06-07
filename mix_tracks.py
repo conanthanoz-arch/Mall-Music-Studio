@@ -16,6 +16,8 @@ TRACK_MODES = {
     "follow_melody": "Follow melody",
     "counter_melody": "Counter melody",
     "follow_chords": "Follow chords",
+    "loop_chords": "Loop (chords bed)",
+    "loop_layer": "Loop (texture layer)",
 }
 
 
@@ -112,8 +114,10 @@ def stem_bucket_for_mode(mode: str) -> str:
         return "drums"
     if mode == "bass_root":
         return "bass"
-    if mode in ("chords", "follow_chords"):
+    if mode in ("chords", "follow_chords", "loop_chords"):
         return "chords"
+    if mode == "loop_layer":
+        return "melody"
     return "melody"
 
 

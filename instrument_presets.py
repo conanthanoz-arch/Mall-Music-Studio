@@ -251,6 +251,44 @@ def presets_base_dir() -> str:
     return os.path.join(os.path.dirname(os.path.abspath(__file__)), "instrument_presets")
 
 
+def samples_presets_dir() -> str:
+    return os.path.join(presets_base_dir(), "samples")
+
+
+def _load_sample_presets() -> Dict[str, Dict[str, Any]]:
+    loaded: Dict[str, Dict[str, Any]] = {}
+    sample_dir = samples_presets_dir()
+    if not os.path.isdir(sample_dir):
+        return loaded
+    for name in os.listdir(sample_dir):
+        if not name.endswith(".json"):
+            continue
+        path = os.path.join(sample_dir, name)
+        try:
+            with open(path, "r", encoding="utf-8") as f:
+                preset = json.load(f)
+            preset_id = preset.get("id") or os.path.splitext(name)[0]
+            preset["id"] = preset_id
+            loaded[preset_id] = preset
+        except (OSError, json.JSONDecodeError):
+            continue
+    return loaded
+
+
+def _load_manifest_presets() -> Dict[str, Dict[str, Any]]:
+    try:
+        from licensed_library import load_manifest
+
+        out: Dict[str, Dict[str, Any]] = {}
+        for preset in load_manifest().get("presets", []):
+            pid = preset.get("id")
+            if pid:
+                out[pid] = deepcopy(preset)
+        return out
+    except ImportError:
+        return {}
+
+
 def user_presets_dir() -> str:
     path = os.path.join(presets_base_dir(), "user")
     os.makedirs(path, exist_ok=True)
@@ -279,6 +317,8 @@ def _load_user_presets() -> Dict[str, Dict[str, Any]]:
 
 def all_presets() -> Dict[str, Dict[str, Any]]:
     merged = deepcopy(BUILTIN_PRESETS)
+    merged.update(_load_sample_presets())
+    merged.update(_load_manifest_presets())
     merged.update(_load_user_presets())
     return merged
 
@@ -302,9 +342,15 @@ def list_presets_for_slot(slot: str) -> List[Dict[str, Any]]:
 def list_presets_for_mode(mode: str) -> List[Dict[str, Any]]:
     presets = all_presets().values()
     if mode == "drums":
-        items = [p for p in presets if p.get("engine") == "drum_kit"]
+        items = [p for p in presets if p.get("engine") in ("drum_kit", "sample_kit")]
+    elif mode in ("loop_chords", "loop_layer"):
+        items = [p for p in presets if p.get("engine") == "sample_loop"]
     else:
-        items = [p for p in presets if p.get("engine") == "va_voice"]
+        items = [
+            p
+            for p in presets
+            if p.get("engine") in ("va_voice", "sample_loop")
+        ]
     items.sort(key=lambda p: (p.get("label") or p.get("id", "")).lower())
     return items
 

@@ -118,6 +118,7 @@ def run_import_subprocess(
     url: str,
     library_dir: str,
     max_download_sec: float = 120.0,
+    user_confirmed: bool = False,
 ) -> Dict[str, Any]:
     """Download + Demucs; returns manifest dict or raises RuntimeError."""
     deps = check_import_dependencies()
@@ -154,6 +155,8 @@ def run_import_subprocess(
         "--manifest-out",
         out_path,
     ]
+    if user_confirmed:
+        cmd.append("--user-confirmed")
 
     proc = subprocess.run(
         cmd,

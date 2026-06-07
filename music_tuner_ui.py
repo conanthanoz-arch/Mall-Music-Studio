@@ -10,7 +10,7 @@ import threading
 import time
 import tkinter as tk
 from datetime import datetime
-from tkinter import messagebox, ttk
+from tkinter import filedialog, messagebox, ttk
 
 from audio_synthesizer import (
     buffer_duration_sec,
@@ -48,7 +48,9 @@ from import_pipeline import (
     read_import_progress,
     run_import_subprocess,
 )
+from licensed_library import licensed_library_dir, register_user_entry, set_licensed_library_root
 from melody_generator import generate_melody_steps
+from midi_pattern import ensure_default_patterns, load_midi_pattern, list_default_midi_patterns
 from music_theory import SAMPLE_RATE, THEME_PROFILES
 from playlist_arranger import (
     SIX_HOUR_SEC,
@@ -65,7 +67,7 @@ from playlist_arranger import (
 )
 from waveform_utils import GrooveGridCanvas, StemLanesCanvas, WaveformCanvas
 
-APP_VERSION = "v0.12"
+APP_VERSION = "v0.13"
 DEBOUNCE_MS = 320
 AUDIO_DEBOUNCE_MS = 450
 SEED_MAX = 999999
@@ -91,6 +93,8 @@ class MallMusicStudioApp:
         self.library_dir = DEFAULT_LIBRARY
         os.makedirs(self.library_dir, exist_ok=True)
         set_library_root(self.library_dir)
+        set_licensed_library_root(os.path.join(app_base_dir(), "licensed_library"))
+        ensure_default_patterns()
 
         self._import_manifest: dict = {}
         self._import_stems: list = []
@@ -103,11 +107,21 @@ class MallMusicStudioApp:
         self.var_sidechain = tk.DoubleVar(value=0.60)
         self.var_density = tk.IntVar(value=70)
         self.var_reverb = tk.DoubleVar(value=0.45)
+        self.var_vinyl = tk.DoubleVar(value=0.25)
+        self.var_tape = tk.DoubleVar(value=0.35)
+        self.var_bitcrush = tk.DoubleVar(value=0.0)
         self.var_measures = tk.IntVar(value=8)
         self.var_target_sec = tk.IntVar(value=180)
         self.var_seed = tk.IntVar(value=random.randint(0, SEED_MAX))
         self.var_auto_advance_seed = tk.BooleanVar(value=False)
         self.var_loop_preview = tk.BooleanVar(value=False)
+        self.var_import_rights = tk.BooleanVar(value=False)
+        self.var_midi_melody = tk.BooleanVar(value=True)
+        self.var_midi_chords = tk.BooleanVar(value=False)
+        self.var_midi_drums = tk.BooleanVar(value=False)
+
+        self._midi_override: dict = {}
+        self._last_drums: dict = {}
 
         self._mix_tracks = default_mix_tracks()
         self._track_row_frames: list = []
@@ -126,7 +140,6 @@ class MallMusicStudioApp:
         self._playhead_active = False
         self._debounce_job = None
         self._audio_restart_job = None
-        self._last_drums: dict = {}
         self._last_stems: dict = {}
         self._live_preview_busy = False
         self._preview_session_armed = False
@@ -217,6 +230,37 @@ class MallMusicStudioApp:
         self.gen_groove = GrooveGridCanvas(self.gen_grid_canvas)
         self.gen_grid_canvas.bind("<Configure>", lambda _: self._redraw_gen_groove())
 
+        midi_row = tk.Frame(grid_frame, bg="#1e1e2e")
+        midi_row.pack(fill="x", padx=8, pady=(0, 8))
+        tk.Button(
+            midi_row,
+            text="Load MIDI pattern",
+            command=self._load_midi_pattern,
+            bg="#45475a",
+            fg="#cdd6f4",
+            relief="flat",
+            padx=8,
+            pady=2,
+        ).pack(side="left")
+        for label, var in (
+            ("Melody", self.var_midi_melody),
+            ("Chords", self.var_midi_chords),
+            ("Drums", self.var_midi_drums),
+        ):
+            tk.Checkbutton(
+                midi_row,
+                text=label,
+                variable=var,
+                fg="#a6adc8",
+                bg="#1e1e2e",
+                selectcolor="#313244",
+                command=self._on_param_change,
+            ).pack(side="left", padx=6)
+        self.lbl_midi_status = tk.Label(
+            midi_row, text="No MIDI loaded", fg="#6c7086", bg="#1e1e2e", font=("Segoe UI", 8)
+        )
+        self.lbl_midi_status.pack(side="left", padx=8)
+
         self.lbl_theme_hint = tk.Label(
             parent,
             text="",
@@ -281,6 +325,9 @@ class MallMusicStudioApp:
             ("Sidechain Compression Depth:", self.var_sidechain, 0.0, 1.0, "%.2f", True),
             ("Melody Note Density (%):", self.var_density, 10, 100, "%d", True),
             ("Ambient Reverb Decay:", self.var_reverb, 0.1, 0.9, "%.2f", True),
+            ("Vinyl Noise Amount:", self.var_vinyl, 0.0, 1.0, "%.2f", True),
+            ("Tape Saturation Drive:", self.var_tape, 0.0, 1.0, "%.2f", True),
+            ("Bit Crush Amount:", self.var_bitcrush, 0.0, 1.0, "%.2f", True),
             ("Preview measures:", self.var_measures, 1, 32, "%d", True),
             ("Target track length (sec):", self.var_target_sec, 30, 600, "%d", False),
         ]:
@@ -401,6 +448,14 @@ class MallMusicStudioApp:
         tk.Entry(row, textvariable=self.var_yt_url, bg="#313244", fg="#cdd6f4", width=72).pack(
             side="left", fill="x", expand=True, padx=(0, 8)
         )
+        tk.Checkbutton(
+            frame,
+            text="I own the rights to this URL (or it is on my allowlist)",
+            variable=self.var_import_rights,
+            fg="#a6adc8",
+            bg="#1e1e2e",
+            selectcolor="#313244",
+        ).pack(anchor="w", padx=10, pady=(0, 4))
         tk.Button(
             row,
             text="Analyze stems",
@@ -774,7 +829,11 @@ class MallMusicStudioApp:
 
         def work():
             try:
-                manifest = run_import_subprocess(url, self.library_dir)
+                manifest = run_import_subprocess(
+                    url,
+                    self.library_dir,
+                    user_confirmed=bool(self.var_import_rights.get()),
+                )
                 self.root.after(0, lambda m=manifest: self._on_import_complete(m, None))
             except Exception as exc:
                 self.root.after(0, lambda e=exc: self._on_import_complete(None, e))
@@ -1195,6 +1254,16 @@ class MallMusicStudioApp:
             padx=12,
             pady=6,
         ).pack(side="left", padx=4)
+        tk.Button(
+            btn_row,
+            text="Register user loop…",
+            command=self._register_user_loop,
+            bg="#585b70",
+            fg="#cdd6f4",
+            relief="flat",
+            padx=12,
+            pady=6,
+        ).pack(side="left", padx=4)
 
         self._rebuild_mix_track_rows()
 
@@ -1479,6 +1548,9 @@ class MallMusicStudioApp:
             self.var_sidechain,
             self.var_density,
             self.var_reverb,
+            self.var_vinyl,
+            self.var_tape,
+            self.var_bitcrush,
         ):
             var.trace_add("write", lambda *_: self._on_param_change())
         self.var_target_sec.trace_add("write", lambda *_: self._update_instant_visuals())
@@ -1554,7 +1626,11 @@ class MallMusicStudioApp:
         self._last_seed = seed
         try:
             buf, drums, melody, stems = synthesize_measure(
-                **p, seed=seed, return_stems=True, mix_tracks=self._mix_tracks_payload()
+                **p,
+                seed=seed,
+                return_stems=True,
+                mix_tracks=self._mix_tracks_payload(),
+                **self._midi_synth_overrides(),
             )
             self._last_drums = drums
             self._last_stems = stems or {}
@@ -1624,7 +1700,129 @@ class MallMusicStudioApp:
             "sidechain_depth": self.var_sidechain.get(),
             "melody_density": self.var_density.get(),
             "reverb_decay": self.var_reverb.get(),
+            "vinyl_amount": self.var_vinyl.get(),
+            "tape_drive": self.var_tape.get(),
+            "bitcrush_amount": self.var_bitcrush.get(),
         }
+
+    def _midi_synth_overrides(self):
+        if not self._midi_override:
+            return {}
+        out = {}
+        if self.var_midi_melody.get() and self._midi_override.get("melody_steps"):
+            out["melody_steps"] = self._midi_override["melody_steps"]
+        if self.var_midi_chords.get() and self._midi_override.get("chord_midis"):
+            out["chord_midis"] = self._midi_override["chord_midis"]
+        if self.var_midi_drums.get() and self._midi_override.get("drum_pattern"):
+            out["drum_pattern"] = self._midi_override["drum_pattern"]
+        return out
+
+    def _load_midi_pattern(self):
+        initial = list_default_midi_patterns()
+        start_dir = os.path.dirname(initial[0]) if initial else app_base_dir()
+        path = filedialog.askopenfilename(
+            title="Load MIDI pattern",
+            initialdir=start_dir,
+            filetypes=[("MIDI files", "*.mid"), ("All files", "*.*")],
+        )
+        if not path:
+            return
+        try:
+            parsed = load_midi_pattern(path, bpm=float(self.var_bpm.get()))
+            self._midi_override = parsed
+            self.lbl_midi_status.config(text=os.path.basename(path))
+            if self.var_midi_melody.get():
+                self._update_melody_map(parsed.get("melody_steps", []))
+            if self.var_midi_drums.get():
+                self._last_drums = parsed.get("drum_pattern", {})
+                self._redraw_gen_groove()
+            self._on_param_change()
+        except Exception as exc:
+            messagebox.showerror("MIDI", str(exc))
+
+    def _register_user_loop(self):
+        path = filedialog.askopenfilename(
+            title="Register user loop (WAV)",
+            initialdir=self.library_dir,
+            filetypes=[("WAV files", "*.wav"), ("All files", "*.*")],
+        )
+        if not path:
+            return
+        dlg = tk.Toplevel(self.root)
+        dlg.title("Register loop")
+        dlg.configure(bg="#1e1e2e")
+        dlg.transient(self.root)
+        var_bpm = tk.DoubleVar(value=float(self.var_bpm.get()))
+        var_bars = tk.DoubleVar(value=2.0)
+        var_slot = tk.StringVar(value="chords")
+        var_label = tk.StringVar(value=os.path.splitext(os.path.basename(path))[0][:40])
+        for text, var, lo, hi in (
+            ("BPM", var_bpm, 60, 140),
+            ("Bars", var_bars, 1, 4),
+        ):
+            row = tk.Frame(dlg, bg="#1e1e2e")
+            row.pack(fill="x", padx=12, pady=4)
+            tk.Label(row, text=text, fg="#a6adc8", bg="#1e1e2e", width=8).pack(side="left")
+            tk.Spinbox(row, from_=lo, to=hi, textvariable=var, width=8).pack(side="left")
+        row = tk.Frame(dlg, bg="#1e1e2e")
+        row.pack(fill="x", padx=12, pady=4)
+        tk.Label(row, text="Slot", fg="#a6adc8", bg="#1e1e2e", width=8).pack(side="left")
+        ttk.Combobox(
+            row, textvariable=var_slot, values=["drums", "bass", "chords", "lead", "layer"], width=12
+        ).pack(side="left")
+        row = tk.Frame(dlg, bg="#1e1e2e")
+        row.pack(fill="x", padx=12, pady=4)
+        tk.Label(row, text="Label", fg="#a6adc8", bg="#1e1e2e", width=8).pack(side="left")
+        tk.Entry(row, textvariable=var_label, width=32).pack(side="left")
+
+        def save_loop():
+            import shutil
+            import uuid
+
+            slot = var_slot.get()
+            preset_id = f"user_loop_{uuid.uuid4().hex[:8]}"
+            dest_dir = os.path.join(licensed_library_dir(), "user_loops")
+            os.makedirs(dest_dir, exist_ok=True)
+            dest = os.path.join(dest_dir, f"{preset_id}.wav")
+            shutil.copy2(path, dest)
+            rel = os.path.relpath(dest, licensed_library_dir()).replace("\\", "/")
+            register_user_entry(
+                {
+                    "id": preset_id,
+                    "path": rel,
+                    "license": "user_original",
+                    "slot": slot,
+                    "type": "loop",
+                    "loop_bpm": float(var_bpm.get()),
+                    "bars": float(var_bars.get()),
+                }
+            )
+            preset = {
+                "id": preset_id,
+                "label": var_label.get().strip() or preset_id,
+                "slot": slot,
+                "engine": "sample_loop",
+                "volume": 0.75,
+                "loop_path": rel,
+                "loop_bpm": float(var_bpm.get()),
+                "bars": float(var_bars.get()),
+            }
+            save_user_preset(preset)
+            mode = "loop_chords" if slot in ("chords", "bass", "lead") else "loop_layer"
+            self._mix_tracks.append(
+                make_track(
+                    name=preset["label"],
+                    preset=preset_id,
+                    mode=mode,
+                    seed=self._current_seed(),
+                    volume=0.85,
+                )
+            )
+            self._rebuild_mix_track_rows()
+            dlg.destroy()
+            messagebox.showinfo("Loop registered", f"Added preset {preset['label']}")
+
+        tk.Button(dlg, text="Save", command=save_loop, bg="#45475a", fg="#cdd6f4").pack(pady=10)
 
     def _update_melody_map(self, steps):
         self._last_melody = steps
@@ -1650,7 +1848,11 @@ class MallMusicStudioApp:
         seed = self._current_seed()
         self._last_seed = seed
         buf, _, melody, stems = synthesize_measure(
-            **p, seed=seed, return_stems=True, mix_tracks=self._mix_tracks_payload()
+            **p,
+            seed=seed,
+            return_stems=True,
+            mix_tracks=self._mix_tracks_payload(),
+            **self._midi_synth_overrides(),
         )
         self._last_stems = stems or {}
         self._show_gen_waveform(buf)
@@ -1667,7 +1869,11 @@ class MallMusicStudioApp:
         n = self.var_measures.get()
         seed = self._current_seed()
         return synthesize_track(
-            **p, num_measures=n, seed=seed, mix_tracks=self._mix_tracks_payload()
+            **p,
+            num_measures=n,
+            seed=seed,
+            mix_tracks=self._mix_tracks_payload(),
+            **self._midi_synth_overrides(),
         ), p, seed
 
     def _apply_preview_buffer(self, buf, p, seed):
@@ -1772,7 +1978,11 @@ class MallMusicStudioApp:
         n = self._measures_for_target(p["bpm"], target)
         seed = self._current_seed()
         buf = synthesize_track(
-            **p, num_measures=n, seed=seed, mix_tracks=self._mix_tracks_payload()
+            **p,
+            num_measures=n,
+            seed=seed,
+            mix_tracks=self._mix_tracks_payload(),
+            **self._midi_synth_overrides(),
         )
         self._show_gen_waveform(buf)
         self._update_duration_labels(buf)
@@ -1793,6 +2003,9 @@ class MallMusicStudioApp:
             "sidechain_depth": p["sidechain_depth"],
             "melody_density": p["melody_density"],
             "reverb_decay": p["reverb_decay"],
+            "vinyl_amount": p.get("vinyl_amount", 0),
+            "tape_drive": p.get("tape_drive", 0),
+            "bitcrush_amount": p.get("bitcrush_amount", 0),
             "mix_tracks": self._mix_tracks_payload(),
             "duration_sec": round(buffer_duration_sec(buf), 3),
             "wav_file": wav_path,

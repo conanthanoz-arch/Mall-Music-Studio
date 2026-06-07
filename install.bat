@@ -22,4 +22,5 @@ echo Install complete.
 echo   Run:  run_music_studio.bat
 echo   Build EXE:  build_and_run.bat
 echo   YouTube import (optional):  install_import_tools.bat
+echo   CC0 sample packs (optional):  install_samples.bat
 pause

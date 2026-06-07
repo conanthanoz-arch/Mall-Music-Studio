@@ -86,7 +86,52 @@ def _normalize_youtube_url(url: str) -> str:
         vid = parse_qs(parsed.query).get("v", [None])[0]
         if vid:
             return f"https://www.youtube.com/watch?v={vid}"
+    if "youtu.be/" in url:
+        from urllib.parse import urlparse
+
+        vid = urlparse(url).path.lstrip("/").split("/")[0]
+        if vid:
+            return f"https://www.youtube.com/watch?v={vid}"
     return url
+
+
+def _video_id_from_url(url: str) -> Optional[str]:
+    url = _normalize_youtube_url(url)
+    if "v=" in url:
+        from urllib.parse import parse_qs, urlparse
+
+        return parse_qs(urlparse(url).query).get("v", [None])[0]
+    return None
+
+
+def fetch_video_metadata(url: str) -> Dict[str, Any]:
+    """Return channel_id, video_id, title without downloading audio."""
+    _verify_yt_dlp()
+    url = _normalize_youtube_url(url)
+    code, out, err = _run_yt_dlp(["--dump-single-json", "--no-playlist", url])
+    if code != 0:
+        raise RuntimeError((err or out or "yt-dlp metadata failed")[:800])
+    data = json.loads(out)
+    return {
+        "title": data.get("title") or "YouTube Import",
+        "duration_sec": float(data.get("duration") or 0),
+        "channel_id": data.get("channel_id") or data.get("uploader_id"),
+        "video_id": data.get("id") or _video_id_from_url(url),
+        "source_url": url,
+    }
+
+
+def assert_import_allowed(url: str, user_confirmed: bool = False) -> None:
+    from tools.import_allowlist import check_import_allowed
+
+    meta = fetch_video_metadata(url)
+    ok, msg = check_import_allowed(
+        meta.get("channel_id"),
+        meta.get("video_id"),
+        user_confirmed=user_confirmed,
+    )
+    if not ok:
+        raise RuntimeError(msg)
 
 
 def _ffmpeg_to_wav(src_path: str, wav_path: str) -> None:
@@ -159,8 +204,10 @@ def download_youtube_audio(
     url: str,
     output_dir: str,
     max_duration_sec: Optional[float] = 120.0,
+    user_confirmed: bool = False,
 ) -> Dict[str, Any]:
     """Download best audio and convert to WAV."""
+    assert_import_allowed(url, user_confirmed=user_confirmed)
     os.makedirs(output_dir, exist_ok=True)
     _clean_source_files(output_dir)
     _verify_yt_dlp()

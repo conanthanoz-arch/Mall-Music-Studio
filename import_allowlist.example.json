@@ -1,0 +1,6 @@
+{
+  "allowed_channel_ids": [],
+  "allowed_video_ids": [],
+  "require_confirmation": true,
+  "_comment": "Add your YouTube channel ID (UC...) or video IDs you own. Copy to import_allowlist.json"
+}

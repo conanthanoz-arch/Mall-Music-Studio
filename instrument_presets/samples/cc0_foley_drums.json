@@ -1,0 +1,23 @@
+{
+  "id": "cc0_foley_drums",
+  "label": "CC0 Foley Drums",
+  "slot": "drums",
+  "engine": "sample_kit",
+  "volume": 1.0,
+  "kick": {
+    "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aftermath_Drumbeat_Loop.wav",
+    "volume": 0.9
+  },
+  "snare": {
+    "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aggressive_Drum_Loop.wav",
+    "volume": 1.0
+  },
+  "hihat_closed": {
+    "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Dark Times_Drumbeat_Loop.wav",
+    "volume": 0.85
+  },
+  "hihat_open": {
+    "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Fast_Drum_Loop.wav",
+    "volume": 0.75
+  }
+}

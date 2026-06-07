@@ -1,0 +1,465 @@
+{
+  "version": 1,
+  "generated_at": "2026-06-07T17:44:23.164032+00:00",
+  "entries": [
+    {
+      "id": "open_lofi_2_am_debug_loop_00",
+      "path": "open_lofi/2-am-debug-loop.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_3_am_echoes_01",
+      "path": "open_lofi/3-am-echoes.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_3am_sink_light_02",
+      "path": "open_lofi/3am-sink-light.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_a_taste_of_spring_03",
+      "path": "open_lofi/a-taste-of-spring.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_after_school_rain_04",
+      "path": "open_lofi/after-school-rain.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_almost_floating_05",
+      "path": "open_lofi/almost-floating.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_amber_sidewalks_06",
+      "path": "open_lofi/amber-sidewalks.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_amber_windowpane_07",
+      "path": "open_lofi/amber-windowpane.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_antenna_after_midnight_08",
+      "path": "open_lofi/antenna-after-midnight.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_ashes_in_the_coffee_cup_09",
+      "path": "open_lofi/ashes-in-the-coffee-cup.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_aurora_on_mute_10",
+      "path": "open_lofi/aurora-on-mute.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_autumn_on_the_window_glass_11",
+      "path": "open_lofi/autumn-on-the-window-glass.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_bamboo_shadow_waltz_12",
+      "path": "open_lofi/bamboo-shadow-waltz.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_barefoot_in_the_kitchen_13",
+      "path": "open_lofi/barefoot-in-the-kitchen.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_basement_groove_86_14",
+      "path": "open_lofi/basement-groove-86.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "open_lofi_bells_before_sunrise_15",
+      "path": "open_lofi/bells-before-sunrise.mp3",
+      "license": "CC0 1.0",
+      "source_url": "",
+      "slot": "layer",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "open_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_01_holiznacc0_poor_but_happy_00",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/01 HoliznaCC0 - Poor, But Happy.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_01_holiznacc0_poor_but_happy_01",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/01 HoliznaCC0 - Poor, But Happy.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_03_holiznacc0_blue_skies_mp3_02",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/03 HoliznaCC0 - Blue Skies.mp3.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_03_holiznacc0_blue_skies_mp3_03",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/03 HoliznaCC0 - Blue Skies.mp3.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_16_holiznacc0_letting_go_of_the_past_04",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/16 HoliznaCC0 - Letting Go Of The Past.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_16_holiznacc0_letting_go_of_the_past_05",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/16 HoliznaCC0 - Letting Go Of The Past.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_19_holiznacc0_puppy_love_06",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/19 HoliznaCC0 - Puppy Love.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_19_holiznacc0_puppy_love_07",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/19 HoliznaCC0 - Puppy Love.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_21_holiznacc0_clouds_08",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/21 HoliznaCC0 - Clouds.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_21_holiznacc0_clouds_09",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/21 HoliznaCC0 - Clouds.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_22_holiznacc0_happy_but_a_little_off_10",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/22 HoliznaCC0 - Happy, but a little off.mp3",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "holizna_happy_lofi_22_holiznacc0_happy_but_a_little_off_11",
+      "path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/22 HoliznaCC0 - Happy, but a little off.ogg",
+      "license": "CC0 1.0",
+      "source_url": "https://opengameart.org/content/happy-lo-fi-lofi-collection",
+      "slot": "chords",
+      "type": "loop",
+      "loop_bpm": 80,
+      "bars": 2,
+      "tags": [
+        "lofi",
+        "holizna_happy_lofi"
+      ]
+    },
+    {
+      "id": "cc0_kick",
+      "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aftermath_Drumbeat_Loop.wav",
+      "license": "CC0 1.0",
+      "slot": "drums",
+      "type": "one_shot",
+      "role": "kick"
+    },
+    {
+      "id": "cc0_snare",
+      "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aggressive_Drum_Loop.wav",
+      "license": "CC0 1.0",
+      "slot": "drums",
+      "type": "one_shot",
+      "role": "snare"
+    },
+    {
+      "id": "cc0_hihat_closed",
+      "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Dark Times_Drumbeat_Loop.wav",
+      "license": "CC0 1.0",
+      "slot": "drums",
+      "type": "one_shot",
+      "role": "hihat_closed"
+    },
+    {
+      "id": "cc0_hihat_open",
+      "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Fast_Drum_Loop.wav",
+      "license": "CC0 1.0",
+      "slot": "drums",
+      "type": "one_shot",
+      "role": "hihat_open"
+    }
+  ],
+  "presets": [
+    {
+      "id": "cc0_foley_drums",
+      "label": "CC0 Foley Drums",
+      "slot": "drums",
+      "engine": "sample_kit",
+      "volume": 1.0,
+      "kick": {
+        "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aftermath_Drumbeat_Loop.wav",
+        "volume": 0.9
+      },
+      "snare": {
+        "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Aggressive_Drum_Loop.wav",
+        "volume": 1.0
+      },
+      "hihat_closed": {
+        "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Dark Times_Drumbeat_Loop.wav",
+        "volume": 0.85
+      },
+      "hihat_open": {
+        "path": "oga_fantasy_drums/FantasyAmbience_Drumloops/Fast_Drum_Loop.wav",
+        "volume": 0.75
+      }
+    },
+    {
+      "id": "cc0_holizna_piano_loop",
+      "label": "CC0 Holizna Piano Loop",
+      "slot": "chords",
+      "engine": "sample_loop",
+      "volume": 0.75,
+      "loop_path": "holizna_happy_lofi/Happy Lo-Fi (Lofi Collection)/01 HoliznaCC0 - Poor, But Happy.mp3",
+      "loop_bpm": 80,
+      "bars": 2
+    }
+  ]
+}

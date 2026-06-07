@@ -88,6 +88,7 @@ def run_import(
     url: str,
     library_dir: str,
     max_download_sec: float = 120.0,
+    user_confirmed: bool = False,
 ) -> dict:
     """Download + Demucs only; user fits emulated presets from UI."""
     work_dir = os.path.join(library_dir, "import_jobs")
@@ -98,7 +99,9 @@ def run_import(
     write_progress(job_dir, "downloading", "Fetching audio from YouTube…")
     download_dir = os.path.join(job_dir, "download")
     os.makedirs(download_dir, exist_ok=True)
-    meta = download_youtube_audio(url, download_dir, max_duration_sec=max_download_sec)
+    meta = download_youtube_audio(
+        url, download_dir, max_duration_sec=max_download_sec, user_confirmed=user_confirmed
+    )
 
     write_progress(job_dir, "separating", "Running Demucs stem separation (may take several minutes)…")
     stems_dir = os.path.join(job_dir, "stems")
@@ -156,9 +159,15 @@ def main():
     parser.add_argument("--library-dir", required=True)
     parser.add_argument("--max-download-sec", type=float, default=120.0)
     parser.add_argument("--manifest-out", default="")
+    parser.add_argument("--user-confirmed", action="store_true")
     args = parser.parse_args()
     try:
-        manifest = run_import(args.url, args.library_dir, max_download_sec=args.max_download_sec)
+        manifest = run_import(
+            args.url,
+            args.library_dir,
+            max_download_sec=args.max_download_sec,
+            user_confirmed=args.user_confirmed,
+        )
     except Exception as exc:
         job_dir = os.path.join(args.library_dir, "import_jobs", "latest")
         write_progress(job_dir, "error", str(exc))

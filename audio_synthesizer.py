@@ -114,6 +114,79 @@ def apply_reverb(buffer: np.ndarray, decay: float) -> np.ndarray:
     return buffer + wet
 
 
+def apply_vinyl_layer(
+    buffer: np.ndarray,
+    amount: float,
+    crackle: Optional[np.ndarray] = None,
+    rng: Optional[np.random.Generator] = None,
+) -> np.ndarray:
+    if amount <= 0.01 or len(buffer) == 0:
+        return buffer
+    rng = rng or _rng()
+    out = buffer.copy()
+    if crackle is not None and len(crackle) > 0:
+        pos = 0
+        while pos < len(out):
+            end = min(len(out), pos + len(crackle))
+            out[pos:end] += crackle[: end - pos] * amount * 0.35
+            pos += len(crackle)
+    else:
+        noise = rng.standard_normal(len(out))
+        noise = _lowpass_fft(noise, 4200)
+        out += noise * amount * 0.018
+    return out
+
+
+def apply_tape_saturation(buffer: np.ndarray, drive: float) -> np.ndarray:
+    if drive <= 0.01 or len(buffer) == 0:
+        return buffer
+    warmed = _lowpass_fft(buffer, 9000 - drive * 2500)
+    wow_rate = 0.35 + drive * 0.15
+    t = np.arange(len(warmed)) / SAMPLE_RATE
+    wow = 1.0 + np.sin(2 * np.pi * wow_rate * t) * (0.0015 * drive)
+    idx = np.clip(np.cumsum(wow) - wow[0], 0, len(warmed) - 1).astype(np.int64)
+    warped = warmed[idx]
+    return np.tanh(warped * (1.0 + drive * 2.2)) / np.tanh(1.0 + drive * 2.2)
+
+
+def apply_bitcrush(buffer: np.ndarray, amount: float) -> np.ndarray:
+    if amount <= 0.01 or len(buffer) == 0:
+        return buffer
+    bits = max(6, int(16 - amount * 10))
+    levels = 2 ** bits
+    crushed = np.round(buffer * levels) / levels
+    step = max(1, int(SAMPLE_RATE * (0.0005 + amount * 0.002)))
+    if step > 1:
+        crushed[::step] = crushed[::step]
+        for i in range(1, len(crushed)):
+            if i % step != 0:
+                crushed[i] = crushed[i - 1]
+    return crushed * 0.92 + buffer * 0.08
+
+
+def apply_master_fx(
+    buffer: np.ndarray,
+    reverb_decay: float,
+    vinyl_amount: float = 0.0,
+    tape_drive: float = 0.0,
+    bitcrush_amount: float = 0.0,
+    crackle: Optional[np.ndarray] = None,
+    rng: Optional[np.random.Generator] = None,
+) -> Tuple[np.ndarray, np.ndarray]:
+    """Returns (final_mix, reverb_wet_only)."""
+    warmed = _lofi_warmth(buffer)
+    if tape_drive > 0:
+        warmed = apply_tape_saturation(warmed, tape_drive)
+    if bitcrush_amount > 0:
+        warmed = apply_bitcrush(warmed, bitcrush_amount)
+    if vinyl_amount > 0:
+        warmed = apply_vinyl_layer(warmed, vinyl_amount, crackle=crackle, rng=rng)
+    with_reverb = apply_reverb(warmed.copy(), reverb_decay)
+    reverb_buf = with_reverb - warmed
+    final = _soft_limit(with_reverb)
+    return final, reverb_buf
+
+
 def _lofi_warmth(buffer: np.ndarray) -> np.ndarray:
     warmed = _lowpass_fft(buffer, 11000)
     return buffer * 0.55 + warmed * 0.45
@@ -133,9 +206,13 @@ def synthesize_measure(
     sidechain_depth: float = 0.6,
     melody_density: int = 70,
     reverb_decay: float = 0.45,
+    vinyl_amount: float = 0.0,
+    tape_drive: float = 0.0,
+    bitcrush_amount: float = 0.0,
     chord_index: int = 0,
     drum_pattern: Optional[Dict[str, List[int]]] = None,
     melody_steps: Optional[List[Optional[int]]] = None,
+    chord_midis: Optional[List[int]] = None,
     seed: Optional[int] = None,
     return_stems: bool = False,
     instruments: Optional[Any] = None,
@@ -148,7 +225,7 @@ def synthesize_measure(
     profile = THEME_PROFILES[theme_id]
     prog = profile["progression"][chord_index % len(profile["progression"])]
     bass_root = prog["root_midi"] - 12
-    chord_midis = chord_tones(prog["root_midi"], prog["intervals"])
+    resolved_chords = chord_midis if chord_midis else chord_tones(prog["root_midi"], prog["intervals"])
 
     drum_seed = _drum_seed_from_tracks(tracks, seed)
     drums = drum_pattern or generate_drum_pattern(drum_seed)
@@ -167,7 +244,7 @@ def synthesize_measure(
         melody_density=melody_density,
         global_seed=seed,
         bass_root=bass_root,
-        chord_midis=chord_midis,
+        chord_midis=resolved_chords,
         melody_steps=melody,
         drum_pattern=drums,
         step_times=times,
@@ -190,10 +267,27 @@ def synthesize_measure(
         if not track.get("mute"):
             dry += audio
 
-    warmed = _lofi_warmth(dry)
-    with_reverb = apply_reverb(warmed.copy(), reverb_decay)
-    reverb_buf = with_reverb - warmed
-    buf = _soft_limit(with_reverb)
+    crackle = None
+    if vinyl_amount > 0.01:
+        try:
+            from licensed_library import vinyl_crackle_path
+            from waveform_utils import load_wav_mono
+
+            cp = vinyl_crackle_path()
+            if cp:
+                crackle = load_wav_mono(cp)
+        except ImportError:
+            pass
+
+    buf, reverb_buf = apply_master_fx(
+        dry,
+        reverb_decay,
+        vinyl_amount=vinyl_amount,
+        tape_drive=tape_drive,
+        bitcrush_amount=bitcrush_amount,
+        crackle=crackle,
+        rng=_rng(),
+    )
 
     stems = None
     if return_stems:
@@ -215,10 +309,16 @@ def synthesize_track(
     sidechain_depth: float = 0.6,
     melody_density: int = 70,
     reverb_decay: float = 0.45,
+    vinyl_amount: float = 0.0,
+    tape_drive: float = 0.0,
+    bitcrush_amount: float = 0.0,
     num_measures: int = 8,
     seed: Optional[int] = None,
     instruments: Optional[Any] = None,
     mix_tracks: Optional[List[Dict[str, Any]]] = None,
+    drum_pattern: Optional[Dict[str, List[int]]] = None,
+    melody_steps: Optional[List[Optional[int]]] = None,
+    chord_midis: Optional[List[int]] = None,
 ) -> np.ndarray:
     if seed is not None:
         set_synthesis_seed(seed)
@@ -227,7 +327,7 @@ def synthesize_track(
     drum_seed = _drum_seed_from_tracks(tracks, seed)
 
     parts = []
-    drums = generate_drum_pattern(drum_seed)
+    drums = drum_pattern or generate_drum_pattern(drum_seed)
     track_arg = mix_tracks if mix_tracks is not None else instruments
     for m in range(num_measures):
         chunk, drums, _, _ = synthesize_measure(
@@ -237,8 +337,13 @@ def synthesize_track(
             sidechain_depth=sidechain_depth,
             melody_density=melody_density,
             reverb_decay=reverb_decay,
+            vinyl_amount=vinyl_amount,
+            tape_drive=tape_drive,
+            bitcrush_amount=bitcrush_amount,
             chord_index=m,
             drum_pattern=drums if m % 4 != 0 else generate_drum_pattern(seed=(drum_seed or 0) + m),
+            melody_steps=melody_steps,
+            chord_midis=chord_midis,
             seed=(seed or 0) + m * 17,
             mix_tracks=track_arg,
         )
