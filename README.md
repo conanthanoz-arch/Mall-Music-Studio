@@ -17,9 +17,7 @@ Procedural lo-fi music studio with mix tracks, YouTube stem analysis (synth emul
 git clone https://github.com/YOUR_USERNAME/Mall-Music-Studio.git
 cd Mall-Music-Studio
 
-py -m venv .venv
-.venv\Scripts\Activate.ps1
-pip install -r requirements.txt
+install.bat
 ```
 
 Optional — YouTube import (large download: PyTorch + Demucs):

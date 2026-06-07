@@ -4,6 +4,7 @@ __pycache__/
 .venv/
 venv/
 .env
+.gh-cli/
 
 # Build artifacts
 build/
