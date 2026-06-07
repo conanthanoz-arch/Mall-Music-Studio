@@ -28,5 +28,5 @@ if errorlevel 1 (
 )
 
 echo.
-echo Done. Repo: https://github.com/YOUR_USERNAME/Mall-Music-Studio
+echo Done. Repo: https://github.com/conanthanoz-arch/Mall-Music-Studio
 pause

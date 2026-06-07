@@ -14,7 +14,7 @@ Procedural lo-fi music studio with mix tracks, YouTube stem analysis (synth emul
 ### Quick install
 
 ```powershell
-git clone https://github.com/YOUR_USERNAME/Mall-Music-Studio.git
+git clone https://github.com/conanthanoz-arch/Mall-Music-Studio.git
 cd Mall-Music-Studio
 
 install.bat
