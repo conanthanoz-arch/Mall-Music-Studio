@@ -10,6 +10,7 @@ venv/
 build/
 dist/
 *.spec.bak
+MallMusicStudio-linux-*.tar.gz
 
 # Stream runtime / generated audio
 stream_monitor.log

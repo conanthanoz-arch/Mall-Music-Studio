@@ -49,7 +49,10 @@ def save_import_manifest(library_dir: str, manifest: Dict[str, Any]) -> None:
 
 def project_root() -> str:
     if getattr(sys, "frozen", False):
-        return os.path.abspath(os.path.join(os.path.dirname(sys.executable), ".."))
+        exe_dir = os.path.dirname(os.path.abspath(sys.executable))
+        if os.path.isdir(os.path.join(exe_dir, "tools")):
+            return exe_dir
+        return os.path.abspath(os.path.join(exe_dir, ".."))
     return os.path.dirname(os.path.abspath(__file__))
 
 

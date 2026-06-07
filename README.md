@@ -6,19 +6,35 @@ Procedural lo-fi music studio with mix tracks, YouTube stem analysis (synth emul
 
 ### Requirements
 
-- **Windows 10/11** (primary; batch scripts are Windows-oriented)
 - **Python 3.9+** (3.10+ recommended)
 - **[FFmpeg](https://ffmpeg.org/download.html)** on PATH (export MP3, stream preview)
 - **Git** (optional, for clone)
+- **Windows 10/11** or **Linux** (Ubuntu 22.04+ recommended for builds)
 
-### Quick install
+### Windows
 
 ```powershell
 git clone https://github.com/conanthanoz-arch/Mall-Music-Studio.git
 cd Mall-Music-Studio
-
 install.bat
+run_music_studio.bat
 ```
+
+Build EXE: `build_and_run.bat` → `dist\MallMusicStudio.exe`
+
+### Linux
+
+```bash
+git clone https://github.com/conanthanoz-arch/Mall-Music-Studio.git
+cd Mall-Music-Studio
+chmod +x install.sh build_music_studio.sh run_music_studio.sh
+./install.sh
+./build_music_studio.sh
+```
+
+Or download a CI-built tarball — see [docs/BUILD_LINUX.md](docs/BUILD_LINUX.md).
+
+### Quick install (Windows)
 
 Optional — YouTube import (large download: PyTorch + Demucs):
 
@@ -64,7 +80,17 @@ Mall-Music-Studio/
 └── run_music_studio.bat
 ```
 
-## Build EXE
+## Build
+
+| Platform | Command | Output |
+|----------|---------|--------|
+| Windows | `build_music_studio.bat` | `dist\MallMusicStudio.exe` |
+| Linux | `./build_music_studio.sh` | `dist/MallMusicStudio` + `.tar.gz` |
+| GitHub CI | Actions → **Build Linux** | Artifact `MallMusicStudio-linux-x64.tar.gz` |
+
+Close any running app before rebuilding on Windows.
+
+## Build EXE (Windows)
 
 Close any running `MallMusicStudio.exe`, then:
 

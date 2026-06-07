@@ -1,0 +1,58 @@
+name: Build Linux
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [master, main]
+    tags: ["v*"]
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: System dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            python3-tk python3-dev \
+            ffmpeg libsdl2-2.0-0 \
+            libxkbcommon-x11-0 libxcb-cursor0 libxcb-xinerama0 libegl1
+
+      - name: Python dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt pyinstaller
+
+      - name: PyInstaller build
+        run: pyinstaller --noconfirm --clean build_music_studio.spec
+
+      - name: Package portable tarball
+        run: |
+          PKG=dist/package
+          rm -rf "$PKG"
+          mkdir -p "$PKG/music_library"
+          cp dist/MallMusicStudio "$PKG/"
+          cp -r tools instrument_presets "$PKG/"
+          touch "$PKG/music_library/.gitkeep"
+          tar -czvf MallMusicStudio-linux-x64.tar.gz -C "$PKG" .
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MallMusicStudio-linux-x64
+          path: MallMusicStudio-linux-x64.tar.gz
+          retention-days: 90
+
+      - name: Upload to release (tags only)
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: MallMusicStudio-linux-x64.tar.gz
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
